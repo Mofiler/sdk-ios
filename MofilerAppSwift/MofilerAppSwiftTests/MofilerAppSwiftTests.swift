@@ -1,15 +1,15 @@
 //
-//  MofilerDevAppTests.swift
-//  MofilerDevAppTests
+//  MofilerAppSwiftTests.swift
+//  MofilerAppSwiftTests
 //
-//  Created by Fernando Chamorro on 10/5/16.
+//  Created by Fernando Chamorro on 10/11/16.
 //  Copyright © 2016 MobileTonic. All rights reserved.
 //
 
 import XCTest
-@testable import MofilerDevApp
+@testable import MofilerAppSwift
 
-class MofilerDevAppTests: XCTestCase {
+class MofilerAppSwiftTests: XCTestCase {
     
     override func setUp() {
         super.setUp()

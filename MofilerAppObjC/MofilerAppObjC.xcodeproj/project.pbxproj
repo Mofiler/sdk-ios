@@ -1,0 +1,469 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		FFC1DB381DAD32E700396B56 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FFC1DB371DAD32E700396B56 /* main.m */; };
+		FFC1DB3B1DAD32E700396B56 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = FFC1DB3A1DAD32E700396B56 /* AppDelegate.m */; };
+		FFC1DB3E1DAD32E700396B56 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFC1DB3D1DAD32E700396B56 /* ViewController.m */; };
+		FFC1DB411DAD32E700396B56 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FFC1DB3F1DAD32E700396B56 /* Main.storyboard */; };
+		FFC1DB431DAD32E700396B56 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FFC1DB421DAD32E700396B56 /* Assets.xcassets */; };
+		FFC1DB461DAD32E700396B56 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FFC1DB441DAD32E700396B56 /* LaunchScreen.storyboard */; };
+		FFC1DB511DAD32E700396B56 /* MofilerAppObjCTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FFC1DB501DAD32E700396B56 /* MofilerAppObjCTests.m */; };
+		FFD8F3A21DAD42F400CC343B /* Mofiler.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFD8F3A11DAD42F400CC343B /* Mofiler.framework */; };
+		FFD8F3A31DAD42F400CC343B /* Mofiler.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FFD8F3A11DAD42F400CC343B /* Mofiler.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		FFC1DB4D1DAD32E700396B56 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FFC1DB2B1DAD32E700396B56 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FFC1DB321DAD32E700396B56;
+			remoteInfo = MofilerAppObjC;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		FFC1DB941DAD348D00396B56 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				FFD8F3A31DAD42F400CC343B /* Mofiler.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		FFC1DB331DAD32E700396B56 /* MofilerAppObjC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MofilerAppObjC.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FFC1DB371DAD32E700396B56 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		FFC1DB391DAD32E700396B56 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		FFC1DB3A1DAD32E700396B56 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		FFC1DB3C1DAD32E700396B56 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		FFC1DB3D1DAD32E700396B56 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		FFC1DB401DAD32E700396B56 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		FFC1DB421DAD32E700396B56 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		FFC1DB451DAD32E700396B56 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		FFC1DB471DAD32E700396B56 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FFC1DB4C1DAD32E700396B56 /* MofilerAppObjCTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MofilerAppObjCTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		FFC1DB501DAD32E700396B56 /* MofilerAppObjCTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MofilerAppObjCTests.m; sourceTree = "<group>"; };
+		FFC1DB521DAD32E700396B56 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FFD8F3A11DAD42F400CC343B /* Mofiler.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Mofiler.framework; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		FFC1DB301DAD32E700396B56 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FFD8F3A21DAD42F400CC343B /* Mofiler.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FFC1DB491DAD32E700396B56 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		FFC1DB2A1DAD32E700396B56 = {
+			isa = PBXGroup;
+			children = (
+				FFD8F3A11DAD42F400CC343B /* Mofiler.framework */,
+				FFC1DB351DAD32E700396B56 /* MofilerAppObjC */,
+				FFC1DB4F1DAD32E700396B56 /* MofilerAppObjCTests */,
+				FFC1DB341DAD32E700396B56 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		FFC1DB341DAD32E700396B56 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FFC1DB331DAD32E700396B56 /* MofilerAppObjC.app */,
+				FFC1DB4C1DAD32E700396B56 /* MofilerAppObjCTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FFC1DB351DAD32E700396B56 /* MofilerAppObjC */ = {
+			isa = PBXGroup;
+			children = (
+				FFC1DB391DAD32E700396B56 /* AppDelegate.h */,
+				FFC1DB3A1DAD32E700396B56 /* AppDelegate.m */,
+				FFC1DB3C1DAD32E700396B56 /* ViewController.h */,
+				FFC1DB3D1DAD32E700396B56 /* ViewController.m */,
+				FFC1DB3F1DAD32E700396B56 /* Main.storyboard */,
+				FFC1DB421DAD32E700396B56 /* Assets.xcassets */,
+				FFC1DB441DAD32E700396B56 /* LaunchScreen.storyboard */,
+				FFC1DB471DAD32E700396B56 /* Info.plist */,
+				FFC1DB361DAD32E700396B56 /* Supporting Files */,
+			);
+			path = MofilerAppObjC;
+			sourceTree = "<group>";
+		};
+		FFC1DB361DAD32E700396B56 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				FFC1DB371DAD32E700396B56 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		FFC1DB4F1DAD32E700396B56 /* MofilerAppObjCTests */ = {
+			isa = PBXGroup;
+			children = (
+				FFC1DB501DAD32E700396B56 /* MofilerAppObjCTests.m */,
+				FFC1DB521DAD32E700396B56 /* Info.plist */,
+			);
+			path = MofilerAppObjCTests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		FFC1DB321DAD32E700396B56 /* MofilerAppObjC */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FFC1DB551DAD32E700396B56 /* Build configuration list for PBXNativeTarget "MofilerAppObjC" */;
+			buildPhases = (
+				FFC1DB2F1DAD32E700396B56 /* Sources */,
+				FFC1DB301DAD32E700396B56 /* Frameworks */,
+				FFC1DB311DAD32E700396B56 /* Resources */,
+				FFC1DB941DAD348D00396B56 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MofilerAppObjC;
+			productName = MofilerAppObjC;
+			productReference = FFC1DB331DAD32E700396B56 /* MofilerAppObjC.app */;
+			productType = "com.apple.product-type.application";
+		};
+		FFC1DB4B1DAD32E700396B56 /* MofilerAppObjCTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FFC1DB581DAD32E700396B56 /* Build configuration list for PBXNativeTarget "MofilerAppObjCTests" */;
+			buildPhases = (
+				FFC1DB481DAD32E700396B56 /* Sources */,
+				FFC1DB491DAD32E700396B56 /* Frameworks */,
+				FFC1DB4A1DAD32E700396B56 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				FFC1DB4E1DAD32E700396B56 /* PBXTargetDependency */,
+			);
+			name = MofilerAppObjCTests;
+			productName = MofilerAppObjCTests;
+			productReference = FFC1DB4C1DAD32E700396B56 /* MofilerAppObjCTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		FFC1DB2B1DAD32E700396B56 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0800;
+				ORGANIZATIONNAME = MobileTonic;
+				TargetAttributes = {
+					FFC1DB321DAD32E700396B56 = {
+						CreatedOnToolsVersion = 8.0;
+						DevelopmentTeam = 7TV34A85J2;
+						ProvisioningStyle = Manual;
+					};
+					FFC1DB4B1DAD32E700396B56 = {
+						CreatedOnToolsVersion = 8.0;
+						ProvisioningStyle = Automatic;
+						TestTargetID = FFC1DB321DAD32E700396B56;
+					};
+				};
+			};
+			buildConfigurationList = FFC1DB2E1DAD32E700396B56 /* Build configuration list for PBXProject "MofilerAppObjC" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = FFC1DB2A1DAD32E700396B56;
+			productRefGroup = FFC1DB341DAD32E700396B56 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				FFC1DB321DAD32E700396B56 /* MofilerAppObjC */,
+				FFC1DB4B1DAD32E700396B56 /* MofilerAppObjCTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		FFC1DB311DAD32E700396B56 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FFC1DB461DAD32E700396B56 /* LaunchScreen.storyboard in Resources */,
+				FFC1DB431DAD32E700396B56 /* Assets.xcassets in Resources */,
+				FFC1DB411DAD32E700396B56 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FFC1DB4A1DAD32E700396B56 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		FFC1DB2F1DAD32E700396B56 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FFC1DB3E1DAD32E700396B56 /* ViewController.m in Sources */,
+				FFC1DB3B1DAD32E700396B56 /* AppDelegate.m in Sources */,
+				FFC1DB381DAD32E700396B56 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FFC1DB481DAD32E700396B56 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FFC1DB511DAD32E700396B56 /* MofilerAppObjCTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		FFC1DB4E1DAD32E700396B56 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FFC1DB321DAD32E700396B56 /* MofilerAppObjC */;
+			targetProxy = FFC1DB4D1DAD32E700396B56 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		FFC1DB3F1DAD32E700396B56 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FFC1DB401DAD32E700396B56 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		FFC1DB441DAD32E700396B56 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FFC1DB451DAD32E700396B56 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		FFC1DB531DAD32E700396B56 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		FFC1DB541DAD32E700396B56 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		FFC1DB561DAD32E700396B56 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 7TV34A85J2;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/MofilerAppObjC",
+					"$(PROJECT_DIR)",
+				);
+				INFOPLIST_FILE = MofilerAppObjC/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.MofilerAppObjC;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "6b2eda75-d7e6-4425-aa60-a4ee6cd70ac8";
+				PROVISIONING_PROFILE_SPECIFIER = "MT Developer";
+			};
+			name = Debug;
+		};
+		FFC1DB571DAD32E700396B56 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				DEVELOPMENT_TEAM = 7TV34A85J2;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/MofilerAppObjC",
+					"$(PROJECT_DIR)",
+				);
+				INFOPLIST_FILE = MofilerAppObjC/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.MofilerAppObjC;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "3fd8b389-0203-4b16-a678-aaa917867de3";
+				PROVISIONING_PROFILE_SPECIFIER = "MT AdHoc";
+			};
+			name = Release;
+		};
+		FFC1DB591DAD32E700396B56 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = MofilerAppObjCTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.MofilerAppObjCTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MofilerAppObjC.app/MofilerAppObjC";
+			};
+			name = Debug;
+		};
+		FFC1DB5A1DAD32E700396B56 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = MofilerAppObjCTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.MofilerAppObjCTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MofilerAppObjC.app/MofilerAppObjC";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		FFC1DB2E1DAD32E700396B56 /* Build configuration list for PBXProject "MofilerAppObjC" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FFC1DB531DAD32E700396B56 /* Debug */,
+				FFC1DB541DAD32E700396B56 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FFC1DB551DAD32E700396B56 /* Build configuration list for PBXNativeTarget "MofilerAppObjC" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FFC1DB561DAD32E700396B56 /* Debug */,
+				FFC1DB571DAD32E700396B56 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FFC1DB581DAD32E700396B56 /* Build configuration list for PBXNativeTarget "MofilerAppObjCTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FFC1DB591DAD32E700396B56 /* Debug */,
+				FFC1DB5A1DAD32E700396B56 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = FFC1DB2B1DAD32E700396B56 /* Project object */;
+}

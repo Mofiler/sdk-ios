@@ -1,8 +1,8 @@
 //
 //  ViewController.swift
-//  MofilerDevApp
+//  MofilerAppSwift
 //
-//  Created by Fernando Chamorro on 10/5/16.
+//  Created by Fernando Chamorro on 10/11/16.
 //  Copyright © 2016 MobileTonic. All rights reserved.
 //
 
