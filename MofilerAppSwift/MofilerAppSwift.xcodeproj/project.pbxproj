@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FFC0F8C21DAE98B400FCEFAB /* Mofiler.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFC0F8C11DAE98B400FCEFAB /* Mofiler.framework */; };
+		FFC0F8C31DAE98B400FCEFAB /* Mofiler.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FFC0F8C11DAE98B400FCEFAB /* Mofiler.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		FFC1DB681DAD331A00396B56 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFC1DB671DAD331A00396B56 /* AppDelegate.swift */; };
 		FFC1DB6A1DAD331A00396B56 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFC1DB691DAD331A00396B56 /* ViewController.swift */; };
 		FFC1DB6D1DAD331A00396B56 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FFC1DB6B1DAD331A00396B56 /* Main.storyboard */; };
@@ -32,6 +34,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				FFC0F8C31DAE98B400FCEFAB /* Mofiler.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -39,6 +42,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		FFC0F8C11DAE98B400FCEFAB /* Mofiler.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Mofiler.framework; sourceTree = "<group>"; };
 		FFC1DB641DAD331A00396B56 /* MofilerAppSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MofilerAppSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FFC1DB671DAD331A00396B56 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FFC1DB691DAD331A00396B56 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -56,6 +60,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FFC0F8C21DAE98B400FCEFAB /* Mofiler.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -72,6 +77,7 @@
 		FFC1DB5B1DAD331A00396B56 = {
 			isa = PBXGroup;
 			children = (
+				FFC0F8C11DAE98B400FCEFAB /* Mofiler.framework */,
 				FFC1DB661DAD331A00396B56 /* MofilerAppSwift */,
 				FFC1DB7B1DAD331A00396B56 /* MofilerAppSwiftTests */,
 				FFC1DB651DAD331A00396B56 /* Products */,

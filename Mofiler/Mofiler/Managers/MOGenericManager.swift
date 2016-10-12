@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class MOGenericManager : NSObject {
+public class MOGenericManager : NSObject {
     
     override init() {
         super.init()

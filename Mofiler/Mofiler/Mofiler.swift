@@ -6,41 +6,112 @@
 //  Copyright © 2016 MobileTonic. All rights reserved.
 //
 
-import UIKit
 import CoreTelephony
-
 import Darwin
 
 public protocol MofilerDelegate {
     func responseValue(valueData: [String:AnyObject])
 }
 
-public class Mofiler: NSObject {
+public class Mofiler: MOGenericManager, NSCoding {
     
+    //# MARK: - Keys to save to disk
+    let MOMOFILER_APP_KEY               = "MOMOFILER_APP_KEY"
+    let MOMOFILER_APP_NAME              = "MOMOFILER_APP_NAME"
+    let MOMOFILER_URL                   = "MOMOFILER_URL"
+    let MOMOFILER_IDENTITIES            = "MOMOFILER_IDENTITIES"
+    let MOMOFILER_USE_LOCATION          = "MOMOFILER_USE_LOCATION"
+    let MOMOFILER_USE_VERBOSE_CONTEXT   = "MOMOFILER_USE_VERBOSE_CONTEXT"
+    let MOMOFILER_VALUES                = "MOMOFILER_VALUES"
+    
+    //# MARK: - Prorpeties
     public static let sharedInstance = Mofiler()
     static var initialized = false
+    
     public var delegate:MofilerDelegate! = nil
-    
-    public var appKey: String?                             //Campo obligarotio
-    public var appName: String?                            //Campo obligarotio
-    public var url: String? = "mofiler.com:8081"
+    public var appKey: String = ""                          //Campo obligarotio
+    public var appName: String = ""                         //Campo obligarotio
+    public var url: String = "mofiler.com:8081"
     public var identities: Array<[String:String]> = []
-    public var useLocation = true                          //defaults to true
-    public var UseVerboseContext = false                   //defaults to false, but helps Mofiler get a lot of information about the device context
-    
+    public var useLocation: Bool = true                     //defaults to true
+    public var useVerboseContext: Bool = false              //defaults to false, but helps Mofiler get a lot of information about the device context
     public var values: Array<[String:String]> = []
     
+    
+    var lastDateSession: NSDate?                            //
+    
+
+    //# MARK: - Methods saving and loading disk.
+    required public init?(coder aDecoder: NSCoder) {
+        super.init()
+        
+        if let key = validateStringField(field: aDecoder.decodeObject(forKey: MOMOFILER_APP_KEY)) {
+            appKey = key
+        }
+        if let name = validateStringField(field: aDecoder.decodeObject(forKey: MOMOFILER_APP_NAME)) {
+            appName = name
+        }
+        if let URL = validateStringField(field: aDecoder.decodeObject(forKey: MOMOFILER_URL)) {
+            url = URL
+        }
+        if let ide = validateArrayField(field: aDecoder.decodeObject(forKey: MOMOFILER_IDENTITIES)) {
+            identities = ide
+        }
+        if let location = validateBoolField(field: aDecoder.decodeBool(forKey: MOMOFILER_USE_LOCATION)) {
+                useLocation = location
+        }
+        if let verboseContext = validateBoolField(field: aDecoder.decodeBool(forKey: MOMOFILER_USE_VERBOSE_CONTEXT)) {
+            useVerboseContext = verboseContext
+        }
+        if let val = validateArrayField(field: aDecoder.decodeObject(forKey: MOMOFILER_VALUES)) {
+            values = val
+        }
+    }
+    
+    public func encode(with aCoder: NSCoder) {
+        aCoder.encode(appKey, forKey: MOMOFILER_APP_KEY)
+        aCoder.encode(appName, forKey: MOMOFILER_APP_NAME)
+        aCoder.encode(url, forKey: MOMOFILER_URL)
+        aCoder.encode(identities, forKey: MOMOFILER_IDENTITIES)
+        aCoder.encode(useLocation, forKey: MOMOFILER_USE_LOCATION)
+        aCoder.encode(useVerboseContext, forKey: MOMOFILER_USE_VERBOSE_CONTEXT)
+        aCoder.encode(values, forKey: MOMOFILER_VALUES)
+    }
+    
+    //# MARK: - Methods
+    override func applicationWillEnterForeground(_ notification: Notification) {
+        //TODO verificar fecha si paso mas de 30"
+        print("applicationWillEnterForeground")
+    }
+    
+    override func applicationWillHibernateToBackground(_ notification: Notification) {
+        //TODO guardar fecha que se fue al background
+        print("applicationWillHibernateToBackground")
+    }
+    
+    override func applicationWillTerminate(_ notification: Notification) {
+        //TODO guardar fecha que se fue al background
+        print("applicationWillTerminate")
+    }
+    
+    //# MARK: - Methods init singleton
     override init() {
         super.init()
         if (!Mofiler.initialized) {
             Mofiler.initialized = true;
+            
+            //InstallID un UUIID UNICO
         }
+        
+        //TODO verificar fecha si paso mas de 30"
+        //SessionID se genera en cada sesion nueva
     }
-    
+
+    //# MARK: - Methods initialize keys and injects
     public func initializeWith(appKey: String, appName: String, identity: [String:String]) {
         self.appKey = appKey
         self.appName = appName
-        self.identities.append(identity)
+        identities.append(identity)
     }
     
     public func addIdentity(newValue: [String:String]) {
@@ -49,6 +120,11 @@ public class Mofiler: NSObject {
     
     public func injectValue(newValue: [String:String]) {
         values.append(newValue)
+        
+        if values.count >= 10 {
+            flushDataToMofiler()
+            values = []
+        }
     }
     
     public func injectValue(newValue: [String:String], dateOfExpiry: Float) {
@@ -56,6 +132,8 @@ public class Mofiler: NSObject {
         values.append(newValue)
     }
     
+    
+    //# MARK: - Methods Post and get API
     public func flushDataToMofiler() {
         //TODO POST API
     }
@@ -64,6 +142,8 @@ public class Mofiler: NSObject {
         //TODO GET API
         //delegate.responseValue(valueData: ["":""])
     }
+    
+    
     
     
     
@@ -171,5 +251,29 @@ public class Mofiler: NSObject {
     func numberOfNodes() -> Double {
         return diskSpaceInBytes(type: FileAttributeKey.systemNodes)
     }
+
     
+    
+    //
+    func validateStringField(field: Any?) -> String? {
+        if let field = field , field is String {
+            return field as? String
+        }
+        return nil
+    }
+    
+    func validateArrayField(field: Any?) -> Array<[String:String]>? {
+        if let field = field , field is Array<[String:String]> {
+            return field as? Array<[String:String]>
+        }
+        return nil
+    }
+    
+    func validateBoolField(field: Any?) -> Bool? {
+        if let field = field , field is Bool {
+            return field as? Bool
+        }
+        return nil
+    }
+
 }

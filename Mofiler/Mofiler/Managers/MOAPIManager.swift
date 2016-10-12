@@ -6,8 +6,6 @@
 //  Copyright © 2016 MobileTonic. All rights reserved.
 //
 
-//import Alamofire
-//import BoltsSwift
 
 class MOAPIManager: MOGenericManager /*,  MTDiskCacheProtocol */ {
 
@@ -16,7 +14,7 @@ class MOAPIManager: MOGenericManager /*,  MTDiskCacheProtocol */ {
     let MO_API_DEFAULT_TIMEOUT   = 30.0
     let MO_API_QUEUENAME         = "MOAPIMANAGER"
     
-    //var alamoFire                = Alamofire.SessionManager.default
+
     
     static let sharedInstance = MOAPIManager()
     static var initialized = false
@@ -24,31 +22,14 @@ class MOAPIManager: MOGenericManager /*,  MTDiskCacheProtocol */ {
     static var queue: DispatchQueue?
     
     
-//    func loadDataFromCache(_ data: [String : AnyObject], diskCache: MODiskCache) {
-//        let cookies: Array<AnyObject> = data[MO_APIMANAGER_COOKIES] as! Array<AnyObject>
-//        let cookieStorage = HTTPCookieStorage.shared
-//        for cookie in cookies {
-//            if let cookie: HTTPCookie = cookie as? HTTPCookie { cookieStorage.setCookie(cookie) }
-//        }
-//    }
-
-//    func dataToCacheForDiskCache(_ diskCache: MTDiskCache) -> [String : AnyObject]? {
-//        if let cookie = HTTPCookieStorage.shared.cookies {
-//            return [MO_APIMANAGER_COOKIES:cookie as AnyObject]
-//        }
-//        return [MO_APIMANAGER_COOKIES:"" as AnyObject]
-//    }
-
     override init() {
         super.init()
         if (!MOAPIManager.initialized) {
-            //MODiskCache.sharedInstance.registerForDiskCaching("ApiManagerCache", object: self)
+
             
             let configuration = URLSessionConfiguration.default
             configuration.timeoutIntervalForRequest = MO_API_DEFAULT_TIMEOUT
             configuration.timeoutIntervalForResource = MO_API_DEFAULT_TIMEOUT
-
-//            alamoFire = Alamofire.SessionManager(configuration: configuration)
             
             MOAPIManager.initialized = true;
         }
