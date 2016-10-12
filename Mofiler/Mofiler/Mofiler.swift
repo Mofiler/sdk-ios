@@ -8,13 +8,27 @@
 
 import UIKit
 import CoreTelephony
+
 import Darwin
 
+public protocol MofilerDelegate {
+    func responseValue(valueData: [String:AnyObject])
+}
 
 public class Mofiler: NSObject {
-
+    
     public static let sharedInstance = Mofiler()
     static var initialized = false
+    public var delegate:MofilerDelegate! = nil
+    
+    public var appKey: String?                             //Campo obligarotio
+    public var appName: String?                            //Campo obligarotio
+    public var url: String? = "mofiler.com:8081"
+    public var identities: Array<[String:String]> = []
+    public var useLocation = true                          //defaults to true
+    public var UseVerboseContext = false                   //defaults to false, but helps Mofiler get a lot of information about the device context
+    
+    public var values: Array<[String:String]> = []
     
     override init() {
         super.init()
@@ -22,6 +36,36 @@ public class Mofiler: NSObject {
             Mofiler.initialized = true;
         }
     }
+    
+    public func initializeWith(appKey: String, appName: String, identity: [String:String]) {
+        self.appKey = appKey
+        self.appName = appName
+        self.identities.append(identity)
+    }
+    
+    public func addIdentity(newValue: [String:String]) {
+        values.append(newValue)
+    }
+    
+    public func injectValue(newValue: [String:String]) {
+        values.append(newValue)
+    }
+    
+    public func injectValue(newValue: [String:String], dateOfExpiry: Float) {
+        //TODO expiry
+        values.append(newValue)
+    }
+    
+    public func flushDataToMofiler() {
+        //TODO POST API
+    }
+    
+    public func getValue(key: String, identityKey: String, identityValue: String) {
+        //TODO GET API
+        //delegate.responseValue(valueData: ["":""])
+    }
+    
+    
     
     //# MARK: - Methods Device info
     public func testDevice() {
@@ -88,7 +132,7 @@ public class Mofiler: NSObject {
             return String(format: "%.2f bytes", bytes)
         }
     }
-
+    
     func diskSpaceInBytes(type: FileAttributeKey) -> Double {
         do {
             let systemAttributes = try FileManager.default.attributesOfFileSystem(forPath: NSHomeDirectory() as String)
@@ -127,5 +171,5 @@ public class Mofiler: NSObject {
     func numberOfNodes() -> Double {
         return diskSpaceInBytes(type: FileAttributeKey.systemNodes)
     }
-
+    
 }

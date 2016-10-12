@@ -11,6 +11,10 @@
 		FF17F8141DA5873A00F0BF42 /* MofilerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF17F8131DA5873A00F0BF42 /* MofilerTests.swift */; };
 		FF17F8161DA5873A00F0BF42 /* Mofiler.h in Headers */ = {isa = PBXBuildFile; fileRef = FF17F8081DA5873A00F0BF42 /* Mofiler.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FF2C319F1DA814B300574322 /* Mofiler.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF2C319E1DA814B300574322 /* Mofiler.swift */; };
+		FF322C411DAD66FD00114F3D /* MOBaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF322C401DAD66FD00114F3D /* MOBaseModel.swift */; };
+		FF322C451DAD697A00114F3D /* MOMofiler.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF322C441DAD697A00114F3D /* MOMofiler.swift */; };
+		FF5641B71DAE6BC500399BE5 /* MOAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF5641B41DAE6BC500399BE5 /* MOAPIManager.swift */; };
+		FF5641B81DAE6BC500399BE5 /* MOGenericManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF5641B51DAE6BC500399BE5 /* MOGenericManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -31,6 +35,10 @@
 		FF17F8131DA5873A00F0BF42 /* MofilerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MofilerTests.swift; sourceTree = "<group>"; };
 		FF17F8151DA5873A00F0BF42 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FF2C319E1DA814B300574322 /* Mofiler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mofiler.swift; sourceTree = "<group>"; };
+		FF322C401DAD66FD00114F3D /* MOBaseModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MOBaseModel.swift; sourceTree = "<group>"; };
+		FF322C441DAD697A00114F3D /* MOMofiler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MOMofiler.swift; sourceTree = "<group>"; };
+		FF5641B41DAE6BC500399BE5 /* MOAPIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MOAPIManager.swift; sourceTree = "<group>"; };
+		FF5641B51DAE6BC500399BE5 /* MOGenericManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MOGenericManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +81,8 @@
 		FF17F8071DA5873A00F0BF42 /* Mofiler */ = {
 			isa = PBXGroup;
 			children = (
+				FF322C3F1DAD66CF00114F3D /* Models */,
+				FF5641B31DAE6BC500399BE5 /* Managers */,
 				FF17F8081DA5873A00F0BF42 /* Mofiler.h */,
 				FF17F8091DA5873A00F0BF42 /* Info.plist */,
 				FF2C319E1DA814B300574322 /* Mofiler.swift */,
@@ -87,6 +97,24 @@
 				FF17F8151DA5873A00F0BF42 /* Info.plist */,
 			);
 			path = MofilerTests;
+			sourceTree = "<group>";
+		};
+		FF322C3F1DAD66CF00114F3D /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				FF322C401DAD66FD00114F3D /* MOBaseModel.swift */,
+				FF322C441DAD697A00114F3D /* MOMofiler.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		FF5641B31DAE6BC500399BE5 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				FF5641B51DAE6BC500399BE5 /* MOGenericManager.swift */,
+				FF5641B41DAE6BC500399BE5 /* MOAPIManager.swift */,
+			);
+			path = Managers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -166,6 +194,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = FF17F7FB1DA5873A00F0BF42;
 			productRefGroup = FF17F8061DA5873A00F0BF42 /* Products */;
@@ -200,7 +229,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FF322C411DAD66FD00114F3D /* MOBaseModel.swift in Sources */,
 				FF2C319F1DA814B300574322 /* Mofiler.swift in Sources */,
+				FF322C451DAD697A00114F3D /* MOMofiler.swift in Sources */,
+				FF5641B81DAE6BC500399BE5 /* MOGenericManager.swift in Sources */,
+				FF5641B71DAE6BC500399BE5 /* MOAPIManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -334,6 +367,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Mofiler",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = Mofiler/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -360,6 +394,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Mofiler",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = Mofiler/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";

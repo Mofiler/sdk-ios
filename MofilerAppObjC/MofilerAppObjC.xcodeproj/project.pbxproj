@@ -14,8 +14,6 @@
 		FFC1DB431DAD32E700396B56 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FFC1DB421DAD32E700396B56 /* Assets.xcassets */; };
 		FFC1DB461DAD32E700396B56 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FFC1DB441DAD32E700396B56 /* LaunchScreen.storyboard */; };
 		FFC1DB511DAD32E700396B56 /* MofilerAppObjCTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FFC1DB501DAD32E700396B56 /* MofilerAppObjCTests.m */; };
-		FFD8F3A21DAD42F400CC343B /* Mofiler.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFD8F3A11DAD42F400CC343B /* Mofiler.framework */; };
-		FFD8F3A31DAD42F400CC343B /* Mofiler.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FFD8F3A11DAD42F400CC343B /* Mofiler.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,7 +33,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				FFD8F3A31DAD42F400CC343B /* Mofiler.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -56,7 +53,6 @@
 		FFC1DB4C1DAD32E700396B56 /* MofilerAppObjCTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MofilerAppObjCTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FFC1DB501DAD32E700396B56 /* MofilerAppObjCTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MofilerAppObjCTests.m; sourceTree = "<group>"; };
 		FFC1DB521DAD32E700396B56 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		FFD8F3A11DAD42F400CC343B /* Mofiler.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Mofiler.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,7 +60,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FFD8F3A21DAD42F400CC343B /* Mofiler.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -81,7 +76,6 @@
 		FFC1DB2A1DAD32E700396B56 = {
 			isa = PBXGroup;
 			children = (
-				FFD8F3A11DAD42F400CC343B /* Mofiler.framework */,
 				FFC1DB351DAD32E700396B56 /* MofilerAppObjC */,
 				FFC1DB4F1DAD32E700396B56 /* MofilerAppObjCTests */,
 				FFC1DB341DAD32E700396B56 /* Products */,

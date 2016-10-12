@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate.h"
-#import <Mofiler/Mofiler-Swift.h>
+//#import <Mofiler/Mofiler-Swift.h>
 
 @interface AppDelegate ()
 
@@ -18,8 +18,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
-    Mofiler* mof = [Mofiler sharedInstance];
-    [mof testDevice];
+//    Mofiler* mof = [Mofiler sharedInstance];
+//    [mof testDevice];
     
     return YES;
 }
