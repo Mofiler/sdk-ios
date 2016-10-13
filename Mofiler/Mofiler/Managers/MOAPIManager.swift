@@ -6,6 +6,7 @@
 //  Copyright © 2016 MobileTonic. All rights reserved.
 //
 
+import Alamofire
 
 class MOAPIManager: MOGenericManager /*,  MTDiskCacheProtocol */ {
 
@@ -13,14 +14,12 @@ class MOAPIManager: MOGenericManager /*,  MTDiskCacheProtocol */ {
     let MO_API_URL               = ""
     let MO_API_DEFAULT_TIMEOUT   = 30.0
     let MO_API_QUEUENAME         = "MOAPIMANAGER"
-    
-
+    let alamoFire                = Alamofire.SessionManager.default
     
     static let sharedInstance = MOAPIManager()
     static var initialized = false
     static var group: DispatchGroup?
     static var queue: DispatchQueue?
-    
     
     override init() {
         super.init()

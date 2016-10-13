@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		08589E7F1DB008F700144878 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08589E7E1DB008F700144878 /* Alamofire.framework */; };
 		FF17F8161DA5873A00F0BF42 /* Mofiler.h in Headers */ = {isa = PBXBuildFile; fileRef = FF17F8081DA5873A00F0BF42 /* Mofiler.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FF2C319F1DA814B300574322 /* Mofiler.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF2C319E1DA814B300574322 /* Mofiler.swift */; };
 		FF5641B71DAE6BC500399BE5 /* MOAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF5641B41DAE6BC500399BE5 /* MOAPIManager.swift */; };
@@ -14,6 +15,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		08589E7E1DB008F700144878 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = SOURCE_ROOT; };
 		FF17F8051DA5873A00F0BF42 /* Mofiler.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Mofiler.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF17F8081DA5873A00F0BF42 /* Mofiler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Mofiler.h; sourceTree = "<group>"; };
 		FF17F8091DA5873A00F0BF42 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -27,6 +29,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				08589E7F1DB008F700144878 /* Alamofire.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -52,6 +55,7 @@
 		FF17F8071DA5873A00F0BF42 /* Mofiler */ = {
 			isa = PBXGroup;
 			children = (
+				08589E7E1DB008F700144878 /* Alamofire.framework */,
 				FF5641B31DAE6BC500399BE5 /* Managers */,
 				FF17F8081DA5873A00F0BF42 /* Mofiler.h */,
 				FF17F8091DA5873A00F0BF42 /* Info.plist */,
@@ -91,6 +95,7 @@
 				FF17F8011DA5873A00F0BF42 /* Frameworks */,
 				FF17F8021DA5873A00F0BF42 /* Headers */,
 				FF17F8031DA5873A00F0BF42 /* Resources */,
+				08589E801DB0093F00144878 /* Carthage */,
 			);
 			buildRules = (
 			);
@@ -145,6 +150,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		08589E801DB0093F00144878 /* Carthage */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/Alamofire.framework",
+			);
+			name = Carthage;
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		FF17F8001DA5873A00F0BF42 /* Sources */ = {
@@ -272,6 +295,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Mofiler",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = Mofiler/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -299,6 +323,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Mofiler",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = Mofiler/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
