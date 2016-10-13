@@ -99,5 +99,10 @@ raven.js
 *.dSYM
 *.bcsymbolmap
 Mofiler/Carthage
-Carthage/Checkouts
+MofilerAppObjC/Carthage/Checkouts
+MofilerAppObjC/Carthage/Builds/*.bcsymbolmap
+MofilerAppObjC/Carthage/Builds/*.dSYM
+MofilerAppSwift/Carthage/Checkouts
+MofilerAppSwift/Carthage/Builds/*.bcsymbolmap
+MofilerAppSwift/Carthage/Builds/*.dSYM
 Cartfile.resolved
