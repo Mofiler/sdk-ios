@@ -24,6 +24,13 @@ public class Mofiler: MOGenericManager, NSCoding {
     let MOMOFILER_USE_VERBOSE_CONTEXT   = "MOMOFILER_USE_VERBOSE_CONTEXT"
     let MOMOFILER_VALUES                = "MOMOFILER_VALUES"
     
+    //# MARK: - Keys session and installid
+    let MOMOFILER_APPLICATION_INSTALLID = "MOMOFILER_APPLICATION_INSTALLID"
+    let MOMOFILER_SESSION_ID            = "MOMOFILER_SESSION_ID"
+    let MOMOFILER_SESSION_START_DATE    = "MOMOFILER_SESSION_START_DATE"
+    let MOMOFILER_SESSION_END_DATE      = "MOMOFILER_SESSION_END_DATE"
+    
+    
     //# MARK: - Prorpeties
     public static let sharedInstance = Mofiler()
     static var initialized = false
@@ -36,10 +43,94 @@ public class Mofiler: MOGenericManager, NSCoding {
     public var useLocation: Bool = true                     //defaults to true
     public var useVerboseContext: Bool = false              //defaults to false, but helps Mofiler get a lot of information about the device context
     public var values: Array<[String:String]> = []
+
+    
+    //# MARK: - Methods init singleton
+    override init() {
+        super.init()
+        
+        if (!Mofiler.initialized) {
+            Mofiler.initialized = true;
+            generateInstallID()
+        }
+        sessionControl()
+    }
+    
+    //# MARK: - Methods generate intallID
+    func generateInstallID() {
+        //Verifica si hay un InstallID, si no hay genera uno que es unico durante la vida de la aplicación
+        if UserDefaults.standard.object(forKey: MOMOFILER_APPLICATION_INSTALLID) == nil {
+            UserDefaults.standard.set(UUID().uuidString, forKey: MOMOFILER_APPLICATION_INSTALLID)
+            UserDefaults.standard.synchronize()
+        }
+    }
     
     
-    var lastDateSession: NSDate?                            //
+    //# MARK: - Methods session controll
+    func sessionControl() {
+        if let startDateSession = UserDefaults.standard.object(forKey: MOMOFILER_SESSION_START_DATE) as? Date, let endDateSession = UserDefaults.standard.object(forKey: MOMOFILER_SESSION_END_DATE) as? Date {
+            if 30000 < differenceDatesMilliSeconds(startDate: endDateSession, endDate: Date()) {
+                saveSession(startDateSession: startDateSession, endDateSession: endDateSession)
+                generateNewSession()
+            }
+        } else {
+            generateNewSession()
+        }
+    }
     
+    func saveSession(startDateSession: Date, endDateSession: Date) {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ"
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        
+        let start = formatter.string(from: startDateSession)
+        let end = formatter.string(from: endDateSession)
+        
+        let sessionEndTime = Float(currentMillis(date: endDateSession))
+        let duration = String(differenceDatesMilliSeconds(startDate: startDateSession, endDate: endDateSession))
+        
+        injectValue(newValue: ["sessionLength":duration], dateOfExpiry: sessionEndTime)
+        injectValue(newValue: ["sessionStart":start], dateOfExpiry: sessionEndTime)
+        injectValue(newValue: ["sessionEnd":end], dateOfExpiry: sessionEndTime)
+    }
+    
+    func generateNewSession() {
+        UserDefaults.standard.set(UUID().uuidString, forKey: MOMOFILER_SESSION_ID)
+        UserDefaults.standard.set(Date(), forKey: MOMOFILER_SESSION_START_DATE)
+        UserDefaults.standard.synchronize()
+    }
+    
+    func saveSasesionDateEnd() {
+        UserDefaults.standard.set(Date(), forKey: MOMOFILER_SESSION_END_DATE)
+        UserDefaults.standard.synchronize()
+    }
+    
+    func currentMillis(date: Date) -> Int {
+        return Int(date.timeIntervalSince1970) * 1000
+    }
+    
+    func differenceDatesMilliSeconds(startDate: Date, endDate: Date) -> Int {
+        let difference = NSCalendar.current.dateComponents([.day, .month, .year, .hour, .minute, .second], from: startDate,  to: endDate)
+        if let seconds = difference.second {
+            return seconds * 1000
+        }
+        return 0
+    }
+
+    //# MARK: - Methods app enter background, foreground
+    override func applicationWillEnterForeground(_ notification: Notification) {
+        sessionControl()
+    }
+    
+    override func applicationWillHibernateToBackground(_ notification: Notification) {
+        saveSasesionDateEnd()
+    }
+    
+    override func applicationWillTerminate(_ notification: Notification) {
+        saveSasesionDateEnd()
+    }
+
 
     //# MARK: - Methods saving and loading disk.
     required public init?(coder aDecoder: NSCoder) {
@@ -58,7 +149,7 @@ public class Mofiler: MOGenericManager, NSCoding {
             identities = ide
         }
         if let location = validateBoolField(field: aDecoder.decodeBool(forKey: MOMOFILER_USE_LOCATION)) {
-                useLocation = location
+            useLocation = location
         }
         if let verboseContext = validateBoolField(field: aDecoder.decodeBool(forKey: MOMOFILER_USE_VERBOSE_CONTEXT)) {
             useVerboseContext = verboseContext
@@ -78,35 +169,6 @@ public class Mofiler: MOGenericManager, NSCoding {
         aCoder.encode(values, forKey: MOMOFILER_VALUES)
     }
     
-    //# MARK: - Methods
-    override func applicationWillEnterForeground(_ notification: Notification) {
-        //TODO verificar fecha si paso mas de 30"
-        print("applicationWillEnterForeground")
-    }
-    
-    override func applicationWillHibernateToBackground(_ notification: Notification) {
-        //TODO guardar fecha que se fue al background
-        print("applicationWillHibernateToBackground")
-    }
-    
-    override func applicationWillTerminate(_ notification: Notification) {
-        //TODO guardar fecha que se fue al background
-        print("applicationWillTerminate")
-    }
-    
-    //# MARK: - Methods init singleton
-    override init() {
-        super.init()
-        if (!Mofiler.initialized) {
-            Mofiler.initialized = true;
-            
-            //InstallID un UUIID UNICO
-        }
-        
-        //TODO verificar fecha si paso mas de 30"
-        //SessionID se genera en cada sesion nueva
-    }
-
     //# MARK: - Methods initialize keys and injects
     public func initializeWith(appKey: String, appName: String, identity: [String:String]) {
         self.appKey = appKey
@@ -119,33 +181,67 @@ public class Mofiler: MOGenericManager, NSCoding {
     }
     
     public func injectValue(newValue: [String:String]) {
-        values.append(newValue)
-        
-        if values.count >= 10 {
-            flushDataToMofiler()
-            values = []
+        if validateFieldsMandatory() {
+            values.append(newValue)
+            
+            if values.count >= 10 {
+                flushDataToMofiler()
+            }
+        } else {
+            print("Error: ")
         }
     }
     
     public func injectValue(newValue: [String:String], dateOfExpiry: Float) {
-        //TODO expiry
-        values.append(newValue)
+        
+        if validateFieldsMandatory() {
+            //TODO que hacer con el expiry
+            values.append(newValue)
+            if values.count >= 10 {
+                flushDataToMofiler()
+            }
+        } else {
+            print("Error: ")
+        }
     }
+    
+    
     
     
     //# MARK: - Methods Post and get API
     public func flushDataToMofiler() {
         //TODO POST API
+        if validateFieldsMandatory() {
+            if values.count > 0 {
+//        let valuesAux: Array<[String:String]> = values
+//        values = []
+                
+                //Success
+                    //NO HACE NADA
+                
+                //Fail
+                    //Hacer backup
+                    //let newValues = valuesAux + values
+                    //values = []
+                    //values = newValues
+            }
+        } else {
+            print("Error: ")
+        }
     }
     
     public func getValue(key: String, identityKey: String, identityValue: String) {
         //TODO GET API
-        //delegate.responseValue(valueData: ["":""])
+        if validateFieldsMandatory() {
+            //        if let delegate = delegate {
+            //            //delegate.responseValue(valueData: ["":""])
+            //        } else {
+            //            //ERROR response no tiene delegate
+            //        }
+        } else {
+            print("Error: ")
+        }
     }
-    
-    
-    
-    
     
     //# MARK: - Methods Device info
     public func testDevice() {
@@ -254,7 +350,7 @@ public class Mofiler: MOGenericManager, NSCoding {
 
     
     
-    //
+    //# MARK: - Methods validate fields
     func validateStringField(field: Any?) -> String? {
         if let field = field , field is String {
             return field as? String
@@ -274,6 +370,10 @@ public class Mofiler: MOGenericManager, NSCoding {
             return field as? Bool
         }
         return nil
+    }
+    
+    func validateFieldsMandatory() -> Bool {
+        return appKey.characters.count > 0 && appName.characters.count > 0 && identities.count > 0
     }
 
 }
