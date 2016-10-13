@@ -98,5 +98,6 @@ newrelic.js
 raven.js
 *.dSYM
 *.bcsymbolmap
+Mofiler/Carthage
 Carthage/Checkouts
 Cartfile.resolved

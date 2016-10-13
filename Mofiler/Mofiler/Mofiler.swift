@@ -10,7 +10,8 @@ import CoreTelephony
 import Darwin
 
 public protocol MofilerDelegate {
-    func responseValue(valueData: [String:AnyObject])
+    func responseValue(key: String, identityKey: String, identityValue: String, value: [String:AnyObject])
+    func errorOcurred(error: String, userInfo: [String: String])
 }
 
 public class Mofiler: MOGenericManager, NSCoding {
@@ -30,19 +31,24 @@ public class Mofiler: MOGenericManager, NSCoding {
     let MOMOFILER_SESSION_START_DATE    = "MOMOFILER_SESSION_START_DATE"
     let MOMOFILER_SESSION_END_DATE      = "MOMOFILER_SESSION_END_DATE"
     
+    //# MARK: - Errors
+    let MOMOFILER_ERROR_CODE_KEY        = "MOMOFILER_ERROR_CODE_KEY"
+    let MOMOFILER_ERROR_NOT_INITIALIZED = "MOMOFILER_ERROR_NOT_INITIALIZED"
     
-    //# MARK: - Prorpeties
+    //# MARK: - Properties
     public static let sharedInstance = Mofiler()
     static var initialized = false
     
-    public var delegate:MofilerDelegate! = nil
-    public var appKey: String = ""                          //Campo obligarotio
-    public var appName: String = ""                         //Campo obligarotio
+    public var delegate: MofilerDelegate? = nil
+    public var appKey: String = ""                          //Required field
+    public var appName: String = ""                         //Required field
     public var url: String = "mofiler.com:8081"
     public var identities: Array<[String:String]> = []
     public var useLocation: Bool = true                     //defaults to true
     public var useVerboseContext: Bool = false              //defaults to false, but helps Mofiler get a lot of information about the device context
     public var values: Array<[String:String]> = []
+    public var sessionTimeoutAfterEnd = 30000
+    public var debugLogging = true
 
     
     //# MARK: - Methods init singleton
@@ -69,13 +75,30 @@ public class Mofiler: MOGenericManager, NSCoding {
     //# MARK: - Methods session controll
     func sessionControl() {
         if let startDateSession = UserDefaults.standard.object(forKey: MOMOFILER_SESSION_START_DATE) as? Date, let endDateSession = UserDefaults.standard.object(forKey: MOMOFILER_SESSION_END_DATE) as? Date {
-            if 30000 < differenceDatesMilliSeconds(startDate: endDateSession, endDate: Date()) {
+            if sessionTimeoutAfterEnd < differenceDatesMilliSeconds(startDate: endDateSession, endDate: Date()) {
                 saveSession(startDateSession: startDateSession, endDateSession: endDateSession)
                 generateNewSession()
             }
         } else {
             generateNewSession()
         }
+    }
+    
+    func debugLog(log: String) {
+        if debugLogging {
+            print(log)
+        }
+    }
+    
+    func errorOcurred(error: String, userInfo: [String: String]) {
+        debugLog(log: error)
+        if let delegate = delegate {
+            delegate.errorOcurred(error: error, userInfo: userInfo)
+        }
+    }
+    
+    func errorNotInitialized() {
+        errorOcurred(error: "The SDK was not initialized properly. Please set appName, appKey and at least one identity before using it.", userInfo: [MOMOFILER_ERROR_CODE_KEY : MOMOFILER_ERROR_NOT_INITIALIZED])
     }
     
     func saveSession(startDateSession: Date, endDateSession: Date) {
@@ -90,9 +113,10 @@ public class Mofiler: MOGenericManager, NSCoding {
         let sessionEndTime = Float(currentMillis(date: endDateSession))
         let duration = String(differenceDatesMilliSeconds(startDate: startDateSession, endDate: endDateSession))
         
-        injectValue(newValue: ["sessionLength":duration], dateOfExpiry: sessionEndTime)
-        injectValue(newValue: ["sessionStart":start], dateOfExpiry: sessionEndTime)
-        injectValue(newValue: ["sessionEnd":end], dateOfExpiry: sessionEndTime)
+        injectValue(newValue: ["sessionLength":duration], expirationDateInMilliseconds: sessionEndTime)
+        injectValue(newValue: ["sessionStart":start], expirationDateInMilliseconds: sessionEndTime)
+        injectValue(newValue: ["sessionEnd":end], expirationDateInMilliseconds: sessionEndTime)
+        flushDataToMofiler()
     }
     
     func generateNewSession() {
@@ -180,38 +204,22 @@ public class Mofiler: MOGenericManager, NSCoding {
         values.append(newValue)
     }
     
-    public func injectValue(newValue: [String:String]) {
-        if validateFieldsMandatory() {
-            values.append(newValue)
-            
-            if values.count >= 10 {
-                flushDataToMofiler()
-            }
-        } else {
-            print("Error: ")
-        }
-    }
-    
-    public func injectValue(newValue: [String:String], dateOfExpiry: Float) {
-        
-        if validateFieldsMandatory() {
+    public func injectValue(newValue: [String:String], expirationDateInMilliseconds: Float? = nil) {
+        if validateMandatoryFields() {
             //TODO que hacer con el expiry
             values.append(newValue)
             if values.count >= 10 {
                 flushDataToMofiler()
             }
         } else {
-            print("Error: ")
+            errorNotInitialized()
         }
     }
-    
-    
-    
     
     //# MARK: - Methods Post and get API
     public func flushDataToMofiler() {
         //TODO POST API
-        if validateFieldsMandatory() {
+        if validateMandatoryFields() {
             if values.count > 0 {
 //        let valuesAux: Array<[String:String]> = values
 //        values = []
@@ -226,20 +234,20 @@ public class Mofiler: MOGenericManager, NSCoding {
                     //values = newValues
             }
         } else {
-            print("Error: ")
+            errorNotInitialized()
         }
     }
     
     public func getValue(key: String, identityKey: String, identityValue: String) {
         //TODO GET API
-        if validateFieldsMandatory() {
+        if validateMandatoryFields() {
             //        if let delegate = delegate {
             //            //delegate.responseValue(valueData: ["":""])
             //        } else {
             //            //ERROR response no tiene delegate
             //        }
         } else {
-            print("Error: ")
+            errorNotInitialized()
         }
     }
     
@@ -347,8 +355,6 @@ public class Mofiler: MOGenericManager, NSCoding {
     func numberOfNodes() -> Double {
         return diskSpaceInBytes(type: FileAttributeKey.systemNodes)
     }
-
-    
     
     //# MARK: - Methods validate fields
     func validateStringField(field: Any?) -> String? {
@@ -372,7 +378,7 @@ public class Mofiler: MOGenericManager, NSCoding {
         return nil
     }
     
-    func validateFieldsMandatory() -> Bool {
+    func validateMandatoryFields() -> Bool {
         return appKey.characters.count > 0 && appName.characters.count > 0 && identities.count > 0
     }
 

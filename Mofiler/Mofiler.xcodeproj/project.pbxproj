@@ -7,31 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		FF17F80F1DA5873A00F0BF42 /* Mofiler.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF17F8051DA5873A00F0BF42 /* Mofiler.framework */; };
-		FF17F8141DA5873A00F0BF42 /* MofilerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF17F8131DA5873A00F0BF42 /* MofilerTests.swift */; };
 		FF17F8161DA5873A00F0BF42 /* Mofiler.h in Headers */ = {isa = PBXBuildFile; fileRef = FF17F8081DA5873A00F0BF42 /* Mofiler.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FF2C319F1DA814B300574322 /* Mofiler.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF2C319E1DA814B300574322 /* Mofiler.swift */; };
 		FF5641B71DAE6BC500399BE5 /* MOAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF5641B41DAE6BC500399BE5 /* MOAPIManager.swift */; };
 		FF5641B81DAE6BC500399BE5 /* MOGenericManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF5641B51DAE6BC500399BE5 /* MOGenericManager.swift */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		FF17F8101DA5873A00F0BF42 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FF17F7FC1DA5873A00F0BF42 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = FF17F8041DA5873A00F0BF42;
-			remoteInfo = Mofiler;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
 		FF17F8051DA5873A00F0BF42 /* Mofiler.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Mofiler.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF17F8081DA5873A00F0BF42 /* Mofiler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Mofiler.h; sourceTree = "<group>"; };
 		FF17F8091DA5873A00F0BF42 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		FF17F80E1DA5873A00F0BF42 /* MofilerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MofilerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		FF17F8131DA5873A00F0BF42 /* MofilerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MofilerTests.swift; sourceTree = "<group>"; };
-		FF17F8151DA5873A00F0BF42 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FF2C319E1DA814B300574322 /* Mofiler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Mofiler.swift; path = ../Mofiler.swift; sourceTree = "<group>"; };
 		FF5641B41DAE6BC500399BE5 /* MOAPIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MOAPIManager.swift; sourceTree = "<group>"; };
 		FF5641B51DAE6BC500399BE5 /* MOGenericManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MOGenericManager.swift; sourceTree = "<group>"; };
@@ -45,14 +30,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		FF17F80B1DA5873A00F0BF42 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				FF17F80F1DA5873A00F0BF42 /* Mofiler.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -60,7 +37,6 @@
 			isa = PBXGroup;
 			children = (
 				FF17F8071DA5873A00F0BF42 /* Mofiler */,
-				FF17F8121DA5873A00F0BF42 /* MofilerTests */,
 				FF17F8061DA5873A00F0BF42 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -69,7 +45,6 @@
 			isa = PBXGroup;
 			children = (
 				FF17F8051DA5873A00F0BF42 /* Mofiler.framework */,
-				FF17F80E1DA5873A00F0BF42 /* MofilerTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -82,15 +57,6 @@
 				FF17F8091DA5873A00F0BF42 /* Info.plist */,
 			);
 			path = Mofiler;
-			sourceTree = "<group>";
-		};
-		FF17F8121DA5873A00F0BF42 /* MofilerTests */ = {
-			isa = PBXGroup;
-			children = (
-				FF17F8131DA5873A00F0BF42 /* MofilerTests.swift */,
-				FF17F8151DA5873A00F0BF42 /* Info.plist */,
-			);
-			path = MofilerTests;
 			sourceTree = "<group>";
 		};
 		FF5641B31DAE6BC500399BE5 /* Managers */ = {
@@ -135,24 +101,6 @@
 			productReference = FF17F8051DA5873A00F0BF42 /* Mofiler.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		FF17F80D1DA5873A00F0BF42 /* MofilerTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = FF17F81C1DA5873A00F0BF42 /* Build configuration list for PBXNativeTarget "MofilerTests" */;
-			buildPhases = (
-				FF17F80A1DA5873A00F0BF42 /* Sources */,
-				FF17F80B1DA5873A00F0BF42 /* Frameworks */,
-				FF17F80C1DA5873A00F0BF42 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				FF17F8111DA5873A00F0BF42 /* PBXTargetDependency */,
-			);
-			name = MofilerTests;
-			productName = MofilerTests;
-			productReference = FF17F80E1DA5873A00F0BF42 /* MofilerTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -167,10 +115,6 @@
 						CreatedOnToolsVersion = 8.0;
 						LastSwiftMigration = 0800;
 						ProvisioningStyle = Manual;
-					};
-					FF17F80D1DA5873A00F0BF42 = {
-						CreatedOnToolsVersion = 8.0;
-						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -188,20 +132,12 @@
 			projectRoot = "";
 			targets = (
 				FF17F8041DA5873A00F0BF42 /* Mofiler */,
-				FF17F80D1DA5873A00F0BF42 /* MofilerTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		FF17F8031DA5873A00F0BF42 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		FF17F80C1DA5873A00F0BF42 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -221,23 +157,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		FF17F80A1DA5873A00F0BF42 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				FF17F8141DA5873A00F0BF42 /* MofilerTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		FF17F8111DA5873A00F0BF42 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = FF17F8041DA5873A00F0BF42 /* Mofiler */;
-			targetProxy = FF17F8101DA5873A00F0BF42 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		FF17F8171DA5873A00F0BF42 /* Debug */ = {
@@ -281,7 +201,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -328,7 +248,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -355,7 +275,6 @@
 				);
 				INFOPLIST_FILE = Mofiler/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Mofiler;
@@ -363,7 +282,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
-				VALID_ARCHS = "arm64 armv7 armv7s i386 x86_64";
+				VALID_ARCHS = "$(ARCHS_STANDARD) i386 x86_64";
 			};
 			name = Debug;
 		};
@@ -383,38 +302,13 @@
 				);
 				INFOPLIST_FILE = Mofiler/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Mofiler;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 3.0;
-				VALID_ARCHS = "arm64 armv7 armv7s i386 x86_64";
-			};
-			name = Release;
-		};
-		FF17F81D1DA5873A00F0BF42 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				INFOPLIST_FILE = MofilerTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.MofilerTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
-			};
-			name = Debug;
-		};
-		FF17F81E1DA5873A00F0BF42 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				INFOPLIST_FILE = MofilerTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.MofilerTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				VALID_ARCHS = "$(ARCHS_STANDARD) i386 x86_64";
 			};
 			name = Release;
 		};
@@ -435,15 +329,6 @@
 			buildConfigurations = (
 				FF17F81A1DA5873A00F0BF42 /* Debug */,
 				FF17F81B1DA5873A00F0BF42 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		FF17F81C1DA5873A00F0BF42 /* Build configuration list for PBXNativeTarget "MofilerTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				FF17F81D1DA5873A00F0BF42 /* Debug */,
-				FF17F81E1DA5873A00F0BF42 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
