@@ -98,7 +98,9 @@ newrelic.js
 raven.js
 *.dSYM
 *.bcsymbolmap
-Mofiler/Carthage
+Mofiler/Carthage/Checkouts
+Mofiler/Carthage/Builds/*.bcsymbolmap
+Mofiler/Carthage/Builds/*.dSYM
 MofilerAppObjC/Carthage/Checkouts
 MofilerAppObjC/Carthage/Builds/*.bcsymbolmap
 MofilerAppObjC/Carthage/Builds/*.dSYM
