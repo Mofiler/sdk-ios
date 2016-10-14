@@ -114,6 +114,20 @@
 			remoteGlobalIDString = 065894E71C9A933B000FDDA6;
 			remoteInfo = "BoltsSwift-watchOS";
 		};
+		081E8EAC1DB1377900B3EB4A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 081E8E921DB1327500B3EB4A /* BoltsSwift.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 87FEF3651A9085FA00C60678;
+			remoteInfo = "BoltsSwift-iOS";
+		};
+		081E8EAE1DB1377D00B3EB4A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 081E8E791DB1326F00B3EB4A /* Alamofire.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = F8111E3219A95C8B0040E7D1;
+			remoteInfo = "Alamofire iOS";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -240,6 +254,8 @@
 			buildRules = (
 			);
 			dependencies = (
+				081E8EAF1DB1377D00B3EB4A /* PBXTargetDependency */,
+				081E8EAD1DB1377900B3EB4A /* PBXTargetDependency */,
 			);
 			name = "Mofiler iOS";
 			productName = Mofiler;
@@ -414,6 +430,19 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		081E8EAD1DB1377900B3EB4A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "BoltsSwift-iOS";
+			targetProxy = 081E8EAC1DB1377900B3EB4A /* PBXContainerItemProxy */;
+		};
+		081E8EAF1DB1377D00B3EB4A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Alamofire iOS";
+			targetProxy = 081E8EAE1DB1377D00B3EB4A /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		FF17F8171DA5873A00F0BF42 /* Debug */ = {
