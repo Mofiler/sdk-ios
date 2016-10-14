@@ -248,23 +248,23 @@ public class Mofiler: MOGenericManager, NSCoding {
     
     public func getValue(key: String, identityKey: String, identityValue: String) {
         
-        if validateMandatoryFields() {
-            if let delegate = delegate {
-                MOAPIManager.sharedInstance.getValue(identityKey: identityKey, identityValue: identityValue, keyToRetrieve: key, urlBase: url, appKey: appKey, appName: appName, device: "apple").continueOnSuccessWith { taskResult in
-                    if let taskResult = taskResult as? [String:AnyObject] {
-                        delegate.responseValue(key: key, identityKey: identityKey, identityValue: identityValue, value: taskResult)
-                    } else {
-                        //TODO error
-                    }
-                }.continueOnErrorWith { _ in
-                    //TODO error
-                }
-            } else {
-                errorDelegate()
-            }
-        } else {
-            errorNotInitialized()
-        }
+//        if validateMandatoryFields() {
+//            if let delegate = delegate {
+//                MOAPIManager.sharedInstance.getValue(identityKey: identityKey, identityValue: identityValue, keyToRetrieve: key, urlBase: url, appKey: appKey, appName: appName, device: "apple").continueOnSuccessWith { taskResult in
+//                    if let taskResult = taskResult as? [String:AnyObject] {
+//                        delegate.responseValue(key: key, identityKey: identityKey, identityValue: identityValue, value: taskResult)
+//                    } else {
+//                        //TODO error
+//                    }
+//                }.continueOnErrorWith { _ in
+//                    //TODO error
+//                }
+//            } else {
+//                errorDelegate()
+//            }
+//        } else {
+//            errorNotInitialized()
+//        }
     }
     
     //# MARK: - Methods Device info

@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "FF17F8041DA5873A00F0BF42"
-               BuildableName = "Mofiler iOS.framework"
+               BuildableName = "Mofiler.framework"
                BlueprintName = "Mofiler iOS"
                ReferencedContainer = "container:Mofiler.xcodeproj">
             </BuildableReference>
@@ -33,7 +33,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "FF17F8041DA5873A00F0BF42"
-            BuildableName = "Mofiler iOS.framework"
+            BuildableName = "Mofiler.framework"
             BlueprintName = "Mofiler iOS"
             ReferencedContainer = "container:Mofiler.xcodeproj">
          </BuildableReference>
@@ -55,7 +55,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "FF17F8041DA5873A00F0BF42"
-            BuildableName = "Mofiler iOS.framework"
+            BuildableName = "Mofiler.framework"
             BlueprintName = "Mofiler iOS"
             ReferencedContainer = "container:Mofiler.xcodeproj">
          </BuildableReference>
@@ -73,7 +73,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "FF17F8041DA5873A00F0BF42"
-            BuildableName = "Mofiler iOS.framework"
+            BuildableName = "Mofiler.framework"
             BlueprintName = "Mofiler iOS"
             ReferencedContainer = "container:Mofiler.xcodeproj">
          </BuildableReference>

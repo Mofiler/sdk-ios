@@ -6,16 +6,13 @@
 //  Copyright © 2016 MobileTonic. All rights reserved.
 //
 
-import Alamofire
-import BoltsSwift
-
 class MOAPIManager: MOGenericManager /*,  MTDiskCacheProtocol */ {
 
     let MO_APIMANAGER_COOKIES    = "MO_APIMANAGER_COOKIES"
     let MO_API_URL               = ""
     let MO_API_DEFAULT_TIMEOUT   = 30.0
     let MO_API_QUEUENAME         = "MOAPIMANAGER"
-    let alamoFire                = Alamofire.SessionManager.default
+    
     
     static let sharedInstance = MOAPIManager()
     static var initialized = false
@@ -53,7 +50,7 @@ class MOAPIManager: MOGenericManager /*,  MTDiskCacheProtocol */ {
         return MO_API_URL
     }
     
-
+/*
     func queueAPIOperationForParameters(params: [String:AnyObject]) -> Task<AnyObject> {
         
         var parameters = params
@@ -162,6 +159,6 @@ class MOAPIManager: MOGenericManager /*,  MTDiskCacheProtocol */ {
         return queueAPIOperationForParameters(params: parameters)
     }
 
-
+*/
 
 }
