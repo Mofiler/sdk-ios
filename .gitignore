@@ -98,7 +98,7 @@ newrelic.js
 raven.js
 *.dSYM
 *.bcsymbolmap
-Mofiler/Carthage/Checkouts
+Mofiler/Carthage/Build
 MofilerAppObjC/Carthage/Checkouts
 MofilerAppSwift/Carthage/Checkouts
 Cartfile.resolved
