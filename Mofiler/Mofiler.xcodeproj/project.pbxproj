@@ -163,6 +163,7 @@
 			);
 			inputPaths = (
 				"$(SRCROOT)/Carthage/Build/iOS/Alamofire.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/BoltsSwift.framework",
 			);
 			name = Carthage;
 			outputPaths = (
