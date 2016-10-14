@@ -6,10 +6,9 @@
 //  Copyright © 2016 MobileTonic. All rights reserved.
 //
 
-class MOAPIManager: MOGenericManager /*,  MTDiskCacheProtocol */ {
+class MOAPIManager: MOGenericManager {
 
-    let MO_APIMANAGER_COOKIES    = "MO_APIMANAGER_COOKIES"
-    let MO_API_URL               = ""
+
     let MO_API_DEFAULT_TIMEOUT   = 30.0
     let MO_API_QUEUENAME         = "MOAPIMANAGER"
     
@@ -18,6 +17,10 @@ class MOAPIManager: MOGenericManager /*,  MTDiskCacheProtocol */ {
     static var initialized = false
     static var group: DispatchGroup?
     static var queue: DispatchQueue?
+    
+    
+    let defaultSession = URLSession(configuration: URLSessionConfiguration.default)
+    var dataTask: URLSessionDataTask?
     
     override init() {
         super.init()
@@ -46,119 +49,162 @@ class MOAPIManager: MOGenericManager /*,  MTDiskCacheProtocol */ {
         return MOAPIManager.queue!
     }
     
-    func getApiURL() ->String{
-        return MO_API_URL
-    }
+    func getValue(identityKey:String, identityValue:String, keyToRetrieve:String, urlBase: String, appKey: String, appName: String, device: String, callback: @escaping (AnyObject?, String?) -> Void) {
     
-/*
-    func queueAPIOperationForParameters(params: [String:AnyObject]) -> Task<AnyObject> {
-        
-        var parameters = params
-        let successful = TaskCompletionSource<AnyObject>()
-        
-        apiQueue().async(group: apiGroup()) { () -> Void in
-            
-            var requestAction = ""
-            if let val: String = parameters["action"] as? String {
-                requestAction = val
-                parameters["action"] = nil
-            }
-            
-            var requestMethod = Alamofire.HTTPMethod.get
-            
-            if let val: String = parameters["method"] as? String {
-                parameters["method"] = nil
-                if val == "POST" {
-                    requestMethod = Alamofire.HTTPMethod.post
-                } else if val == "PUT" {
-                    requestMethod = Alamofire.HTTPMethod.put
-                }
-            }
-            
-            var urlBase = ""
-            if let val: String = parameters["urlBase"] as? String {
-                urlBase = val
-                parameters["urlBase"] = nil
-            }
-            
-            var appKey = ""
-            if let val: String = parameters["appKey"] as? String {
-                appKey = val
-                parameters["appKey"] = nil
-            }
-            
-            var appName = ""
-            if let val: String = parameters["appName"] as? String {
-                appName = val
-                parameters["appName"] = nil
-            }
-            
-            var installID = ""
-            if let val = UserDefaults.standard.object(forKey: "MOMOFILER_APPLICATION_INSTALLID") as? String {
-                installID = val
-            }
-            
-            var sessionID = ""
-            if let val = UserDefaults.standard.object(forKey: "MOMOFILER_SESSION_ID") as? String {
-                sessionID = val
-            }
-
-            let headers = ["Accept" : "application/json",
-                           "Content­type" : "application/json",
-                           "X­Mofiler­ApiVersion" : "0.1",
-                           "X­Mofiler­AppKey" : appKey,
-                           "X­Mofiler­AppName" : appName,
-                           "X­Mofiler­InstallID" : installID,
-                           "X­Mofiler­SessionID" : sessionID]
-            
-            let url = String(format: "%@%@", urlBase, requestAction)
-            
-            Alamofire.request(url, method: requestMethod, parameters: parameters, encoding: URLEncoding.default, headers: headers).responseJSON {
-                data in
-                if data.result.isSuccess {
-                    successful.set(result: data.result.value as AnyObject)
-                } else if let dataError = data.result.error {
-                    successful.set(error: dataError)
-                } else {
-                    successful.set(error: NSError(domain: "Unexpected error", code: 100, userInfo: nil))
-                }
-            }
-            
+        // Set up the URL request
+        let urlString = String(format: "%@/api/values/%@/%@/%@/%@", urlBase, device, identityKey, identityValue, keyToRetrieve)
+        guard let url = URL(string: urlString) else {
+            callback(nil, "Error: cannot create URL")
+            return
         }
-        return successful.task
+        var urlRequest = URLRequest(url: url)
+        
+
+        guard let installID = UserDefaults.standard.object(forKey: "MOMOFILER_APPLICATION_INSTALLID") as? String else {
+            callback(nil, "Error: cannot installID")
+            return
+        }
+        
+        guard let sessionID = UserDefaults.standard.object(forKey: "MOMOFILER_SESSION_ID") as? String else {
+            callback(nil, "Error: cannot sessionID")
+            return
+        }
+        
+        urlRequest.addValue("application/json", forHTTPHeaderField: "Accept")
+        urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        urlRequest.addValue("0.1", forHTTPHeaderField: "X­Mofiler­ApiVersion")
+        urlRequest.addValue(appKey, forHTTPHeaderField: "X­Mofiler­AppKey")
+        urlRequest.addValue(appName, forHTTPHeaderField: "X­Mofiler­AppName")
+        urlRequest.addValue(installID, forHTTPHeaderField: "X­Mofiler­InstallID")
+        urlRequest.addValue(sessionID, forHTTPHeaderField: "X­Mofiler­SessionID")
+        
+        
+        // set up the session
+        let config = URLSessionConfiguration.default
+        let session = URLSession(configuration: config)
+        
+        // make the request
+        let task = session.dataTask(with: urlRequest, completionHandler: { (data, response, error) in
+            print(error)
+            print(response)
+            
+            // check for any errors
+            guard error == nil else {
+                callback(nil, "Error")
+                return
+            }
+            
+            // make sure we got data
+            guard let responseData = data else {
+                callback(nil, "Error: did not receive data")
+                return
+            }
+            
+            // parse the result as JSON, since that's what the API provides
+            do {
+                guard let result = try JSONSerialization.jsonObject(with: responseData, options: []) as? [String: AnyObject] else {
+                    callback(nil, "error trying to convert data to JSON")
+                    return
+                }
+                
+                callback(result as AnyObject?, nil)
+            } catch  {
+                callback(nil, "error trying to convert data to JSON")
+                return
+            }
+            
+            
+        })
+        
+        task.resume()
     }
-    
-    
-    func uploadValues(urlBase: String, appKey: String, appName: String, values:[String:String]) -> Task<AnyObject> {
+  
+    func uploadValues(urlBase: String, appKey: String, appName: String, values:Array<[String:String]>, callback: @escaping (AnyObject?, String?) -> Void) {
         
         var parameters: [String:AnyObject]  = [:]
-        
-        parameters["action"]                = "api/values" as AnyObject?
-        parameters["method"]                = "POST" as AnyObject?
-        parameters["urlBase"]               = urlBase as AnyObject?
-        parameters["appKey"]                = appKey as AnyObject?
-        parameters["appName"]               = appName as AnyObject?
-        
         parameters["values"]                = values as AnyObject?
+        //TODO
         
-        return queueAPIOperationForParameters(params: parameters)
+        do {
+            
+            let jsonData = try JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted)
+            
+            // Set up the URL request
+            let urlString = String(format: "%@/api/values", urlBase)
+            guard let url = URL(string: urlString) else {
+                callback(nil, "Error: cannot create URL")
+                return
+            }
+            var urlRequest = URLRequest(url: url)
+            
+            guard let installID = UserDefaults.standard.object(forKey: "MOMOFILER_APPLICATION_INSTALLID") as? String else {
+                callback(nil, "Error: cannot installID")
+                return
+            }
+            
+            guard let sessionID = UserDefaults.standard.object(forKey: "MOMOFILER_SESSION_ID") as? String else {
+                callback(nil, "Error: cannot sessionID")
+                return
+            }
+            
+            urlRequest.addValue("application/json", forHTTPHeaderField: "Accept")
+            urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
+            urlRequest.addValue("0.1", forHTTPHeaderField: "X­Mofiler­ApiVersion")
+            urlRequest.addValue(appKey, forHTTPHeaderField: "X­Mofiler­AppKey")
+            urlRequest.addValue(appName, forHTTPHeaderField: "X­Mofiler­AppName")
+            urlRequest.addValue(installID, forHTTPHeaderField: "X­Mofiler­InstallID")
+            urlRequest.addValue(sessionID, forHTTPHeaderField: "X­Mofiler­SessionID")
+            
+            
+            // set up the session
+            let config = URLSessionConfiguration.default
+            let session = URLSession(configuration: config)
+            
+            
+            urlRequest.httpMethod = "POST"
+            urlRequest.httpBody = jsonData
+            
+            
+            // make the request
+            let task = session.dataTask(with: urlRequest, completionHandler: { (data, response, error) in
+                print(error)
+                print(response)
+                
+                // check for any errors
+                guard error == nil else {
+                    callback(nil, "Error")
+                    return
+                }
+                
+                // make sure we got data
+                guard let responseData = data else {
+                    callback(nil, "Error: did not receive data")
+                    return
+                }
+                
+                // parse the result as JSON, since that's what the API provides
+                do {
+                    guard let todo = try JSONSerialization.jsonObject(with: responseData, options: []) as? [String: AnyObject] else {
+                        callback(nil, "error trying to convert data to JSON")
+                        return
+                    }
+                    
+                    // now we have the todo, let's just print it to prove we can access it
+                    print("The todo is: " + todo.description)
+                    
+                    
+                } catch  {
+                    callback(nil, "error trying to convert data to JSON")
+                    return
+                }
+                
+            })
+            
+            task.resume()
+            
+        } catch {
+            print(error)
+        }
+        
     }
-    
-    
-    func getValue(identityKey:String, identityValue:String, keyToRetrieve:String, urlBase: String, appKey: String, appName: String, device: String) -> Task<AnyObject> {
-        
-        var parameters: [String:AnyObject]  = [:]
-        
-        let url = String(format: "api/values/%@/%@/%@/%@", device, identityKey, identityValue, keyToRetrieve)
-        parameters["action"]                = url as AnyObject?
-        parameters["method"]                = "GET" as AnyObject?
-        parameters["urlBase"]               = urlBase as AnyObject?
-        parameters["appKey"]                = appKey as AnyObject?
-        parameters["appName"]               = appName as AnyObject?
-        
-        return queueAPIOperationForParameters(params: parameters)
-    }
-
-*/
-
 }

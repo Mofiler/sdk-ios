@@ -225,21 +225,27 @@ public class Mofiler: MOGenericManager, NSCoding {
     }
     
     //# MARK: - Methods Post and get API
-    public func flushDataToMofiler() {
-        //TODO POST API
+    public func flushDataToMofiler() {        
         if validateMandatoryFields() {
             if values.count > 0 {
-//        let valuesAux: Array<[String:String]> = values
-//        values = []
                 
-                //Success
-                    //NO HACE NADA
-                
-                //Fail
-                    //Hacer backup
-                    //let newValues = valuesAux + values
-                    //values = []
-                    //values = newValues
+                MOAPIManager.sharedInstance.uploadValues(urlBase: url, appKey: appKey, appName: appName, values: values, callback: { (result, error) in
+                    if let error = error {
+                        self.errorOcurred(error: error, userInfo: [self.MOMOFILER_ERROR_API : self.MOMOFILER_ERROR_API])
+                        
+                        let valuesAux = self.values
+                        for (idx, _) in valuesAux.enumerated() {
+                            if idx < 10 {
+                                self.values.remove(at: idx)
+                            }
+                        }
+                        
+                    } else if let _ = result as? [String : AnyObject]{
+                        //not
+                    } else {
+                        self.errorOcurred(error: "Error", userInfo: [self.MOMOFILER_ERROR_API : self.MOMOFILER_ERROR_API])
+                    }
+                })
             }
         } else {
             errorNotInitialized()
@@ -248,23 +254,24 @@ public class Mofiler: MOGenericManager, NSCoding {
     
     public func getValue(key: String, identityKey: String, identityValue: String) {
         
-//        if validateMandatoryFields() {
-//            if let delegate = delegate {
-//                MOAPIManager.sharedInstance.getValue(identityKey: identityKey, identityValue: identityValue, keyToRetrieve: key, urlBase: url, appKey: appKey, appName: appName, device: "apple").continueOnSuccessWith { taskResult in
-//                    if let taskResult = taskResult as? [String:AnyObject] {
-//                        delegate.responseValue(key: key, identityKey: identityKey, identityValue: identityValue, value: taskResult)
-//                    } else {
-//                        //TODO error
-//                    }
-//                }.continueOnErrorWith { _ in
-//                    //TODO error
-//                }
-//            } else {
-//                errorDelegate()
-//            }
-//        } else {
-//            errorNotInitialized()
-//        }
+        if validateMandatoryFields() {
+            if let delegate = delegate {
+                
+                MOAPIManager.sharedInstance.getValue(identityKey: identityKey, identityValue: identityValue, keyToRetrieve: key, urlBase: url, appKey: appKey, appName: appName, device: "apple", callback: { (result, error) in
+                    if let error = error {
+                        self.errorOcurred(error: error, userInfo: [self.MOMOFILER_ERROR_API : self.MOMOFILER_ERROR_API])
+                    } else if let result = result as? [String : AnyObject]{
+                        delegate.responseValue(key: key, identityKey: identityKey, identityValue: identityValue, value: result)
+                    } else {
+                        self.errorOcurred(error: "Error", userInfo: [self.MOMOFILER_ERROR_API : self.MOMOFILER_ERROR_API])
+                    }
+                })
+            } else {
+                errorDelegate()
+            }
+        } else {
+            errorNotInitialized()
+        }
     }
     
     //# MARK: - Methods Device info

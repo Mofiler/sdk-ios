@@ -11,6 +11,7 @@
 		FF2C319F1DA814B300574322 /* Mofiler.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF2C319E1DA814B300574322 /* Mofiler.swift */; };
 		FF5641B71DAE6BC500399BE5 /* MOAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF5641B41DAE6BC500399BE5 /* MOAPIManager.swift */; };
 		FF5641B81DAE6BC500399BE5 /* MOGenericManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF5641B51DAE6BC500399BE5 /* MOGenericManager.swift */; };
+		FFF20D311DB14FE4009B65B4 /* Async.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFF20D301DB14FE4009B65B4 /* Async.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,6 +21,7 @@
 		FF2C319E1DA814B300574322 /* Mofiler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Mofiler.swift; path = ../Mofiler.swift; sourceTree = "<group>"; };
 		FF5641B41DAE6BC500399BE5 /* MOAPIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MOAPIManager.swift; sourceTree = "<group>"; };
 		FF5641B51DAE6BC500399BE5 /* MOGenericManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MOGenericManager.swift; sourceTree = "<group>"; };
+		FFF20D301DB14FE4009B65B4 /* Async.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Async.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,6 +67,7 @@
 				FF5641B51DAE6BC500399BE5 /* MOGenericManager.swift */,
 				FF5641B41DAE6BC500399BE5 /* MOAPIManager.swift */,
 				FF2C319E1DA814B300574322 /* Mofiler.swift */,
+				FFF20D301DB14FE4009B65B4 /* Async.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -151,6 +154,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FFF20D311DB14FE4009B65B4 /* Async.swift in Sources */,
 				FF2C319F1DA814B300574322 /* Mofiler.swift in Sources */,
 				FF5641B81DAE6BC500399BE5 /* MOGenericManager.swift in Sources */,
 				FF5641B71DAE6BC500399BE5 /* MOAPIManager.swift in Sources */,
