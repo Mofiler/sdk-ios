@@ -12,6 +12,7 @@
 		FF2C319F1DA814B300574322 /* Mofiler.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF2C319E1DA814B300574322 /* Mofiler.swift */; };
 		FF5641B71DAE6BC500399BE5 /* MOAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF5641B41DAE6BC500399BE5 /* MOAPIManager.swift */; };
 		FF5641B81DAE6BC500399BE5 /* MOGenericManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF5641B51DAE6BC500399BE5 /* MOGenericManager.swift */; };
+		FFE2A1551DB111DD00EF027D /* BoltsSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFE2A1541DB111DD00EF027D /* BoltsSwift.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,7 @@
 		FF2C319E1DA814B300574322 /* Mofiler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Mofiler.swift; path = ../Mofiler.swift; sourceTree = "<group>"; };
 		FF5641B41DAE6BC500399BE5 /* MOAPIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MOAPIManager.swift; sourceTree = "<group>"; };
 		FF5641B51DAE6BC500399BE5 /* MOGenericManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MOGenericManager.swift; sourceTree = "<group>"; };
+		FFE2A1541DB111DD00EF027D /* BoltsSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BoltsSwift.framework; path = ../Carthage/Build/iOS/BoltsSwift.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -30,6 +32,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				08589E7F1DB008F700144878 /* Alamofire.framework in Frameworks */,
+				FFE2A1551DB111DD00EF027D /* BoltsSwift.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -55,6 +58,7 @@
 		FF17F8071DA5873A00F0BF42 /* Mofiler */ = {
 			isa = PBXGroup;
 			children = (
+				FFE2A1541DB111DD00EF027D /* BoltsSwift.framework */,
 				08589E7E1DB008F700144878 /* Alamofire.framework */,
 				FF5641B31DAE6BC500399BE5 /* Managers */,
 				FF17F8081DA5873A00F0BF42 /* Mofiler.h */,

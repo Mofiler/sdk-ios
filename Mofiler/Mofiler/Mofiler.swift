@@ -34,6 +34,8 @@ public class Mofiler: MOGenericManager, NSCoding {
     //# MARK: - Errors
     let MOMOFILER_ERROR_CODE_KEY        = "MOMOFILER_ERROR_CODE_KEY"
     let MOMOFILER_ERROR_NOT_INITIALIZED = "MOMOFILER_ERROR_NOT_INITIALIZED"
+    let MOMOFILER_ERROR_NOT_DELEGATE    = "MOMOFILER_ERROR_NOT_DELEGATE"
+    let MOMOFILER_ERROR_API             = "MOMOFILER_ERROR_API"
     
     //# MARK: - Properties
     public static let sharedInstance = Mofiler()
@@ -100,6 +102,12 @@ public class Mofiler: MOGenericManager, NSCoding {
     func errorNotInitialized() {
         errorOcurred(error: "The SDK was not initialized properly. Please set appName, appKey and at least one identity before using it.", userInfo: [MOMOFILER_ERROR_CODE_KEY : MOMOFILER_ERROR_NOT_INITIALIZED])
     }
+    
+    func errorDelegate() {
+        errorOcurred(error: "The SDK was not initialized properly. Please set delegate.", userInfo: [MOMOFILER_ERROR_CODE_KEY : MOMOFILER_ERROR_NOT_DELEGATE])
+    }
+    
+    
     
     func saveSession(startDateSession: Date, endDateSession: Date) {
         let formatter = DateFormatter()
@@ -239,13 +247,21 @@ public class Mofiler: MOGenericManager, NSCoding {
     }
     
     public func getValue(key: String, identityKey: String, identityValue: String) {
-        //TODO GET API
+        
         if validateMandatoryFields() {
-            //        if let delegate = delegate {
-            //            //delegate.responseValue(valueData: ["":""])
-            //        } else {
-            //            //ERROR response no tiene delegate
-            //        }
+            if let delegate = delegate {
+                MOAPIManager.sharedInstance.getValue(identityKey: identityKey, identityValue: identityValue, keyToRetrieve: key, urlBase: url, appKey: appKey, appName: appName, device: "apple").continueOnSuccessWith { taskResult in
+                    if let taskResult = taskResult as? [String:AnyObject] {
+                        delegate.responseValue(key: key, identityKey: identityKey, identityValue: identityValue, value: taskResult)
+                    } else {
+                        //TODO error
+                    }
+                }.continueOnErrorWith { _ in
+                    //TODO error
+                }
+            } else {
+                errorDelegate()
+            }
         } else {
             errorNotInitialized()
         }
