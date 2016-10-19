@@ -132,9 +132,9 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
         let sessionEndTime = Float(currentMillis(date: endDateSession))
         let duration = String(differenceDatesMilliSeconds(startDate: startDateSession, endDate: endDateSession))
         
-        injectValue(newValue: ["sessionLength":duration], expirationDateInMilliseconds: sessionEndTime)
-        injectValue(newValue: ["sessionStart":start], expirationDateInMilliseconds: sessionEndTime)
-        injectValue(newValue: ["sessionEnd":end], expirationDateInMilliseconds: sessionEndTime)
+        injectValue(newValue: ["sessionLength":duration], expirationDateInMilliseconds: sessionEndTime as NSNumber)
+        injectValue(newValue: ["sessionStart":start], expirationDateInMilliseconds: sessionEndTime as NSNumber)
+        injectValue(newValue: ["sessionEnd":end], expirationDateInMilliseconds: sessionEndTime as NSNumber)
         flushDataToMofiler()
     }
     
@@ -207,7 +207,7 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
         }
     }
     
-    public func injectValue(newValue: [String:String], expirationDateInMilliseconds: Float? = nil) {
+    public func injectValue(newValue: [String:String], expirationDateInMilliseconds: NSNumber? = nil) {
         if validateMandatoryFields() {
             
             if let keyValue = newValue.first?.key, let value = newValue.first?.value {
