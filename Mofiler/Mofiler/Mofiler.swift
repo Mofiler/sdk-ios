@@ -59,6 +59,8 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
     var latitude: Float?
     var longitude: Float?
     
+    var mofilerProbeTimer: Timer?
+    
     //# MARK: - Methods init singleton
     override init() {
         super.init()
@@ -70,6 +72,8 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
         determineMyCurrentLocation()
         sessionControl()
         MODiskCache.sharedInstance.registerForDiskCaching("Mofiler", object: self)
+        
+        mofilerProbeTimer = Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(injectMofilerProbe), userInfo: nil, repeats: true)
     }
     
     //# MARK: - Methods generate intallID
@@ -159,14 +163,21 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
 
     //# MARK: - Methods app enter background, foreground
     override func applicationWillEnterForeground(_ notification: Notification) {
+        mofilerProbeTimer = Timer.scheduledTimer(timeInterval: 60, target: self, selector: #selector(injectMofilerProbe), userInfo: nil, repeats: true)
         sessionControl()
     }
     
     override func applicationWillHibernateToBackground(_ notification: Notification) {
+        if let mofilerProbeTimer = mofilerProbeTimer {
+            mofilerProbeTimer.invalidate()
+        }
         saveSasesionDateEnd()
     }
     
     override func applicationWillTerminate(_ notification: Notification) {
+        if let mofilerProbeTimer = mofilerProbeTimer {
+            mofilerProbeTimer.invalidate()
+        }
         saveSasesionDateEnd()
     }
 
@@ -223,6 +234,18 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
                 flushDataToMofiler()
             }
             
+        } else {
+            errorNotInitialized()
+        }
+    }
+    
+    func injectMofilerProbe() {
+        if validateMandatoryFields() {
+            values.append(["mofiler_probe":MODeviceManager.sharedInstance.loadExtras()])
+            MODiskCache.sharedInstance.saveCacheToDisk()
+            if values.count >= 10 {
+                flushDataToMofiler()
+            }
         } else {
             errorNotInitialized()
         }
