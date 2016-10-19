@@ -8,16 +8,11 @@
 
 class MOAPIManager: MOGenericManager {
 
-
     let MO_API_DEFAULT_TIMEOUT   = 30.0
     let MO_API_QUEUENAME         = "MOAPIMANAGER"
     
-    
     static let sharedInstance = MOAPIManager()
     static var initialized = false
-    static var group: DispatchGroup?
-    static var queue: DispatchQueue?
-    
     
     let defaultSession = URLSession(configuration: URLSessionConfiguration.default)
     var dataTask: URLSessionDataTask?
@@ -25,7 +20,6 @@ class MOAPIManager: MOGenericManager {
     override init() {
         super.init()
         if (!MOAPIManager.initialized) {
-
             
             let configuration = URLSessionConfiguration.default
             configuration.timeoutIntervalForRequest = MO_API_DEFAULT_TIMEOUT
@@ -35,79 +29,57 @@ class MOAPIManager: MOGenericManager {
         }
     }
     
-    func apiGroup() -> DispatchGroup {
-        if MOAPIManager.group == nil {
-            MOAPIManager.group = DispatchGroup();
-        }
-        return MOAPIManager.group!
-    }
-    
-    func apiQueue() -> DispatchQueue {
-        if MOAPIManager.queue == nil {
-            MOAPIManager.queue = DispatchQueue(label: MO_API_QUEUENAME, attributes: DispatchQueue.Attributes.concurrent)
-        }
-        return MOAPIManager.queue!
-    }
-    
-    func getValue(identityKey:String, identityValue:String, keyToRetrieve:String, urlBase: String, appKey: String, appName: String, device: String, callback: @escaping (AnyObject?, String?) -> Void) {
-    
-        // Set up the URL request
-        let urlString = String(format: "%@/api/values/%@/%@/%@/%@", urlBase, device, identityKey, identityValue, keyToRetrieve)
-        guard let url = URL(string: urlString) else {
-            callback(nil, "Error: cannot create URL")
-            return
-        }
+    func createUrlRequest(url: URL, appKey: String, appName: String) -> URLRequest {
+        
         var urlRequest = URLRequest(url: url)
         
-
-        guard let installID = UserDefaults.standard.object(forKey: "MOMOFILER_APPLICATION_INSTALLID") as? String else {
-            callback(nil, "Error: cannot installID")
-            return
+        if let installID = UserDefaults.standard.object(forKey: Mofiler.sharedInstance.MOMOFILER_APPLICATION_INSTALLID) as? String {
+            urlRequest.addValue(installID, forHTTPHeaderField: "X­-Mofiler-­InstallID")
         }
         
-        guard let sessionID = UserDefaults.standard.object(forKey: "MOMOFILER_SESSION_ID") as? String else {
-            callback(nil, "Error: cannot sessionID")
-            return
+        if let sessionID = UserDefaults.standard.object(forKey: Mofiler.sharedInstance.MOMOFILER_SESSION_ID) as? String {
+            urlRequest.addValue(sessionID, forHTTPHeaderField: "X­-Mofiler-­SessionID")
         }
         
         urlRequest.addValue("application/json", forHTTPHeaderField: "Accept")
         urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        urlRequest.addValue("0.1", forHTTPHeaderField: "X­Mofiler­ApiVersion")
-        urlRequest.addValue(appKey, forHTTPHeaderField: "X­Mofiler­AppKey")
-        urlRequest.addValue(appName, forHTTPHeaderField: "X­Mofiler­AppName")
-        urlRequest.addValue(installID, forHTTPHeaderField: "X­Mofiler­InstallID")
-        urlRequest.addValue(sessionID, forHTTPHeaderField: "X­Mofiler­SessionID")
+        urlRequest.addValue("0.1", forHTTPHeaderField: "X­-Mofiler­-ApiVersion")
+        urlRequest.addValue(appKey, forHTTPHeaderField: "X­-Mofiler­-AppKey")
+        urlRequest.addValue(appName, forHTTPHeaderField: "X­-Mofiler-­AppName")
+
+        return urlRequest
+    }
+    
+    
+    func getValue(identityKey:String, identityValue:String, keyToRetrieve:String, urlBase: String, appKey: String, appName: String, device: String, callback: @escaping (Any?, String?) -> Void) {
         
+        guard let url = URL(string: String(format: "https://%@/api/values/%@/%@/%@/%@", urlBase, device, identityKey, identityValue, keyToRetrieve)) else {
+            callback(nil, "Error: cannot create URL")
+            return
+        }
         
-        // set up the session
-        let config = URLSessionConfiguration.default
-        let session = URLSession(configuration: config)
+        let urlRequest = createUrlRequest(url: url, appKey: appKey, appName: appName)
+        let session = URLSession(configuration: URLSessionConfiguration.default)
         
-        // make the request
         let task = session.dataTask(with: urlRequest, completionHandler: { (data, response, error) in
-            print(error)
-            print(response)
-            
-            // check for any errors
+
             guard error == nil else {
                 callback(nil, "Error")
                 return
             }
             
-            // make sure we got data
             guard let responseData = data else {
                 callback(nil, "Error: did not receive data")
                 return
             }
             
-            // parse the result as JSON, since that's what the API provides
             do {
-                guard let result = try JSONSerialization.jsonObject(with: responseData, options: []) as? [String: AnyObject] else {
+                guard let result = try JSONSerialization.jsonObject(with: responseData, options: []) as? [String: Any] else {
                     callback(nil, "error trying to convert data to JSON")
                     return
                 }
                 
-                callback(result as AnyObject?, nil)
+                callback(result as Any?, nil)
             } catch  {
                 callback(nil, "error trying to convert data to JSON")
                 return
@@ -119,85 +91,48 @@ class MOAPIManager: MOGenericManager {
         task.resume()
     }
   
-    func uploadValues(urlBase: String, appKey: String, appName: String, values:Array<[String:String]>, callback: @escaping (AnyObject?, String?) -> Void) {
-        
-        var parameters: [String:AnyObject]  = [:]
-        parameters["values"]                = values as AnyObject?
-        //TODO
+
+    func uploadValues(urlBase: String, appKey: String, appName: String, data: [String:Any], callback: @escaping (Any?, String?) -> Void) {
         
         do {
+
+            let jsonData = try JSONSerialization.data(withJSONObject: data, options: .prettyPrinted)
             
-            let jsonData = try JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted)
-            
-            // Set up the URL request
-            let urlString = String(format: "%@/api/values", urlBase)
-            guard let url = URL(string: urlString) else {
+            guard let url = URL(string: String(format: "https://%@/api/values/", urlBase)) else {
                 callback(nil, "Error: cannot create URL")
                 return
             }
-            var urlRequest = URLRequest(url: url)
             
-            guard let installID = UserDefaults.standard.object(forKey: "MOMOFILER_APPLICATION_INSTALLID") as? String else {
-                callback(nil, "Error: cannot installID")
-                return
-            }
-            
-            guard let sessionID = UserDefaults.standard.object(forKey: "MOMOFILER_SESSION_ID") as? String else {
-                callback(nil, "Error: cannot sessionID")
-                return
-            }
-            
-            urlRequest.addValue("application/json", forHTTPHeaderField: "Accept")
-            urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
-            urlRequest.addValue("0.1", forHTTPHeaderField: "X­Mofiler­ApiVersion")
-            urlRequest.addValue(appKey, forHTTPHeaderField: "X­Mofiler­AppKey")
-            urlRequest.addValue(appName, forHTTPHeaderField: "X­Mofiler­AppName")
-            urlRequest.addValue(installID, forHTTPHeaderField: "X­Mofiler­InstallID")
-            urlRequest.addValue(sessionID, forHTTPHeaderField: "X­Mofiler­SessionID")
-            
-            
-            // set up the session
-            let config = URLSessionConfiguration.default
-            let session = URLSession(configuration: config)
-            
-            
+            var urlRequest = createUrlRequest(url: url, appKey: appKey, appName: appName)
             urlRequest.httpMethod = "POST"
             urlRequest.httpBody = jsonData
             
+            let session = URLSession(configuration: URLSessionConfiguration.default)
             
-            // make the request
             let task = session.dataTask(with: urlRequest, completionHandler: { (data, response, error) in
-                print(error)
-                print(response)
-                
-                // check for any errors
+
                 guard error == nil else {
                     callback(nil, "Error")
                     return
                 }
                 
-                // make sure we got data
                 guard let responseData = data else {
                     callback(nil, "Error: did not receive data")
                     return
                 }
                 
-                // parse the result as JSON, since that's what the API provides
                 do {
-                    guard let todo = try JSONSerialization.jsonObject(with: responseData, options: []) as? [String: AnyObject] else {
+    
+                    guard let result = try JSONSerialization.jsonObject(with: responseData, options: []) as? [String: Any] else {
                         callback(nil, "error trying to convert data to JSON")
                         return
                     }
                     
-                    // now we have the todo, let's just print it to prove we can access it
-                    print("The todo is: " + todo.description)
-                    
-                    
+                    callback(result as Any?, nil)
                 } catch  {
                     callback(nil, "error trying to convert data to JSON")
                     return
                 }
-                
             })
             
             task.resume()
