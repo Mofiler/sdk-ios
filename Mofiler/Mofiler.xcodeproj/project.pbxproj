@@ -9,8 +9,11 @@
 /* Begin PBXBuildFile section */
 		FF17F8161DA5873A00F0BF42 /* Mofiler.h in Headers */ = {isa = PBXBuildFile; fileRef = FF17F8081DA5873A00F0BF42 /* Mofiler.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FF2C319F1DA814B300574322 /* Mofiler.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF2C319E1DA814B300574322 /* Mofiler.swift */; };
+		FF4253151DB666BB00680BBA /* UIDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4253141DB666BB00680BBA /* UIDevice.swift */; };
+		FF4253171DB66BB200680BBA /* MODeviceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4253161DB66BB200680BBA /* MODeviceManager.swift */; };
 		FF5641B71DAE6BC500399BE5 /* MOAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF5641B41DAE6BC500399BE5 /* MOAPIManager.swift */; };
 		FF5641B81DAE6BC500399BE5 /* MOGenericManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF5641B51DAE6BC500399BE5 /* MOGenericManager.swift */; };
+		FF7279FF1DB5019600F158E6 /* MODiskCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF7279FE1DB5019600F158E6 /* MODiskCache.swift */; };
 		FFF20D311DB14FE4009B65B4 /* Async.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFF20D301DB14FE4009B65B4 /* Async.swift */; };
 /* End PBXBuildFile section */
 
@@ -18,10 +21,13 @@
 		FF17F8051DA5873A00F0BF42 /* Mofiler.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Mofiler.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF17F8081DA5873A00F0BF42 /* Mofiler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Mofiler.h; sourceTree = "<group>"; };
 		FF17F8091DA5873A00F0BF42 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		FF2C319E1DA814B300574322 /* Mofiler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Mofiler.swift; path = ../Mofiler.swift; sourceTree = "<group>"; };
+		FF2C319E1DA814B300574322 /* Mofiler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mofiler.swift; sourceTree = "<group>"; };
+		FF4253141DB666BB00680BBA /* UIDevice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIDevice.swift; path = ../Managers/UIDevice.swift; sourceTree = "<group>"; };
+		FF4253161DB66BB200680BBA /* MODeviceManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MODeviceManager.swift; sourceTree = "<group>"; };
 		FF5641B41DAE6BC500399BE5 /* MOAPIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MOAPIManager.swift; sourceTree = "<group>"; };
 		FF5641B51DAE6BC500399BE5 /* MOGenericManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MOGenericManager.swift; sourceTree = "<group>"; };
-		FFF20D301DB14FE4009B65B4 /* Async.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Async.swift; sourceTree = "<group>"; };
+		FF7279FE1DB5019600F158E6 /* MODiskCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MODiskCache.swift; path = ../Managers/MODiskCache.swift; sourceTree = "<group>"; };
+		FFF20D301DB14FE4009B65B4 /* Async.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Async.swift; path = ../Managers/Async.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,11 +60,23 @@
 		FF17F8071DA5873A00F0BF42 /* Mofiler */ = {
 			isa = PBXGroup;
 			children = (
+				FF4253181DB671C600680BBA /* Helpers */,
 				FF5641B31DAE6BC500399BE5 /* Managers */,
+				FF2C319E1DA814B300574322 /* Mofiler.swift */,
 				FF17F8081DA5873A00F0BF42 /* Mofiler.h */,
 				FF17F8091DA5873A00F0BF42 /* Info.plist */,
 			);
 			path = Mofiler;
+			sourceTree = "<group>";
+		};
+		FF4253181DB671C600680BBA /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				FFF20D301DB14FE4009B65B4 /* Async.swift */,
+				FF4253141DB666BB00680BBA /* UIDevice.swift */,
+				FF7279FE1DB5019600F158E6 /* MODiskCache.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 		FF5641B31DAE6BC500399BE5 /* Managers */ = {
@@ -66,8 +84,7 @@
 			children = (
 				FF5641B51DAE6BC500399BE5 /* MOGenericManager.swift */,
 				FF5641B41DAE6BC500399BE5 /* MOAPIManager.swift */,
-				FF2C319E1DA814B300574322 /* Mofiler.swift */,
-				FFF20D301DB14FE4009B65B4 /* Async.swift */,
+				FF4253161DB66BB200680BBA /* MODeviceManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -155,9 +172,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				FFF20D311DB14FE4009B65B4 /* Async.swift in Sources */,
+				FF4253151DB666BB00680BBA /* UIDevice.swift in Sources */,
+				FF7279FF1DB5019600F158E6 /* MODiskCache.swift in Sources */,
 				FF2C319F1DA814B300574322 /* Mofiler.swift in Sources */,
 				FF5641B81DAE6BC500399BE5 /* MOGenericManager.swift in Sources */,
 				FF5641B71DAE6BC500399BE5 /* MOAPIManager.swift in Sources */,
+				FF4253171DB66BB200680BBA /* MODeviceManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

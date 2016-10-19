@@ -8,13 +8,14 @@
 
 import CoreTelephony
 import Darwin
+import CoreLocation
 
 public protocol MofilerDelegate {
-    func responseValue(key: String, identityKey: String, identityValue: String, value: [String:AnyObject])
+    func responseValue(key: String, identityKey: String, identityValue: String, value: [String:Any])
     func errorOcurred(error: String, userInfo: [String: String])
 }
 
-public class Mofiler: MOGenericManager, NSCoding {
+public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCacheProtocol {
     
     //# MARK: - Keys to save to disk
     let MOMOFILER_APP_KEY               = "MOMOFILER_APP_KEY"
@@ -37,6 +38,8 @@ public class Mofiler: MOGenericManager, NSCoding {
     let MOMOFILER_ERROR_NOT_DELEGATE    = "MOMOFILER_ERROR_NOT_DELEGATE"
     let MOMOFILER_ERROR_API             = "MOMOFILER_ERROR_API"
     
+    let MO_STORE_CACHEDOBJECTS          = "MO_STORE_CACHEDOBJECTS"
+    
     //# MARK: - Properties
     public static let sharedInstance = Mofiler()
     static var initialized = false
@@ -48,10 +51,13 @@ public class Mofiler: MOGenericManager, NSCoding {
     public var identities: Array<[String:String]> = []
     public var useLocation: Bool = true                     //defaults to true
     public var useVerboseContext: Bool = false              //defaults to false, but helps Mofiler get a lot of information about the device context
-    public var values: Array<[String:String]> = []
+    public var values: Array<[String : Any]> = []
     public var sessionTimeoutAfterEnd = 30000
     public var debugLogging = true
-
+    public var isLoadingPost = false
+    
+    var latitude: Float?
+    var longitude: Float?
     
     //# MARK: - Methods init singleton
     override init() {
@@ -61,12 +67,13 @@ public class Mofiler: MOGenericManager, NSCoding {
             Mofiler.initialized = true;
             generateInstallID()
         }
+        determineMyCurrentLocation()
         sessionControl()
+        MODiskCache.sharedInstance.registerForDiskCaching("Mofiler", object: self)
     }
     
     //# MARK: - Methods generate intallID
     func generateInstallID() {
-        //Verifica si hay un InstallID, si no hay genera uno que es unico durante la vida de la aplicación
         if UserDefaults.standard.object(forKey: MOMOFILER_APPLICATION_INSTALLID) == nil {
             UserDefaults.standard.set(UUID().uuidString, forKey: MOMOFILER_APPLICATION_INSTALLID)
             UserDefaults.standard.synchronize()
@@ -163,92 +170,98 @@ public class Mofiler: MOGenericManager, NSCoding {
         saveSasesionDateEnd()
     }
 
-
-    //# MARK: - Methods saving and loading disk.
-    required public init?(coder aDecoder: NSCoder) {
-        super.init()
-        
-        if let key = validateStringField(field: aDecoder.decodeObject(forKey: MOMOFILER_APP_KEY)) {
-            appKey = key
-        }
-        if let name = validateStringField(field: aDecoder.decodeObject(forKey: MOMOFILER_APP_NAME)) {
-            appName = name
-        }
-        if let URL = validateStringField(field: aDecoder.decodeObject(forKey: MOMOFILER_URL)) {
-            url = URL
-        }
-        if let ide = validateArrayField(field: aDecoder.decodeObject(forKey: MOMOFILER_IDENTITIES)) {
-            identities = ide
-        }
-        if let location = validateBoolField(field: aDecoder.decodeBool(forKey: MOMOFILER_USE_LOCATION)) {
-            useLocation = location
-        }
-        if let verboseContext = validateBoolField(field: aDecoder.decodeBool(forKey: MOMOFILER_USE_VERBOSE_CONTEXT)) {
-            useVerboseContext = verboseContext
-        }
-        if let val = validateArrayField(field: aDecoder.decodeObject(forKey: MOMOFILER_VALUES)) {
-            values = val
-        }
-    }
-    
-    public func encode(with aCoder: NSCoder) {
-        aCoder.encode(appKey, forKey: MOMOFILER_APP_KEY)
-        aCoder.encode(appName, forKey: MOMOFILER_APP_NAME)
-        aCoder.encode(url, forKey: MOMOFILER_URL)
-        aCoder.encode(identities, forKey: MOMOFILER_IDENTITIES)
-        aCoder.encode(useLocation, forKey: MOMOFILER_USE_LOCATION)
-        aCoder.encode(useVerboseContext, forKey: MOMOFILER_USE_VERBOSE_CONTEXT)
-        aCoder.encode(values, forKey: MOMOFILER_VALUES)
-    }
-    
     //# MARK: - Methods initialize keys and injects
     public func initializeWith(appKey: String, appName: String, identity: [String:String]) {
         self.appKey = appKey
         self.appName = appName
+        
+        validateIdentity(identity: identity)
         identities.append(identity)
+        
+        MODiskCache.sharedInstance.saveCacheToDisk()
     }
     
-    public func addIdentity(newValue: [String:String]) {
-        values.append(newValue)
+    public func addIdentity(identity: [String:String]) {
+        validateIdentity(identity: identity)
+        identities.append(identity)
+        MODiskCache.sharedInstance.saveCacheToDisk()
+    }
+    
+    func validateIdentity(identity: [String:String]) {
+        let identitiesAux = identities
+        for (idx, identi) in identitiesAux.enumerated() {
+            if let key = identi.first?.key, let newKey = identity.first?.key, key == newKey {
+                identities.remove(at: idx)
+            }
+        }
     }
     
     public func injectValue(newValue: [String:String], expirationDateInMilliseconds: Float? = nil) {
         if validateMandatoryFields() {
-            //TODO que hacer con el expiry
-            values.append(newValue)
+            
+            if let keyValue = newValue.first?.key, let value = newValue.first?.value {
+                var dataValue:[String:Any] = [:]
+                if let expirationDateInMilliseconds = expirationDateInMilliseconds {
+                    if let latitude = latitude, let longitude = longitude {
+                        dataValue = [keyValue: value, "tstamp":currentMillis(date: Date()) as NSNumber, "expireAfter":expirationDateInMilliseconds as NSNumber, "location":["latitude":String(format: "%f", latitude),"longitude":String(format: "%f", longitude)]]
+                    } else {
+                        dataValue = [keyValue: value, "tstamp":currentMillis(date: Date()) as NSNumber, "expireAfter":expirationDateInMilliseconds as NSNumber]
+                    }
+                } else {
+                    if let latitude = latitude, let longitude = longitude {
+                        dataValue = [keyValue: value, "tstamp":currentMillis(date: Date()) as NSNumber, "location":["latitude":String(format: "%f", latitude),"longitude":String(format: "%f", longitude)]]
+                    } else {
+                        dataValue = [keyValue: value, "tstamp":currentMillis(date: Date()) as NSNumber]
+                    }
+                }
+                
+                values.append(dataValue)
+                MODiskCache.sharedInstance.saveCacheToDisk()
+            }
+            
             if values.count >= 10 {
                 flushDataToMofiler()
             }
+            
         } else {
             errorNotInitialized()
         }
     }
     
     //# MARK: - Methods Post and get API
-    public func flushDataToMofiler() {        
-        if validateMandatoryFields() {
-            if values.count > 0 {
-                
-                MOAPIManager.sharedInstance.uploadValues(urlBase: url, appKey: appKey, appName: appName, values: values, callback: { (result, error) in
-                    if let error = error {
-                        self.errorOcurred(error: error, userInfo: [self.MOMOFILER_ERROR_API : self.MOMOFILER_ERROR_API])
-                        
-                        let valuesAux = self.values
-                        for (idx, _) in valuesAux.enumerated() {
-                            if idx < 10 {
-                                self.values.remove(at: idx)
+    public func flushDataToMofiler() {
+        if !isLoadingPost {
+            if validateMandatoryFields() {
+                if values.count > 0 {
+                    self.isLoadingPost = true
+                    let data = MODeviceManager.sharedInstance.loadData(userValues: values, identities: identities)
+                    let countDeleteItems = values.count - 1
+                    MOAPIManager.sharedInstance.uploadValues(urlBase: url, appKey: appKey, appName: appName, data: data, callback: { (result, error) in
+                        self.isLoadingPost = false
+                        if let error = error {
+                            self.errorOcurred(error: error, userInfo: [self.MOMOFILER_ERROR_API : self.MOMOFILER_ERROR_API])
+                        } else if let result = result as? [String : Any] {
+                            
+                            if let error = result["error"] {
+                                print(error)
+                            } else {
+                                let valuesAux = self.values
+                                for (idx, _) in valuesAux.enumerated() {
+                                    if idx < countDeleteItems {
+                                        self.values.removeFirst()
+                                    }
+                                }
+                                
+                                MODiskCache.sharedInstance.saveCacheToDisk()
                             }
+                        } else {
+                            self.errorOcurred(error: "Error", userInfo: [self.MOMOFILER_ERROR_API : self.MOMOFILER_ERROR_API])
                         }
-                        
-                    } else if let _ = result as? [String : AnyObject]{
-                        //not
-                    } else {
-                        self.errorOcurred(error: "Error", userInfo: [self.MOMOFILER_ERROR_API : self.MOMOFILER_ERROR_API])
-                    }
-                })
+                    })
+                }
+            } else {
+                errorNotInitialized()
             }
-        } else {
-            errorNotInitialized()
         }
     }
     
@@ -260,7 +273,7 @@ public class Mofiler: MOGenericManager, NSCoding {
                 MOAPIManager.sharedInstance.getValue(identityKey: identityKey, identityValue: identityValue, keyToRetrieve: key, urlBase: url, appKey: appKey, appName: appName, device: "apple", callback: { (result, error) in
                     if let error = error {
                         self.errorOcurred(error: error, userInfo: [self.MOMOFILER_ERROR_API : self.MOMOFILER_ERROR_API])
-                    } else if let result = result as? [String : AnyObject]{
+                    } else if let result = result as? [String : Any]{
                         delegate.responseValue(key: key, identityKey: identityKey, identityValue: identityValue, value: result)
                     } else {
                         self.errorOcurred(error: "Error", userInfo: [self.MOMOFILER_ERROR_API : self.MOMOFILER_ERROR_API])
@@ -274,110 +287,32 @@ public class Mofiler: MOGenericManager, NSCoding {
         }
     }
     
-    //# MARK: - Methods Device info
-    public func testDevice() {
-        reportCarrier()
-        reportMemory()
-        reportDisk()
-    }
     
-    //# MARK: - Methods Carrier info
-    func reportCarrier() {
-        print("\nCARRIER")
+    //# MARK: - Location
+    func determineMyCurrentLocation() {
+        let locationManager = CLLocationManager()
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.requestAlwaysAuthorization()
         
-        let netinfo = CTTelephonyNetworkInfo()
-        print("\ncurrentRadioAccessTechnology: ", netinfo.currentRadioAccessTechnology)
-        
-        let carrier = netinfo.subscriberCellularProvider
-        print("\n carrierName: ", carrier?.carrierName)
-        print("\n mobileCountryCode: ", carrier?.mobileCountryCode)
-        print("\n mobileNetworkCode: ", carrier?.mobileNetworkCode)
-        print("\n isoCountryCode: ", carrier?.isoCountryCode)
-        print("\n allowsVOIP: ", carrier?.allowsVOIP)
-    }
-    
-    //# MARK: - Methods Memory info
-    func reportMemory() {
-        let HOST_BASIC_INFO_COUNT = MemoryLayout<host_basic_info>.stride/MemoryLayout<integer_t>.stride
-        var size = mach_msg_type_number_t(HOST_BASIC_INFO_COUNT)
-        let hostInfo = host_basic_info_t.allocate(capacity: 1)
-        let _ = hostInfo.withMemoryRebound(to: integer_t.self, capacity: HOST_BASIC_INFO_COUNT) {
-            host_info(mach_host_self(), HOST_BASIC_INFO, $0, &size)
-        }
-        
-        print("\nMEMORY")
-        print("\n max_cpus: ", hostInfo.pointee.max_cpus)
-        print("\n avail_cpus: ", hostInfo.pointee.avail_cpus)
-        print("\n memory_size: ", hostInfo.pointee.memory_size)
-        print("\n max_mem: ", hostInfo.pointee.max_mem)
-        
-        hostInfo.deallocate(capacity: 1)
-    }
-    
-    //# MARK: - Methods disk info
-    func reportDisk() {
-        print("\nDISK")
-        print(" totalDiskSpace: ",totalDiskSpace(),
-              "\n freeDiskSpace: ", freeDiskSpace(),
-              "\n usedDiskSpace: ", usedDiskSpace(),
-              "\n totalDiskSpaceInBytes: ", totalDiskSpaceInBytes(),
-              "\n freeDiskSpaceInBytes: ", freeDiskSpaceInBytes(),
-              "\n usedDiskSpaceInBytes: ", usedDiskSpaceInBytes(),
-              "\n numberOfNodes: ", numberOfNodes(),"\n")
-    }
-    
-    func memoryFormatter(diskSpace: Double) -> String {
-        let bytes:Double = 1.0 * diskSpace
-        let megabytes:Double = bytes / 1048576.0
-        let gigabytes:Double = bytes / 1073741824.0
-        
-        if gigabytes >= 1.0 {
-            return String(format: "%.2f GB", gigabytes)
-        } else if megabytes >= 1.0 {
-            return String(format: "%.2f MB", megabytes)
-        } else {
-            return String(format: "%.2f bytes", bytes)
+        if CLLocationManager.locationServicesEnabled() {
+            locationManager.startUpdatingLocation()
         }
     }
     
-    func diskSpaceInBytes(type: FileAttributeKey) -> Double {
-        do {
-            let systemAttributes = try FileManager.default.attributesOfFileSystem(forPath: NSHomeDirectory() as String)
-            if let fileSize = (systemAttributes[type] as? Double) {
-                return fileSize
-            }
-        } catch { }
-        return 0.0
+    public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if let location = locations.first {
+            self.latitude = Float(location.coordinate.latitude)
+            self.longitude = Float(location.coordinate.longitude)
+            print("user latitude = \(location.coordinate.latitude)")
+            print("user longitude = \(location.coordinate.longitude)")
+        }
     }
     
-    func totalDiskSpaceInBytes() -> Double {
-        return diskSpaceInBytes(type: FileAttributeKey.systemSize)
+    public func locationManager(_ manager: CLLocationManager, didFailWithError error: Error){
+        print("Error \(error.localizedDescription)")
     }
     
-    func freeDiskSpaceInBytes() -> Double {
-        return diskSpaceInBytes(type: FileAttributeKey.systemFreeSize)
-    }
-    
-    func usedDiskSpaceInBytes() -> Double {
-        return totalDiskSpaceInBytes() - freeDiskSpaceInBytes()
-    }
-    
-    func totalDiskSpace() -> String {
-        return memoryFormatter(diskSpace: totalDiskSpaceInBytes())
-    }
-    
-    func freeDiskSpace() -> String {
-        return memoryFormatter(diskSpace: freeDiskSpaceInBytes())
-    }
-    
-    func usedDiskSpace() -> String {
-        return memoryFormatter(diskSpace: usedDiskSpaceInBytes())
-    }
-    
-    /*! WORK IN PROGRESS */
-    func numberOfNodes() -> Double {
-        return diskSpaceInBytes(type: FileAttributeKey.systemNodes)
-    }
     
     //# MARK: - Methods validate fields
     func validateStringField(field: Any?) -> String? {
@@ -387,7 +322,14 @@ public class Mofiler: MOGenericManager, NSCoding {
         return nil
     }
     
-    func validateArrayField(field: Any?) -> Array<[String:String]>? {
+    func validateArrayField(field: Any?) -> Array<[String:Any]>? {
+        if let field = field , field is Array<[String:Any]> {
+            return field as? Array<[String:Any]>
+        }
+        return nil
+    }
+    
+    func validateArrayFieldString(field: Any?) -> Array<[String:String]>? {
         if let field = field , field is Array<[String:String]> {
             return field as? Array<[String:String]>
         }
@@ -403,6 +345,41 @@ public class Mofiler: MOGenericManager, NSCoding {
     
     func validateMandatoryFields() -> Bool {
         return appKey.characters.count > 0 && appName.characters.count > 0 && identities.count > 0
+    }
+    
+    //# MARK: - MODiskCacheProtocol
+    func dataToCacheForDiskCache(_ diskCache: MODiskCache) -> [String : Any]? {
+        return [MOMOFILER_APP_KEY               : appKey,
+                MOMOFILER_APP_NAME              : appName,
+                MOMOFILER_URL                   : url,
+                MOMOFILER_IDENTITIES            : identities,
+                MOMOFILER_USE_LOCATION          : useLocation,
+                MOMOFILER_USE_VERBOSE_CONTEXT   : useVerboseContext,
+                MOMOFILER_VALUES                : values]
+    }
+    
+    func loadDataFromCache(_ data: [String : Any], diskCache: MODiskCache) {
+        if let obj = data[MOMOFILER_APP_KEY] as? String {
+            appKey = obj
+        }
+        if let obj = data[MOMOFILER_APP_NAME] as? String {
+            appName = obj
+        }
+        if let obj = data[MOMOFILER_URL] as? String {
+            url = obj
+        }
+        if let obj = data[MOMOFILER_IDENTITIES] as? Array<[String:String]> {
+            identities = obj
+        }
+        if let obj = data[MOMOFILER_USE_LOCATION] as? Bool {
+            useLocation = obj
+        }
+        if let obj = data[MOMOFILER_USE_VERBOSE_CONTEXT] as? Bool {
+            useVerboseContext = obj
+        }
+        if let obj = data[MOMOFILER_VALUES] as? Array<[String:Any]> {
+            values = obj
+        }
     }
 
 }
