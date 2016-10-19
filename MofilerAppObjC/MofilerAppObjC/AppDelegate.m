@@ -18,10 +18,25 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
     Mofiler* mof = [Mofiler sharedInstance];
-    [mof testDevice];
+    
+    [mof initializeWithAppKey:@"MY-APPKEY-HERE-IOS" appName:@"MyIosTestApplication" identity:@{@"username":@"johndoe"}];
+    
+    mof.url = @"mofiler.com";
+    [mof addIdentityWithIdentity:@{@"name":@"john doe"}];
+    [mof addIdentityWithIdentity:@{@"email":@"john@doe.com"}];
+    mof.useLocation = false;
+    mof.useVerboseContext = true;
+    
+    
+    
+    [mof flushDataToMofiler];
+    
+    [mof getValueWithKey:@"mykey1" identityKey:@"username" identityValue:@"johndoe"];
+    [mof getValueWithKey:@"mykey1" identityKey:@"username" identityValue:@"johndoe" callback:^(id resutl, id error) {
+        NSLog(@"%@", resutl);
+    }];
     
     return YES;
 }
-
 
 @end
