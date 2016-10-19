@@ -10,9 +10,9 @@ import CoreTelephony
 import Darwin
 import CoreLocation
 
-public protocol MofilerDelegate {
-    func responseValue(key: String, identityKey: String, identityValue: String, value: [String:Any])
-    func errorOcurred(error: String, userInfo: [String: String])
+@objc public protocol MofilerDelegate {
+    @objc optional func responseValue(key: String, identityKey: String, identityValue: String, value: [String:Any])
+    @objc optional func errorOcurred(error: String, userInfo: [String: String])
 }
 
 public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCacheProtocol {
@@ -105,8 +105,8 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
     
     func errorOcurred(error: String, userInfo: [String: String]) {
         debugLog(log: error)
-        if let delegate = delegate {
-            delegate.errorOcurred(error: error, userInfo: userInfo)
+        if let delegate = delegate, let errorOcurred = delegate.errorOcurred {
+            errorOcurred(error, userInfo)
         }
     }
     
@@ -291,13 +291,13 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
     public func getValue(key: String, identityKey: String, identityValue: String) {
         
         if validateMandatoryFields() {
-            if let delegate = delegate {
+            if let delegate = delegate, let responseValue = delegate.responseValue {
                 
                 MOAPIManager.sharedInstance.getValue(identityKey: identityKey, identityValue: identityValue, keyToRetrieve: key, urlBase: url, appKey: appKey, appName: appName, device: "apple", callback: { (result, error) in
                     if let error = error {
                         self.errorOcurred(error: error, userInfo: [self.MOMOFILER_ERROR_API : self.MOMOFILER_ERROR_API])
                     } else if let result = result as? [String : Any]{
-                        delegate.responseValue(key: key, identityKey: identityKey, identityValue: identityValue, value: result)
+                        responseValue(key, identityKey, identityValue, result)
                     } else {
                         self.errorOcurred(error: "Error", userInfo: [self.MOMOFILER_ERROR_API : self.MOMOFILER_ERROR_API])
                     }
