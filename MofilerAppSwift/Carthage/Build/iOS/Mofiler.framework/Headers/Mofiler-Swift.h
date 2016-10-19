@@ -123,6 +123,8 @@ SWIFT_CLASS("_TtC7Mofiler16MOGenericManager")
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 @end
 
+@protocol MofilerDelegate;
+@class NSNumber;
 @class CLLocationManager;
 @class CLLocation;
 
@@ -130,6 +132,7 @@ SWIFT_CLASS("_TtC7Mofiler7Mofiler")
 @interface Mofiler : MOGenericManager <CLLocationManagerDelegate>
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) Mofiler * _Nonnull sharedInstance;)
 + (Mofiler * _Nonnull)sharedInstance;
+@property (nonatomic, strong) id <MofilerDelegate> _Nullable delegate;
 @property (nonatomic, copy) NSString * _Nonnull appKey;
 @property (nonatomic, copy) NSString * _Nonnull appName;
 @property (nonatomic, copy) NSString * _Nonnull url;
@@ -142,11 +145,20 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) Mofiler * _N
 @property (nonatomic) BOOL isLoadingPost;
 - (void)initializeWithAppKey:(NSString * _Nonnull)appKey appName:(NSString * _Nonnull)appName identity:(NSDictionary<NSString *, NSString *> * _Nonnull)identity SWIFT_METHOD_FAMILY(none);
 - (void)addIdentityWithIdentity:(NSDictionary<NSString *, NSString *> * _Nonnull)identity;
+- (void)injectValueWithNewValue:(NSDictionary<NSString *, NSString *> * _Nonnull)newValue expirationDateInMilliseconds:(NSNumber * _Nullable)expirationDateInMilliseconds;
 - (void)flushDataToMofiler;
 - (void)getValueWithKey:(NSString * _Nonnull)key identityKey:(NSString * _Nonnull)identityKey identityValue:(NSString * _Nonnull)identityValue;
 - (void)getValueWithKey:(NSString * _Nonnull)key identityKey:(NSString * _Nonnull)identityKey identityValue:(NSString * _Nonnull)identityValue callback:(void (^ _Nonnull)(id _Nullable, id _Nullable))callback;
 - (void)locationManager:(CLLocationManager * _Nonnull)manager didUpdateLocations:(NSArray<CLLocation *> * _Nonnull)locations;
 - (void)locationManager:(CLLocationManager * _Nonnull)manager didFailWithError:(NSError * _Nonnull)error;
+@end
+
+
+SWIFT_PROTOCOL("_TtP7Mofiler15MofilerDelegate_")
+@protocol MofilerDelegate
+@optional
+- (void)responseValueWithKey:(NSString * _Nonnull)key identityKey:(NSString * _Nonnull)identityKey identityValue:(NSString * _Nonnull)identityValue value:(NSDictionary<NSString *, id> * _Nonnull)value;
+- (void)errorOcurredWithError:(NSString * _Nonnull)error userInfo:(NSDictionary<NSString *, NSString *> * _Nonnull)userInfo;
 @end
 
 
