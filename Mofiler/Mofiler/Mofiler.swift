@@ -310,6 +310,24 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
         }
     }
     
+    public func getValue(key: String, identityKey: String, identityValue: String, callback: @escaping (Any?, Any?) -> Void) {
+     
+        if validateMandatoryFields() {
+            MOAPIManager.sharedInstance.getValue(identityKey: identityKey, identityValue: identityValue, keyToRetrieve: key, urlBase: url, appKey: appKey, appName: appName, device: "apple", callback: { (result, error) in
+                if let error = error {
+                    callback(nil, ["error":error, self.MOMOFILER_ERROR_API:self.MOMOFILER_ERROR_API])
+                } else if let result = result as? [String : Any]{
+                    callback(["key":key, "identityKey":identityKey, "identityValue":identityValue, "value":result] , nil)
+                } else {
+                    callback(nil, ["error":"Error", self.MOMOFILER_ERROR_API:self.MOMOFILER_ERROR_API])
+                }
+            })
+            
+        } else {
+            errorNotInitialized()
+        }
+    }
+    
     
     //# MARK: - Location
     func determineMyCurrentLocation() {
