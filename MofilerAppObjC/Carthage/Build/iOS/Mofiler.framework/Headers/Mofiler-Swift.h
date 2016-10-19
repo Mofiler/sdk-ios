@@ -111,7 +111,8 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 #endif
 #if defined(__has_feature) && __has_feature(modules)
 @import ObjectiveC;
-@import Foundation;
+@import CoreLocation;
+@import UIKit;
 #endif
 
 #pragma clang diagnostic ignored "-Wproperty-attribute-mismatch"
@@ -122,10 +123,11 @@ SWIFT_CLASS("_TtC7Mofiler16MOGenericManager")
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 @end
 
-@class NSCoder;
+@class CLLocationManager;
+@class CLLocation;
 
 SWIFT_CLASS("_TtC7Mofiler7Mofiler")
-@interface Mofiler : MOGenericManager <NSCoding>
+@interface Mofiler : MOGenericManager <CLLocationManagerDelegate>
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) Mofiler * _Nonnull sharedInstance;)
 + (Mofiler * _Nonnull)sharedInstance;
 @property (nonatomic, copy) NSString * _Nonnull appKey;
@@ -134,16 +136,22 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) Mofiler * _N
 @property (nonatomic, copy) NSArray<NSDictionary<NSString *, NSString *> *> * _Nonnull identities;
 @property (nonatomic) BOOL useLocation;
 @property (nonatomic) BOOL useVerboseContext;
-@property (nonatomic, copy) NSArray<NSDictionary<NSString *, NSString *> *> * _Nonnull values;
+@property (nonatomic, copy) NSArray<NSDictionary<NSString *, id> *> * _Nonnull values;
 @property (nonatomic) NSInteger sessionTimeoutAfterEnd;
 @property (nonatomic) BOOL debugLogging;
-- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder OBJC_DESIGNATED_INITIALIZER;
-- (void)encodeWithCoder:(NSCoder * _Nonnull)aCoder;
+@property (nonatomic) BOOL isLoadingPost;
 - (void)initializeWithAppKey:(NSString * _Nonnull)appKey appName:(NSString * _Nonnull)appName identity:(NSDictionary<NSString *, NSString *> * _Nonnull)identity SWIFT_METHOD_FAMILY(none);
-- (void)addIdentityWithNewValue:(NSDictionary<NSString *, NSString *> * _Nonnull)newValue;
+- (void)addIdentityWithIdentity:(NSDictionary<NSString *, NSString *> * _Nonnull)identity;
 - (void)flushDataToMofiler;
 - (void)getValueWithKey:(NSString * _Nonnull)key identityKey:(NSString * _Nonnull)identityKey identityValue:(NSString * _Nonnull)identityValue;
-- (void)testDevice;
+- (void)getValueWithKey:(NSString * _Nonnull)key identityKey:(NSString * _Nonnull)identityKey identityValue:(NSString * _Nonnull)identityValue callback:(void (^ _Nonnull)(id _Nullable, id _Nullable))callback;
+- (void)locationManager:(CLLocationManager * _Nonnull)manager didUpdateLocations:(NSArray<CLLocation *> * _Nonnull)locations;
+- (void)locationManager:(CLLocationManager * _Nonnull)manager didFailWithError:(NSError * _Nonnull)error;
+@end
+
+
+@interface UIDevice (SWIFT_EXTENSION(Mofiler))
+@property (nonatomic, readonly, copy) NSString * _Nonnull modelName;
 @end
 
 #pragma clang diagnostic pop
