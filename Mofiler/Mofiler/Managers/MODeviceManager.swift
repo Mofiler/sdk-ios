@@ -60,7 +60,7 @@ class MODeviceManager: MOGenericManager {
     //# MARK: - Methods Device info
     func loadData (userValues: Array<[String:Any]>, identities: Array<[String:Any]>) -> [String:Any]{
         let data: [String : Any] = [MOMOFILER_DEVICE_USER_VALUES:   userValues,
-                                    MOMOFILER_DEVICE_IDENTITY:      "", //identities,
+                                    MOMOFILER_DEVICE_IDENTITY:      identities,
                                     MOMOFILER_DEVICE_CONTEXT:       loadMofilerDeviceContext()]
         return data
     }

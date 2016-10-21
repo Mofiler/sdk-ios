@@ -187,21 +187,25 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
         self.appName = appName
         
         validateIdentity(identity: identity)
-        identities.append(identity)
+        if let key = identity.first?.key, let value = identity.first?.value {
+            identities.append(["name":key,"value":value])
+        }
         
         MODiskCache.sharedInstance.saveCacheToDisk()
     }
     
     public func addIdentity(identity: [String:String]) {
         validateIdentity(identity: identity)
-        identities.append(identity)
+        if let key = identity.first?.key, let value = identity.first?.value {
+            identities.append(["name":key,"value":value])
+        }
         MODiskCache.sharedInstance.saveCacheToDisk()
     }
     
     func validateIdentity(identity: [String:String]) {
         let identitiesAux = identities
         for (idx, identi) in identitiesAux.enumerated() {
-            if let key = identi.first?.key, let newKey = identity.first?.key, key == newKey {
+            if let key = identi.first?.value, let newKey = identity.first?.value, key == newKey {
                 identities.remove(at: idx)
             }
         }
