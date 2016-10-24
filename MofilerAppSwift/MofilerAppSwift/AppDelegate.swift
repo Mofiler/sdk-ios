@@ -42,6 +42,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MofilerDelegate {
         mof.injectValue(newValue: ["mykey13":"myvalue13"])
         
         
+        let valueInt: Int = 111111
+        mof.injectValue(newValue: ["mykey14": String(format: "%lu", valueInt)])
+        
+        let valueFloat: Float = 111111.12
+        mof.injectValue(newValue: ["mykey15": String(format: "%f", valueFloat)])
+        
+        let valueDouble: Double = 111111.12
+        mof.injectValue(newValue: ["mykey16": String(format: "%f", valueDouble)])
+        
+        let valueDictionary: [String:Any] = ["key":"value"]
+        mof.injectValue(newValue: ["mykey17": valueDictionary.description])
+        
+        let valueArray: Array<Any> = ["value1","value2","value3"]
+        mof.injectValue(newValue: ["mykey18": valueArray.description])
+        
         mof.flushDataToMofiler()
         
         mof.getValue(key: "mykey1", identityKey: "username", identityValue: "johndoe")
@@ -49,7 +64,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MofilerDelegate {
         mof.getValue(key: "mykey1", identityKey: "username", identityValue: "johndoe") { (result, error) in
             print(result)
         }
-        
         
         return true
     }

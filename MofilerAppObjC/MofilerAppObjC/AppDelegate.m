@@ -41,6 +41,16 @@
     [mof injectValueWithNewValue:@{@"mykey12":@"myvalue12"} expirationDateInMilliseconds:nil];
     [mof injectValueWithNewValue:@{@"mykey13":@"myvalue13"} expirationDateInMilliseconds:nil];
     
+    float valueFloat = 111111.32;
+    [mof injectValueWithNewValue:@{@"mykey14":[[NSNumber numberWithFloat:valueFloat] stringValue]} expirationDateInMilliseconds:nil];
+    
+    
+    NSDictionary* valueDictionary = @{@"key":@"value"};
+    [mof injectValueWithNewValue:@{@"mykey17":valueDictionary.description} expirationDateInMilliseconds:nil];
+    
+    NSArray* valueArray = @[@"value1",@"value2",@"value3"];
+    [mof injectValueWithNewValue:@{@"mykey18":valueArray.description} expirationDateInMilliseconds:nil];
+    
     [mof flushDataToMofiler];
     
     [mof getValueWithKey:@"mykey1" identityKey:@"username" identityValue:@"johndoe"];
