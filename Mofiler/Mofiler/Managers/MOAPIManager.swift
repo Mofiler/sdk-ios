@@ -138,7 +138,7 @@ class MOAPIManager: MOGenericManager {
             task.resume()
             
         } catch {
-            print(error)
+          //  print(error)
         }
         
     }

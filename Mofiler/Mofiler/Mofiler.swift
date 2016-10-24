@@ -37,6 +37,7 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
     let MOMOFILER_ERROR_NOT_INITIALIZED = "MOMOFILER_ERROR_NOT_INITIALIZED"
     let MOMOFILER_ERROR_NOT_DELEGATE    = "MOMOFILER_ERROR_NOT_DELEGATE"
     let MOMOFILER_ERROR_API             = "MOMOFILER_ERROR_API"
+    let MOMOFILER_ERROR_LOCATION        = "MOMOFILER_ERROR_LOCATION"
     
     let MO_STORE_CACHEDOBJECTS          = "MO_STORE_CACHEDOBJECTS"
     
@@ -271,8 +272,8 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
                                 self.errorOcurred(error: error, userInfo: [self.MOMOFILER_ERROR_API : self.MOMOFILER_ERROR_API])
                             } else if let result = result as? [String : Any] {
                                 
-                                if let error = result["error"] {
-                                    print(error)
+                                if let _ = result["error"] {
+                                    self.errorOcurred(error: "Error", userInfo: [self.MOMOFILER_ERROR_API : self.MOMOFILER_ERROR_API])
                                 } else {
                                     let valuesAux = self.values
                                     for (idx, _) in valuesAux.enumerated() {
@@ -357,13 +358,11 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
         if let location = locations.first {
             self.latitude = Float(location.coordinate.latitude)
             self.longitude = Float(location.coordinate.longitude)
-            print("user latitude = \(location.coordinate.latitude)")
-            print("user longitude = \(location.coordinate.longitude)")
         }
     }
     
     public func locationManager(_ manager: CLLocationManager, didFailWithError error: Error){
-        print("Error \(error.localizedDescription)")
+        self.errorOcurred(error: "Error \(error.localizedDescription)", userInfo: [self.MOMOFILER_ERROR_LOCATION : self.MOMOFILER_ERROR_LOCATION])
     }
     
     
