@@ -264,26 +264,30 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
                     let data = MODeviceManager.sharedInstance.loadData(userValues: values, identities: identities)
                     let countDeleteItems = values.count - 1
                     MOAPIManager.sharedInstance.uploadValues(urlBase: url, appKey: appKey, appName: appName, data: data, callback: { (result, error) in
-                        self.isLoadingPost = false
-                        if let error = error {
-                            self.errorOcurred(error: error, userInfo: [self.MOMOFILER_ERROR_API : self.MOMOFILER_ERROR_API])
-                        } else if let result = result as? [String : Any] {
-                            
-                            if let error = result["error"] {
-                                print(error)
-                            } else {
-                                let valuesAux = self.values
-                                for (idx, _) in valuesAux.enumerated() {
-                                    if idx < countDeleteItems {
-                                        self.values.removeFirst()
-                                    }
-                                }
+                        
+                        performBlockOnMainQueue {
+                            self.isLoadingPost = false
+                            if let error = error {
+                                self.errorOcurred(error: error, userInfo: [self.MOMOFILER_ERROR_API : self.MOMOFILER_ERROR_API])
+                            } else if let result = result as? [String : Any] {
                                 
-                                MODiskCache.sharedInstance.saveCacheToDisk()
-                            }
-                        } else {
-                            self.errorOcurred(error: "Error", userInfo: [self.MOMOFILER_ERROR_API : self.MOMOFILER_ERROR_API])
+                                if let error = result["error"] {
+                                    print(error)
+                                } else {
+                                    let valuesAux = self.values
+                                    for (idx, _) in valuesAux.enumerated() {
+                                        if idx < countDeleteItems {
+                                            self.values.removeFirst()
+                                        }
+                                    }
+                                    
+                                    MODiskCache.sharedInstance.saveCacheToDisk()
+                                }
+                            } else {
+                                self.errorOcurred(error: "Error", userInfo: [self.MOMOFILER_ERROR_API : self.MOMOFILER_ERROR_API])
+                            }    
                         }
+                        
                     })
                 }
             } else {
@@ -298,13 +302,17 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
             if let delegate = delegate, let responseValue = delegate.responseValue {
                 
                 MOAPIManager.sharedInstance.getValue(identityKey: identityKey, identityValue: identityValue, keyToRetrieve: key, urlBase: url, appKey: appKey, appName: appName, device: "apple", callback: { (result, error) in
-                    if let error = error {
-                        self.errorOcurred(error: error, userInfo: [self.MOMOFILER_ERROR_API : self.MOMOFILER_ERROR_API])
-                    } else if let result = result as? [String : Any]{
-                        responseValue(key, identityKey, identityValue, result)
-                    } else {
-                        self.errorOcurred(error: "Error", userInfo: [self.MOMOFILER_ERROR_API : self.MOMOFILER_ERROR_API])
+                    
+                    performBlockOnMainQueue {
+                        if let error = error {
+                            self.errorOcurred(error: error, userInfo: [self.MOMOFILER_ERROR_API : self.MOMOFILER_ERROR_API])
+                        } else if let result = result as? [String : Any]{
+                            responseValue(key, identityKey, identityValue, result)
+                        } else {
+                            self.errorOcurred(error: "Error", userInfo: [self.MOMOFILER_ERROR_API : self.MOMOFILER_ERROR_API])
+                        }
                     }
+                    
                 })
             } else {
                 errorDelegate()
