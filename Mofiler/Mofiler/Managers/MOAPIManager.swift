@@ -34,18 +34,20 @@ class MOAPIManager: MOGenericManager {
         var urlRequest = URLRequest(url: url)
         
         if let installID = UserDefaults.standard.object(forKey: Mofiler.sharedInstance.MOMOFILER_APPLICATION_INSTALLID) as? String {
-            urlRequest.addValue(installID, forHTTPHeaderField: "X­-Mofiler-­InstallID")
+            urlRequest.addValue(installID, forHTTPHeaderField: "x-mofiler-installid")
         }
         
         if let sessionID = UserDefaults.standard.object(forKey: Mofiler.sharedInstance.MOMOFILER_SESSION_ID) as? String {
-            urlRequest.addValue(sessionID, forHTTPHeaderField: "X­-Mofiler-­SessionID")
+            urlRequest.addValue(sessionID, forHTTPHeaderField: "x-mofiler-sessionid")
         }
         
         urlRequest.addValue("application/json", forHTTPHeaderField: "Accept")
         urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        urlRequest.addValue("0.1", forHTTPHeaderField: "X­-Mofiler­-ApiVersion")
-        urlRequest.addValue(appKey, forHTTPHeaderField: "X­-Mofiler­-AppKey")
-        urlRequest.addValue(appName, forHTTPHeaderField: "X­-Mofiler-­AppName")
+        urlRequest.addValue("0.1", forHTTPHeaderField: "x-mofiler-apiversion")
+        urlRequest.addValue(appKey, forHTTPHeaderField: "x-mofiler-appkey")
+        urlRequest.addValue(appName, forHTTPHeaderField: "x-mofiler-appname")
+        urlRequest.addValue("1", forHTTPHeaderField: "x-mofiler-noiselevel")
+        
 
         return urlRequest
     }
@@ -142,4 +144,6 @@ class MOAPIManager: MOGenericManager {
         }
         
     }
+    
+    
 }
