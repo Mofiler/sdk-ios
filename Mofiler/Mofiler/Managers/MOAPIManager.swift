@@ -66,7 +66,7 @@ class MOAPIManager: MOGenericManager {
         let task = session.dataTask(with: urlRequest, completionHandler: { (data, response, error) in
 
             guard error == nil else {
-                callback(nil, "Error")
+                callback(nil, "Error, get api.")
                 return
             }
             
@@ -117,7 +117,7 @@ class MOAPIManager: MOGenericManager {
             let task = session.dataTask(with: urlRequest, completionHandler: { (data, response, error) in
 
                 guard error == nil else {
-                    callback(nil, "Error")
+                    callback(nil, "Error, post api.")
                     return
                 }
                 

@@ -329,7 +329,7 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
         if validateMandatoryFields() {
             MOAPIManager.sharedInstance.getValue(identityKey: identityKey, identityValue: identityValue, keyToRetrieve: key, urlBase: url, appKey: appKey, appName: appName, device: "apple", callback: { (result, error) in
                 if error != nil {
-                    callback(nil, ["error":"Error", self.MOMOFILER_ERROR_CONVERT_JSON:self.MOMOFILER_ERROR_CONVERT_JSON])
+                    callback(nil, ["error":error, self.MOMOFILER_ERROR_API:self.MOMOFILER_ERROR_API])
                 } else if let result = result as? [String : Any]{
                     callback(["key":key, "identityKey":identityKey, "identityValue":identityValue, "value":result] , nil)
                 } else {
