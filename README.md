@@ -41,7 +41,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MofilerDelegate {
 
 3) Funcionalidades
 
-```//Singleton de mofiler
+```
+//Singleton de mofiler
 let mof = Mofiler.sharedInstance
 
 //Inicializa mofiler con los campos obligatorios        
