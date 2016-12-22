@@ -1,5 +1,7 @@
 # Mofiler sdk-ios
 
+En este repositorio encontrará tanto el código del SDK como el de 2 aplicaciones de ejemplo, una escrita en ObjectiveC (`MofilerAppObjC`) y otra escrita en Swift (`MofilerAppSwift`)
+
 ## Cómo integrar
 El SDK de Mofiler se distribuye a través de Carthage, que es inicialmente la forma recomendada de utilizar el framework.
 
@@ -26,7 +28,7 @@ Para acceder a location la aplicación debe agregar al `Info.plist` una key `NSL
 
 ## Usando el SDK
 
-### SI SU APP ESTÁ DESARROLLADA EN SWIFT
+### SWIFT
 
 1) Agregar el siguiente import
 ```
@@ -99,8 +101,7 @@ print(error)
 }
 ```
 
-
-### SI SU APP ESTÁ DESARROLLADA EN OBJECTIVE C
+### OBJECTIVE C
 
 1) Agregar el siguiente import
 ```
