@@ -92,6 +92,9 @@ class MOAPIManager: MOGenericManager {
         
         task.resume()
     }
+    
+    
+
   
 
     func uploadValues(urlBase: String, appKey: String, appName: String, data: [String:Any], callback: @escaping (Any?, String?) -> Void) {
@@ -140,7 +143,7 @@ class MOAPIManager: MOGenericManager {
             task.resume()
             
         } catch {
-          //  print(error)
+          
         }
         
     }
