@@ -22,7 +22,7 @@ class MODeviceManager: MOGenericManager {
     let MOMOFILER_DEVICE_DISPLAY                    = "display"
     let MOMOFILER_DEVICE_LOCALE                     = "locale"
     let MOMOFILER_DEVICE_XMOFILER_SESSIONID         = "X­Mofiler­SessionID"
-    let MOMOFILER_DEVICE_XMOFILER_INSTALLID         = "X­MofilerInstallID"
+    let MOMOFILER_DEVICE_XMOFILER_INSTALLID         = "X-Mofiler-InstallID"
     let MOMOFILER_DEVICE_EXTRAS                     = "extras"
     let MOMOFILER_DEVICE_PHONETYPE                  = "phonetype"
     let MOMOFILER_DEVICE_OPERATOR_MCC               = "operator_mcc"

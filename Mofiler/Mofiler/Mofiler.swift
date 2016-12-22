@@ -37,6 +37,7 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
     let MOMOFILER_ERROR_NOT_INITIALIZED = "MOMOFILER_ERROR_NOT_INITIALIZED"
     let MOMOFILER_ERROR_NOT_DELEGATE    = "MOMOFILER_ERROR_NOT_DELEGATE"
     let MOMOFILER_ERROR_API             = "MOMOFILER_ERROR_API"
+    let MOMOFILER_ERROR_CONVERT_JSON    = "MOMOFILER_ERROR_CONVERT_JSON"
     let MOMOFILER_ERROR_LOCATION        = "MOMOFILER_ERROR_LOCATION"
     
     let MO_STORE_CACHEDOBJECTS          = "MO_STORE_CACHEDOBJECTS"
@@ -206,12 +207,12 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
     func validateIdentity(identity: [String:String]) {
         let identitiesAux = identities
         for (idx, identi) in identitiesAux.enumerated() {
-            if let key = identi.first?.value, let newKey = identity.first?.value, key == newKey {
+            if let key = identi.first?.value, let newKey = identity.first?.key, key == newKey {
                 identities.remove(at: idx)
             }
         }
     }
-    
+
     public func injectValue(newValue: [String:String], expirationDateInMilliseconds: NSNumber? = nil) {
         if validateMandatoryFields() {
             
@@ -327,7 +328,7 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
      
         if validateMandatoryFields() {
             MOAPIManager.sharedInstance.getValue(identityKey: identityKey, identityValue: identityValue, keyToRetrieve: key, urlBase: url, appKey: appKey, appName: appName, device: "apple", callback: { (result, error) in
-                if let error = error {
+                if error != nil {
                     callback(nil, ["error":error, self.MOMOFILER_ERROR_API:self.MOMOFILER_ERROR_API])
                 } else if let result = result as? [String : Any]{
                     callback(["key":key, "identityKey":identityKey, "identityValue":identityValue, "value":result] , nil)
