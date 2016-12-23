@@ -19,7 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MofilerDelegate {
         
         let mof = Mofiler.sharedInstance
         
-        mof.initializeWith(appKey: "MY-­APPKEY-­HERE-IOS", appName: "MyIosTestApplication", identity: ["username" : "johndoe"])
+        mof.initializeWith(appKey: "MY-APPKEY-HERE-IOS", appName: "MyIosTestApplication", identity: ["username" : "johndoe"])
         mof.delegate = self
         mof.url = "mofiler.com"
         mof.addIdentity(identity: ["name":"john doe"])
@@ -40,8 +40,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MofilerDelegate {
         mof.injectValue(newValue: ["mykey11":"myvalue11"])
         mof.injectValue(newValue: ["mykey12":"myvalue12"])
         mof.injectValue(newValue: ["mykey13":"myvalue13"])
-        
-        
+
         let valueInt: Int = 111111
         mof.injectValue(newValue: ["mykey14": String(format: "%lu", valueInt)])
         
