@@ -190,6 +190,7 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
         
         validateIdentity(identity: identity)
         if let key = identity.first?.key, let value = identity.first?.value {
+            identities = []
             identities.append(["name":key,"value":value])
         }
         
