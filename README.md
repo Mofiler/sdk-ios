@@ -101,6 +101,14 @@ print(error)
 }
 ```
 
+#### Manejo de sesiones e identidad
+
+El SDK maneja sesiones de manera transparente, pero es importante notar que las identities utilizadas corresponden a un usuario en particular y por lo tanto deben ser re-inicializadas cada vez que un usuario hace login a la aplicacion. La práctica recomendada es la siguiente:
+
+1. llamar a `mof.initializeWith(appKey: "MY-­APPKEY-­HERE-IOS", appName: "MyIosTestApplication", identity: ["username" : "johndoe"])` cada vez que se hace un login de un usuario
+2. llamar a `mof.flushDataToMofiler()` cada vez que se hace un logout, para forzar liberar todo registro de algo que haya sido realizado por el usuario anteriormente logeado.
+
+
 ### OBJECTIVE C
 
 1) Agregar el siguiente import
