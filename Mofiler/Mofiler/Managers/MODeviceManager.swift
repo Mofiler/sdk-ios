@@ -10,6 +10,7 @@ import Foundation
 import CoreTelephony
 import Darwin
 import UIKit
+import SystemConfiguration.CaptiveNetwork
 
 class MODeviceManager: MOGenericManager {
     
@@ -55,6 +56,7 @@ class MODeviceManager: MOGenericManager {
     let MOMOFILER_DEVICE_MODEL_NAME                 = "model"
     let MOMOFILER_DEVICE_NAME                       = "deviceName"
     let MOMOFILER_DEVICE_IDENTIFIER_FOR_VENDOR      = "identifierForVendor"
+    let MOMOFILER_DEVICE_NETWORK_SSID               = "networkSSID"
 
     
     static let sharedInstance = MODeviceManager()
@@ -167,6 +169,12 @@ class MODeviceManager: MOGenericManager {
         let deviceModelName: String = UIDevice.current.modelName
         let deviceName: String = UIDevice.current.name
         let identifierForVendor: String = UIDevice.current.identifierForVendor!.uuidString
+        var printableNetworkSSID = "unknown"
+        let networkSSID = fetchSSIDInfo()
+        // now unwrap it
+        if let unwrapped = networkSSID {
+            printableNetworkSSID = unwrapped
+        }
         
         let extras: [String:Any] = [MOMOFILER_DEVICE_PHONETYPE:                 currentRadioAccessTechnology,
                                     MOMOFILER_DEVICE_OPERATOR_MCC:              mobileCountryCode,
@@ -182,6 +190,7 @@ class MODeviceManager: MOGenericManager {
                                     MOMOFILER_DEVICE_MODEL_NAME:                deviceModelName,
                                     MOMOFILER_DEVICE_NAME:                      deviceName,
                                     MOMOFILER_DEVICE_IDENTIFIER_FOR_VENDOR:     identifierForVendor,
+                                    MOMOFILER_DEVICE_NETWORK_SSID:              printableNetworkSSID,
                                     MOMOFILER_DEVICE_SCREEN_INFO:               screenInfo,
                                     MOMOFILER_DEVICE_MAX_CPUS:                  String(format: "%f", hostInfo.pointee.max_cpus),
                                     MOMOFILER_DEVICE_AVAIL_CPUS:                String(format: "%f", hostInfo.pointee.avail_cpus),
@@ -203,6 +212,21 @@ class MODeviceManager: MOGenericManager {
         return extras
     }
     
+    func fetchSSIDInfo() ->  String? {
+        if let interfaces = CNCopySupportedInterfaces() {
+            for i in 0..<CFArrayGetCount(interfaces){
+                let interfaceName: UnsafeRawPointer = CFArrayGetValueAtIndex(interfaces, i)
+                let rec = unsafeBitCast(interfaceName, to: AnyObject.self)
+                let unsafeInterfaceData = CNCopyCurrentNetworkInfo("\(rec)" as CFString)
+                
+                if let unsafeInterfaceData = unsafeInterfaceData as? Dictionary<AnyHashable, Any> {
+                    return unsafeInterfaceData["SSID"] as? String
+                }
+            }
+        }
+        return nil
+    }
+
     
     //# MARK: - Methods disk info
     func memoryFormatter(diskSpace: Double) -> String {
