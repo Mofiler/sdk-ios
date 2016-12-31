@@ -44,6 +44,13 @@ class MODeviceManager: MOGenericManager {
     let MOMOFILER_DEVICE_USED_DISK_SPACE_IN_BYTES   = "usedDiskSpaceInBytes"
     let MOMOFILER_DEVICE_SCREEN_ORIENTATION         = "orientation"
     let MOMOFILER_DEVICE_SCREEN_INFO                = "screenInfo"
+
+    let MOMOFILER_DEVICE_OS_NAME                    = "os_name"
+    let MOMOFILER_DEVICE_OS_NAME_IOS                = "iOS"
+    let MOMOFILER_DEVICE_OS_VERSION                 = "os_version"
+    let MOMOFILER_DEVICE_SDK_TYPE                   = "sdk_type"
+    let MOMOFILER_DEVICE_SDK_TYPE_NAME              = "iPhone SDK"
+    let MOMOFILER_DEVICE_SDK_VERSION                = "sdk_version"
     
     static let sharedInstance = MODeviceManager()
     static var initialized = false
@@ -150,6 +157,8 @@ class MODeviceManager: MOGenericManager {
 
         let screenInfo: [String:Any] = [MOMOFILER_DEVICE_SCREEN_ORIENTATION:        orientationValue]
         
+        var sysVersion = UIDevice.current.systemVersion
+        
         let extras: [String:Any] = [MOMOFILER_DEVICE_PHONETYPE:                 currentRadioAccessTechnology,
                                     MOMOFILER_DEVICE_OPERATOR_MCC:              mobileCountryCode,
                                     MOMOFILER_DEVICE_OPERATOR_MCCMNC:           mobileNetworkCode,
@@ -157,6 +166,10 @@ class MODeviceManager: MOGenericManager {
                                     MOMOFILER_DEVICE_SIM_OPERATOR_NAME:         carrierName,
                                     MOMOFILER_DEVICE_SIM_OPERATOR_MCCMNC:       mobileNetworkCode,
                                     MOMOFILER_DEVICE_DEVICE_ID:                 deviceID,
+                                    MOMOFILER_DEVICE_OS_NAME:                   MOMOFILER_DEVICE_OS_NAME_IOS,
+                                    MOMOFILER_DEVICE_OS_VERSION:                sysVersion,
+                                    MOMOFILER_DEVICE_SDK_TYPE:                  MOMOFILER_DEVICE_SDK_TYPE_NAME,
+                                    MOMOFILER_DEVICE_SDK_VERSION:               "1.1",
                                     MOMOFILER_DEVICE_SCREEN_INFO:               screenInfo,
                                     MOMOFILER_DEVICE_MAX_CPUS:                  String(format: "%f", hostInfo.pointee.max_cpus),
                                     MOMOFILER_DEVICE_AVAIL_CPUS:                String(format: "%f", hostInfo.pointee.avail_cpus),
