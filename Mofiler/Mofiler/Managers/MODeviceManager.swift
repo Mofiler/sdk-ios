@@ -52,6 +52,11 @@ class MODeviceManager: MOGenericManager {
     let MOMOFILER_DEVICE_SDK_TYPE_NAME              = "iPhone SDK"
     let MOMOFILER_DEVICE_SDK_VERSION                = "sdk_version"
     
+    let MOMOFILER_DEVICE_MODEL_NAME                 = "model"
+    let MOMOFILER_DEVICE_NAME                       = "deviceName"
+    let MOMOFILER_DEVICE_IDENTIFIER_FOR_VENDOR      = "identifierForVendor"
+
+    
     static let sharedInstance = MODeviceManager()
     static var initialized = false
     
@@ -157,7 +162,11 @@ class MODeviceManager: MOGenericManager {
 
         let screenInfo: [String:Any] = [MOMOFILER_DEVICE_SCREEN_ORIENTATION:        orientationValue]
         
-        var sysVersion = UIDevice.current.systemVersion
+        let sysVersion: String = UIDevice.current.systemVersion
+        
+        let deviceModelName: String = UIDevice.current.modelName
+        let deviceName: String = UIDevice.current.name
+        let identifierForVendor: String = UIDevice.current.identifierForVendor!.uuidString
         
         let extras: [String:Any] = [MOMOFILER_DEVICE_PHONETYPE:                 currentRadioAccessTechnology,
                                     MOMOFILER_DEVICE_OPERATOR_MCC:              mobileCountryCode,
@@ -170,6 +179,9 @@ class MODeviceManager: MOGenericManager {
                                     MOMOFILER_DEVICE_OS_VERSION:                sysVersion,
                                     MOMOFILER_DEVICE_SDK_TYPE:                  MOMOFILER_DEVICE_SDK_TYPE_NAME,
                                     MOMOFILER_DEVICE_SDK_VERSION:               "1.1",
+                                    MOMOFILER_DEVICE_MODEL_NAME:                deviceModelName,
+                                    MOMOFILER_DEVICE_NAME:                      deviceName,
+                                    MOMOFILER_DEVICE_IDENTIFIER_FOR_VENDOR:     identifierForVendor,
                                     MOMOFILER_DEVICE_SCREEN_INFO:               screenInfo,
                                     MOMOFILER_DEVICE_MAX_CPUS:                  String(format: "%f", hostInfo.pointee.max_cpus),
                                     MOMOFILER_DEVICE_AVAIL_CPUS:                String(format: "%f", hostInfo.pointee.avail_cpus),
