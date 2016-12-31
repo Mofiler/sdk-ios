@@ -9,6 +9,7 @@
 import Foundation
 import CoreTelephony
 import Darwin
+import UIKit
 
 class MODeviceManager: MOGenericManager {
     
@@ -41,6 +42,8 @@ class MODeviceManager: MOGenericManager {
     let MOMOFILER_DEVICE_TOTAL_DISK_SPACE_IN_BYTES  = "totalDiskSpaceInBytes"
     let MOMOFILER_DEVICE_FREE_DISK_SPACE_IN_BYTES   = "freeDiskSpaceInBytes"
     let MOMOFILER_DEVICE_USED_DISK_SPACE_IN_BYTES   = "usedDiskSpaceInBytes"
+    let MOMOFILER_DEVICE_SCREEN_ORIENTATION         = "orientation"
+    let MOMOFILER_DEVICE_SCREEN_INFO                = "screenInfo"
     
     static let sharedInstance = MODeviceManager()
     static var initialized = false
@@ -96,6 +99,9 @@ class MODeviceManager: MOGenericManager {
     }
     
     func loadExtras() -> [String:Any] {
+        
+        UIDevice.current.beginGeneratingDeviceOrientationNotifications()
+        
         let netinfo = CTTelephonyNetworkInfo()
         let carrier = netinfo.subscriberCellularProvider
         
@@ -122,6 +128,27 @@ class MODeviceManager: MOGenericManager {
             mobileNetworkCode = mobileNC
             carrierName = carrierN
         }
+
+        // now calculate orientation
+        var orientationValue = 0
+        switch UIDevice.current.orientation {
+            case UIDeviceOrientation.portrait:
+                orientationValue = 1
+            case UIDeviceOrientation.portraitUpsideDown:
+                orientationValue = 2
+            case UIDeviceOrientation.landscapeLeft:
+                orientationValue = 0
+            case UIDeviceOrientation.landscapeRight:
+                orientationValue = 3
+            case UIDeviceOrientation.unknown:
+                orientationValue = 4
+            case UIDeviceOrientation.faceUp:
+                orientationValue = 5
+            case UIDeviceOrientation.faceDown:
+                orientationValue = 6
+        }
+
+        let screenInfo: [String:Any] = [MOMOFILER_DEVICE_SCREEN_ORIENTATION:        orientationValue]
         
         let extras: [String:Any] = [MOMOFILER_DEVICE_PHONETYPE:                 currentRadioAccessTechnology,
                                     MOMOFILER_DEVICE_OPERATOR_MCC:              mobileCountryCode,
@@ -130,6 +157,7 @@ class MODeviceManager: MOGenericManager {
                                     MOMOFILER_DEVICE_SIM_OPERATOR_NAME:         carrierName,
                                     MOMOFILER_DEVICE_SIM_OPERATOR_MCCMNC:       mobileNetworkCode,
                                     MOMOFILER_DEVICE_DEVICE_ID:                 deviceID,
+                                    MOMOFILER_DEVICE_SCREEN_INFO:               screenInfo,
                                     MOMOFILER_DEVICE_MAX_CPUS:                  String(format: "%f", hostInfo.pointee.max_cpus),
                                     MOMOFILER_DEVICE_AVAIL_CPUS:                String(format: "%f", hostInfo.pointee.avail_cpus),
                                     MOMOFILER_DEVICE_MEMORY_SIZE:               String(format: "%f", hostInfo.pointee.memory_size),
@@ -142,6 +170,10 @@ class MODeviceManager: MOGenericManager {
                                     MOMOFILER_DEVICE_USED_DISK_SPACE_IN_BYTES:  String(format: "%f", usedDiskSpaceInBytes())]
         
         hostInfo.deallocate(capacity: 1)
+        
+        if UIDevice.current.isGeneratingDeviceOrientationNotifications {
+            UIDevice.current.endGeneratingDeviceOrientationNotifications()
+        }
         
         return extras
     }
