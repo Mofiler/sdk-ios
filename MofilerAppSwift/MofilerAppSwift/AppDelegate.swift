@@ -19,9 +19,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MofilerDelegate {
         
         let mof = Mofiler.sharedInstance
         
-        mof.initializeWith(appKey: "MY-APPKEY-HERE-IOS", appName: "MyIosTestApplication", identity: ["username" : "johndoe"])
+        mof.initializeWith(appKey: "MY-APPKEY-HERE-IOS", appName: "MyIosTestApplication")
         mof.delegate = self
         mof.url = "mofiler.com"
+        mof.addIdentity(identity: ["username" : "johndoe"])
         mof.addIdentity(identity: ["name":"john doe"])
         mof.addIdentity(identity: ["email":"john@doe.com"])
         mof.useLocation = false

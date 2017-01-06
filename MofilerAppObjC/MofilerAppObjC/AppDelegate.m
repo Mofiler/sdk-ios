@@ -19,9 +19,10 @@
     
     Mofiler* mof = [Mofiler sharedInstance];
     
-    [mof initializeWithAppKey:@"MY-APPKEY-HERE-IOS" appName:@"MyIosTestApplication" identity:@{@"username":@"johndoe"}];
+    [mof initializeWithAppKey:@"MY-APPKEY-HERE-IOS" appName:@"MyIosTestApplication" useAdvertisingId:true];
     mof.delegate = self;
     mof.url = @"mofiler.com";
+    [mof addIdentityWithIdentity:@{@"username":@"johndoe"}];
     [mof addIdentityWithIdentity:@{@"name":@"john doe"}];
     [mof addIdentityWithIdentity:@{@"email":@"john@doe.com"}];
     mof.useLocation = false;
