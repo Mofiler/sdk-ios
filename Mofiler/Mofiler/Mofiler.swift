@@ -45,6 +45,8 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
     
     let MOFILER_ADVERTISING_ID          = "advertisingIdentifier"
     
+    let MOFILER_INSTALL_ID              = "mofilerInstallId"
+    
     //# MARK: - Properties
     public static let sharedInstance = Mofiler()
     static var initialized = false
@@ -202,6 +204,12 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
                 identities.append(["name":MOFILER_ADVERTISING_ID,"value":ASIdentifierManager.shared().advertisingIdentifier.uuidString])
             }
         }
+        
+        // add installID as identity too
+        if let installID = UserDefaults.standard.object(forKey: Mofiler.sharedInstance.MOMOFILER_APPLICATION_INSTALLID) as? String {
+            identities.append(["name":MOFILER_INSTALL_ID,"value":installID])
+        }
+
         
         MODiskCache.sharedInstance.saveCacheToDisk()
     }
