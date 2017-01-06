@@ -50,6 +50,10 @@ let mof = Mofiler.sharedInstance
 //Inicializa mofiler con los campos obligatorios        
 mof.initializeWith(appKey: "MY-­APPKEY-­HERE-IOS", appName: "MyIosTestApplication", identity: ["username" : "johndoe"])
 
+
+// otro ejemplo: inicializa mofiler con los campos obligatorios y especifica el opcional no utilizar el advertisingId        
+// mof.initializeWith(appKey: "MY-­APPKEY-­HERE-IOS", appName: "MyIosTestApplication", identity: ["username" : "johndoe"], useAdvertisingId: false)
+
 //Le asigna el delegate
 mof.delegate = self
 
