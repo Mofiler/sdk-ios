@@ -189,15 +189,12 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
     }
 
     //# MARK: - Methods initialize keys and injects
-    public func initializeWith(appKey: String, appName: String, identity: [String:String], useAdvertisingId: Bool = true) {
+    public func initializeWith(appKey: String, appName: String, useAdvertisingId: Bool = true) {
         self.appKey = appKey
         self.appName = appName
         
-        validateIdentity(identity: identity)
-        if let key = identity.first?.key, let value = identity.first?.value {
-            identities = []
-            identities.append(["name":key,"value":value])
-        }
+        // clear identities
+        identities = []
         
         if (useAdvertisingId) {
             if ASIdentifierManager.shared().isAdvertisingTrackingEnabled {
