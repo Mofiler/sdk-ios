@@ -9,6 +9,7 @@
 import CoreTelephony
 import Darwin
 import CoreLocation
+import AdSupport
 
 @objc public protocol MofilerDelegate {
     @objc optional func responseValue(key: String, identityKey: String, identityValue: String, value: [String:Any])
@@ -41,6 +42,8 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
     let MOMOFILER_ERROR_LOCATION        = "MOMOFILER_ERROR_LOCATION"
     
     let MO_STORE_CACHEDOBJECTS          = "MO_STORE_CACHEDOBJECTS"
+    
+    let MOFILER_ADVERTISING_ID          = "advertisingIdentifier"
     
     //# MARK: - Properties
     public static let sharedInstance = Mofiler()
@@ -184,15 +187,20 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
     }
 
     //# MARK: - Methods initialize keys and injects
-    public func initializeWith(appKey: String, appName: String, identity: [String:String]) {
+    public func initializeWith(appKey: String, appName: String, identity: [String:String], useAdvertisingId: Bool = true) {
         self.appKey = appKey
         self.appName = appName
         
         validateIdentity(identity: identity)
         if let key = identity.first?.key, let value = identity.first?.value {
             identities = []
-            values = []
             identities.append(["name":key,"value":value])
+        }
+        
+        if (useAdvertisingId) {
+            if ASIdentifierManager.shared().isAdvertisingTrackingEnabled {
+                identities.append(["name":MOFILER_ADVERTISING_ID,"value":ASIdentifierManager.shared().advertisingIdentifier.uuidString])
+            }
         }
         
         MODiskCache.sharedInstance.saveCacheToDisk()
