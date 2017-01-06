@@ -48,11 +48,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MofilerDelegate {
 let mof = Mofiler.sharedInstance
 
 //Inicializa mofiler con los campos obligatorios        
-mof.initializeWith(appKey: "MY-­APPKEY-­HERE-IOS", appName: "MyIosTestApplication", identity: ["username" : "johndoe"])
+mof.initializeWith(appKey: "MY-­APPKEY-­HERE-IOS", appName: "MyIosTestApplication")
 
 
 // otro ejemplo: inicializa mofiler con los campos obligatorios y especifica el opcional no utilizar el advertisingId        
-// mof.initializeWith(appKey: "MY-­APPKEY-­HERE-IOS", appName: "MyIosTestApplication", identity: ["username" : "johndoe"], useAdvertisingId: false)
+// mof.initializeWith(appKey: "MY-­APPKEY-­HERE-IOS", appName: "MyIosTestApplication", useAdvertisingId: false)
 
 //Le asigna el delegate
 mof.delegate = self
@@ -109,7 +109,7 @@ print(error)
 
 El SDK maneja sesiones de manera transparente, pero es importante notar que las identities utilizadas corresponden a un usuario en particular y por lo tanto deben ser re-inicializadas cada vez que un usuario hace login a la aplicacion. La práctica recomendada es la siguiente:
 
-1. llamar a `mof.initializeWith(appKey: "MY-­APPKEY-­HERE-IOS", appName: "MyIosTestApplication", identity: ["username" : "johndoe"])` cada vez que se hace un login de un usuario
+1. llamar a `mof.initializeWith(appKey: "MY-­APPKEY-­HERE-IOS", appName: "MyIosTestApplication")` y luego a `mof.addIdentity(identity: ["name":"john doe"])` cada vez que se hace un login de un usuario
 2. llamar a `mof.flushDataToMofiler()` cada vez que se hace un logout, para forzar liberar todo registro de algo que haya sido realizado por el usuario anteriormente logeado.
 
 
