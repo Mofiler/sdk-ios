@@ -25,6 +25,16 @@ Después de haber inicializado el repositorio, añadir Mofiler.xcodeproj como un
 
 El SDK accede a la location del device con el propósito de comprender la utilización de la aplicación en el plano espacio / tiempo, información que se utilizará a posteriori en la mejora de UX. Para acceder a location la aplicación debe agregar al `Info.plist` una key `NSLocationAlwaysUsageDescription` con un value que explique al usuario cómo la aplicación utiliza estos datos. 
 
+El `info.plist` de su aplicación debe contener para esto un par key string como el siguiente:
+
+```
+<dict>
+    [...]
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>This apps tracks your location from time to time to better understand how you make use of it, and improve your UX in upcoming releases.</string>
+    [...]
+</dict>
+```
 
 ## Usando el SDK
 
