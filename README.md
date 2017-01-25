@@ -54,6 +54,15 @@ mof.initializeWith(appKey: "MY-­APPKEY-­HERE-IOS", appName: "MyIosTestApplicat
 // otro ejemplo: inicializa mofiler con los campos obligatorios y especifica el opcional no utilizar el advertisingId        
 // mof.initializeWith(appKey: "MY-­APPKEY-­HERE-IOS", appName: "MyIosTestApplication", useAdvertisingId: false)
 
+// otro ejemplo: inicializa mofiler con los campos obligatorios y especifica el opcional de no utilizar location       
+// mof.initializeWith(appKey: "MY-­APPKEY-­HERE-IOS", appName: "MyIosTestApplication", useLoc: false)
+
+// otro ejemplo: inicializa mofiler con los campos obligatorios y especifica el opcional de no utilizar location ni el advertisingId      
+// mof.initializeWith(appKey: "MY-­APPKEY-­HERE-IOS", appName: "MyIosTestApplication", useLoc: false, useAdvertisingId: false)
+
+// otro ejemplo: inicializa mofiler con los campos obligatorios y especifica el opcional de utilizar location pero no el advertisingId      
+// mof.initializeWith(appKey: "MY-­APPKEY-­HERE-IOS", appName: "MyIosTestApplication", useLoc: true, useAdvertisingId: false)
+
 //Le asigna el delegate
 mof.delegate = self
 
@@ -61,7 +70,6 @@ mof.delegate = self
 mof.url = "mofiler.com"
 mof.addIdentity(identity: ["name":"john doe"])
 mof.addIdentity(identity: ["email":"john@doe.com"])
-mof.useLocation = false
 mof.useVerboseContext = true
         
 //Inyecta valores por clave-valor o clave-valor y fecha de caducidad
@@ -131,7 +139,15 @@ El SDK maneja sesiones de manera transparente, pero es importante notar que las 
 Mofiler* mof = [Mofiler sharedInstance];
     
 //Inicializa mofiler con los campos obligatorios        
-[mof initializeWithAppKey:@"MY-APPKEY-HERE-IOS" appName:@"MyIosTestApplication" identity:@{@"username":@"johndoe"}];
+[mof initializeWithAppKey:@"MY-APPKEY-HERE-IOS" appName:@"MyIosTestApplication"];
+
+
+// otro ejemplo: inicializa mofiler con los campos obligatorios y especifica el opcional de utilizar el location y advertisingId
+// [mof initializeWithAppKey:@"MY-APPKEY-HERE-IOS" appName:@"MyIosTestApplication" useLoc: true useAdvertisingId: true];
+
+// otro ejemplo: inicializa mofiler con los campos obligatorios y especifica el opcional de utilizar location pero no el advertisingId      
+// [mof initializeWithAppKey:@"MY-APPKEY-HERE-IOS" appName:@"MyIosTestApplication" useLoc: true useAdvertisingId: false];
+
 
 //Le asigna el delegate    
 mof.delegate = self;
@@ -140,7 +156,6 @@ mof.delegate = self;
 mof.url = @"mofiler.com";
 [mof addIdentityWithIdentity:@{@"name":@"john doe"}];
 [mof addIdentityWithIdentity:@{@"email":@"john@doe.com"}];
-mof.useLocation = false;
 mof.useVerboseContext = true;
     
 //Inyecta valores por clave-valor o clave-valor y fecha de caducidad
