@@ -21,9 +21,9 @@ Para compilar el SDK de forma manual empezar por clonar el repositorio:
 
 Después de haber inicializado el repositorio, añadir Mofiler.xcodeproj como un sub-proyecto para el proyecto de su aplicación, y luego añadir el Mofiler.framework.
 
-## Location
+### IMPORTANTE: LOCATION 
 
-Para acceder a location la aplicación debe agregar al `Info.plist` una key `NSLocationAlwaysUsageDescription` con un value que explique al usuario cómo la aplicación utiliza estos datos.
+El SDK accede a la location del device con el propósito de comprender la utilización de la aplicación en el plano espacio / tiempo, información que se utilizará a posteriori en la mejora de UX. Para acceder a location la aplicación debe agregar al `Info.plist` una key `NSLocationAlwaysUsageDescription` con un value que explique al usuario cómo la aplicación utiliza estos datos. 
 
 
 ## Usando el SDK
