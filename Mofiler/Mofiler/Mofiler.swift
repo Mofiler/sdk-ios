@@ -56,13 +56,13 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
     public var appName: String = ""                         //Required field
     public var url: String = "mofiler.com:8081"
     public var identities: Array<[String:String]> = []
-    public var useLocation: Bool = true                     //defaults to true
     public var useVerboseContext: Bool = false              //defaults to false, but helps Mofiler get a lot of information about the device context
     public var values: Array<[String : Any]> = []
     public var sessionTimeoutAfterEnd = 30000
     public var debugLogging = true
     public var isLoadingPost = false
     
+    var useLocation: Bool = true                     //defaults to true
     var latitude: Float?
     var longitude: Float?
     
@@ -76,7 +76,6 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
             Mofiler.initialized = true;
             generateInstallID()
         }
-        determineMyCurrentLocation()
         sessionControl()
         MODiskCache.sharedInstance.registerForDiskCaching("Mofiler", object: self)
         
@@ -189,13 +188,18 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
     }
 
     //# MARK: - Methods initialize keys and injects
-    public func initializeWith(appKey: String, appName: String, useAdvertisingId: Bool = true) {
+    public func initializeWith(appKey: String, appName: String, useLoc: Bool = true, useAdvertisingId: Bool = true) {
         self.appKey = appKey
         self.appName = appName
         
         // clear identities
         identities = []
         
+        useLocation = useLoc
+        if (useLoc) {
+            determineMyCurrentLocation()
+        }
+
         if (useAdvertisingId) {
             if ASIdentifierManager.shared().isAdvertisingTrackingEnabled {
                 identities.append(["name":MOFILER_ADVERTISING_ID,"value":ASIdentifierManager.shared().advertisingIdentifier.uuidString])
