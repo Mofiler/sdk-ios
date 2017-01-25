@@ -25,7 +25,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MofilerDelegate {
         mof.addIdentity(identity: ["username" : "johndoe"])
         mof.addIdentity(identity: ["name":"john doe"])
         mof.addIdentity(identity: ["email":"john@doe.com"])
-        mof.useLocation = false
         mof.useVerboseContext = true
         
         mof.injectValue(newValue: ["mykey1":"myvalue1"])
