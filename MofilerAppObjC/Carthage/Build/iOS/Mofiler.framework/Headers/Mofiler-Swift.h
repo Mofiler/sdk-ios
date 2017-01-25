@@ -137,13 +137,12 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) Mofiler * _N
 @property (nonatomic, copy) NSString * _Nonnull appName;
 @property (nonatomic, copy) NSString * _Nonnull url;
 @property (nonatomic, copy) NSArray<NSDictionary<NSString *, NSString *> *> * _Nonnull identities;
-@property (nonatomic) BOOL useLocation;
 @property (nonatomic) BOOL useVerboseContext;
 @property (nonatomic, copy) NSArray<NSDictionary<NSString *, id> *> * _Nonnull values;
 @property (nonatomic) NSInteger sessionTimeoutAfterEnd;
 @property (nonatomic) BOOL debugLogging;
 @property (nonatomic) BOOL isLoadingPost;
-- (void)initializeWithAppKey:(NSString * _Nonnull)appKey appName:(NSString * _Nonnull)appName useAdvertisingId:(BOOL)useAdvertisingId SWIFT_METHOD_FAMILY(none);
+- (void)initializeWithAppKey:(NSString * _Nonnull)appKey appName:(NSString * _Nonnull)appName useLoc:(BOOL)useLoc useAdvertisingId:(BOOL)useAdvertisingId SWIFT_METHOD_FAMILY(none);
 - (void)addIdentityWithIdentity:(NSDictionary<NSString *, NSString *> * _Nonnull)identity;
 - (void)injectValueWithNewValue:(NSDictionary<NSString *, NSString *> * _Nonnull)newValue expirationDateInMilliseconds:(NSNumber * _Nullable)expirationDateInMilliseconds;
 - (void)flushDataToMofiler;
