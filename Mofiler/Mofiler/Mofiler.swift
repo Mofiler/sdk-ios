@@ -261,14 +261,16 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
     }
     
     func injectMofilerProbe() {
-        if validateMandatoryFields() {
-            values.append(["mofiler_probe":MODeviceManager.sharedInstance.loadExtras()])
-            MODiskCache.sharedInstance.saveCacheToDisk()
-            if values.count >= 10 {
-                flushDataToMofiler()
+        if (useVerboseContext) {
+            if validateMandatoryFields() {
+                values.append(["mofiler_probe":MODeviceManager.sharedInstance.loadExtras()])
+                MODiskCache.sharedInstance.saveCacheToDisk()
+                if values.count >= 10 {
+                    flushDataToMofiler()
+                }
+            } else {
+                errorNotInitialized()
             }
-        } else {
-            errorNotInitialized()
         }
     }
     
