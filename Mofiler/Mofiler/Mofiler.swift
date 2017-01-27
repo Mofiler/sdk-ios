@@ -155,8 +155,8 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
         UserDefaults.standard.synchronize()
     }
     
-    func currentMillis(date: Date) -> Int {
-        return Int(date.timeIntervalSince1970) * 1000
+    func currentMillis(date: Date) -> Int64 {
+        return Int64(date.timeIntervalSince1970) * 1000
     }
     
     func differenceDatesMilliSeconds(startDate: Date, endDate: Date) -> Int {
@@ -237,17 +237,18 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
             
             if let keyValue = newValue.first?.key, let value = newValue.first?.value {
                 var dataValue:[String:Any] = [:]
+                let milis = NSNumber(value: currentMillis(date: Date()))
                 if let expirationDateInMilliseconds = expirationDateInMilliseconds {
                     if let latitude = latitude, let longitude = longitude {
-                        dataValue = [keyValue: value, "tstamp":currentMillis(date: Date()) as NSNumber, "expireAfter":expirationDateInMilliseconds as NSNumber, "location":["latitude":String(format: "%f", latitude),"longitude":String(format: "%f", longitude)]]
+                        dataValue = [keyValue: value, "tstamp":milis, "expireAfter":expirationDateInMilliseconds as NSNumber, "location":["latitude":String(format: "%f", latitude),"longitude":String(format: "%f", longitude)]]
                     } else {
-                        dataValue = [keyValue: value, "tstamp":currentMillis(date: Date()) as NSNumber, "expireAfter":expirationDateInMilliseconds as NSNumber]
+                        dataValue = [keyValue: value, "tstamp":milis, "expireAfter":expirationDateInMilliseconds as NSNumber]
                     }
                 } else {
                     if let latitude = latitude, let longitude = longitude {
-                        dataValue = [keyValue: value, "tstamp":currentMillis(date: Date()) as NSNumber, "location":["latitude":String(format: "%f", latitude),"longitude":String(format: "%f", longitude)]]
+                        dataValue = [keyValue: value, "tstamp":milis, "location":["latitude":String(format: "%f", latitude),"longitude":String(format: "%f", longitude)]]
                     } else {
-                        dataValue = [keyValue: value, "tstamp":currentMillis(date: Date()) as NSNumber]
+                        dataValue = [keyValue: value, "tstamp":milis]
                     }
                 }
                 
