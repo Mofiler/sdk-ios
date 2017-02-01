@@ -186,7 +186,7 @@ class MODeviceManager: MOGenericManager {
                                     MOMOFILER_DEVICE_OS_NAME:                   MOMOFILER_DEVICE_OS_NAME_IOS,
                                     MOMOFILER_DEVICE_OS_VERSION:                sysVersion,
                                     MOMOFILER_DEVICE_SDK_TYPE:                  MOMOFILER_DEVICE_SDK_TYPE_NAME,
-                                    MOMOFILER_DEVICE_SDK_VERSION:               "1.1",
+                                    MOMOFILER_DEVICE_SDK_VERSION:               "1.1.2",
                                     MOMOFILER_DEVICE_MODEL_NAME:                deviceModelName,
                                     MOMOFILER_DEVICE_NAME:                      deviceName,
                                     MOMOFILER_DEVICE_IDENTIFIER_FOR_VENDOR:     identifierForVendor,
