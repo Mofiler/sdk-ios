@@ -47,6 +47,8 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
     
     let MOFILER_INSTALL_ID              = "mofilerInstallId"
     
+    let VALUES_COUNT:Int = 10;
+
     //# MARK: - Properties
     public static let sharedInstance = Mofiler()
     static var initialized = false
@@ -54,7 +56,7 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
     public var delegate: MofilerDelegate? = nil
     public var appKey: String = ""                          //Required field
     public var appName: String = ""                         //Required field
-    public var url: String = "mofiler.com:8081"
+    public var url: String = "mofiler.com"
     public var identities: Array<[String:String]> = []
     public var useVerboseContext: Bool = false              //defaults to false, but helps Mofiler get a lot of information about the device context
     public var values: Array<[String : Any]> = []
@@ -67,6 +69,7 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
     var longitude: Float?
     
     var mofilerProbeTimer: Timer?
+    var mofilerProbeInterval:Double = 1800 //30 minutes
     
     //# MARK: - Methods init singleton
     override init() {
@@ -79,7 +82,7 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
         sessionControl()
         MODiskCache.sharedInstance.registerForDiskCaching("Mofiler", object: self)
         
-        mofilerProbeTimer = Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(injectMofilerProbe), userInfo: nil, repeats: true)
+        mofilerProbeTimer = Timer.scheduledTimer(timeInterval: mofilerProbeInterval, target: self, selector: #selector(injectMofilerProbe), userInfo: nil, repeats: true)
     }
     
     //# MARK: - Methods generate intallID
@@ -169,7 +172,7 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
 
     //# MARK: - Methods app enter background, foreground
     override func applicationWillEnterForeground(_ notification: Notification) {
-        mofilerProbeTimer = Timer.scheduledTimer(timeInterval: 60, target: self, selector: #selector(injectMofilerProbe), userInfo: nil, repeats: true)
+        mofilerProbeTimer = Timer.scheduledTimer(timeInterval: mofilerProbeInterval, target: self, selector: #selector(injectMofilerProbe), userInfo: nil, repeats: true)
         sessionControl()
     }
     
@@ -256,7 +259,7 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
                 MODiskCache.sharedInstance.saveCacheToDisk()
             }
             
-            if values.count >= 10 {
+            if values.count >= VALUES_COUNT {
                 flushDataToMofiler()
             }
             
@@ -266,11 +269,12 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
     }
     
     func injectMofilerProbe() {
+
         if (useVerboseContext) {
             if validateMandatoryFields() {
                 values.append(["mofiler_probe":MODeviceManager.sharedInstance.loadExtras()])
                 MODiskCache.sharedInstance.saveCacheToDisk()
-                if values.count >= 10 {
+                if values.count >= VALUES_COUNT {
                     flushDataToMofiler()
                 }
             } else {
