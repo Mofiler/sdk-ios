@@ -235,6 +235,11 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
         }
     }
 
+    public func setSdkTypeAndVersion(sdk_type: String, sdk_version: String) {
+        MODeviceManager.sharedInstance.setSdkTypeAndVersion(sdk_type: sdk_type, sdk_version: sdk_version)
+    }
+    
+    
     public func injectValue(newValue: [String:String], expirationDateInMilliseconds: NSNumber? = nil) {
         if validateMandatoryFields() {
             

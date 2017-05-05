@@ -50,8 +50,9 @@ class MODeviceManager: MOGenericManager {
     let MOMOFILER_DEVICE_OS_NAME_IOS                = "iOS"
     let MOMOFILER_DEVICE_OS_VERSION                 = "os_version"
     let MOMOFILER_DEVICE_SDK_TYPE                   = "sdk_type"
-    let MOMOFILER_DEVICE_SDK_TYPE_NAME              = "iPhone SDK"
+    var MOMOFILER_DEVICE_SDK_TYPE_NAME              = "iPhone SDK"
     let MOMOFILER_DEVICE_SDK_VERSION                = "sdk_version"
+    var MOMOFILER_DEVICE_SDK_VERSION_N              = "1.1.2"
     
     let MOMOFILER_DEVICE_MODEL_NAME                 = "model"
     let MOMOFILER_DEVICE_NAME                       = "deviceName"
@@ -186,7 +187,7 @@ class MODeviceManager: MOGenericManager {
                                     MOMOFILER_DEVICE_OS_NAME:                   MOMOFILER_DEVICE_OS_NAME_IOS,
                                     MOMOFILER_DEVICE_OS_VERSION:                sysVersion,
                                     MOMOFILER_DEVICE_SDK_TYPE:                  MOMOFILER_DEVICE_SDK_TYPE_NAME,
-                                    MOMOFILER_DEVICE_SDK_VERSION:               "1.1.2",
+                                    MOMOFILER_DEVICE_SDK_VERSION:               MOMOFILER_DEVICE_SDK_VERSION_N,
                                     MOMOFILER_DEVICE_MODEL_NAME:                deviceModelName,
                                     MOMOFILER_DEVICE_NAME:                      deviceName,
                                     MOMOFILER_DEVICE_IDENTIFIER_FOR_VENDOR:     identifierForVendor,
@@ -210,6 +211,11 @@ class MODeviceManager: MOGenericManager {
         }
         
         return extras
+    }
+    
+    func setSdkTypeAndVersion(sdk_type: String, sdk_version: String) {
+        self.MOMOFILER_DEVICE_SDK_TYPE_NAME = sdk_type
+        self.MOMOFILER_DEVICE_SDK_VERSION_N = sdk_version
     }
     
     func fetchSSIDInfo() ->  String? {
