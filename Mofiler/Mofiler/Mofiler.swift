@@ -203,17 +203,21 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
             determineMyCurrentLocation()
         }
 
+        // add installID as identity too
+        if let installID = UserDefaults.standard.object(forKey: Mofiler.sharedInstance.MOMOFILER_APPLICATION_INSTALLID) as? String {
+            identities.append(["name":MOFILER_INSTALL_ID,"value":installID])
+        }
+        
+
         if (useAdvertisingId) {
             if ASIdentifierManager.shared().isAdvertisingTrackingEnabled {
                 identities.append(["name":MOFILER_ADVERTISING_ID,"value":ASIdentifierManager.shared().advertisingIdentifier.uuidString])
             }
         }
         
-        // add installID as identity too
-        if let installID = UserDefaults.standard.object(forKey: Mofiler.sharedInstance.MOMOFILER_APPLICATION_INSTALLID) as? String {
-            identities.append(["name":MOFILER_INSTALL_ID,"value":installID])
-        }
-
+        injectValue(newValue: ["_initialized" : String(NSDate().timeIntervalSince1970*1000)])
+            
+        flushDataToMofiler();
         
         MODiskCache.sharedInstance.saveCacheToDisk()
     }

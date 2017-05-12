@@ -45,6 +45,7 @@ class MODeviceManager: MOGenericManager {
     let MOMOFILER_DEVICE_USED_DISK_SPACE_IN_BYTES   = "usedDiskSpaceInBytes"
     let MOMOFILER_DEVICE_SCREEN_ORIENTATION         = "orientation"
     let MOMOFILER_DEVICE_SCREEN_INFO                = "screenInfo"
+    let MOMOFILER_BATTERY_INFO                      = "batteryInfo"
 
     let MOMOFILER_DEVICE_OS_NAME                    = "os_name"
     let MOMOFILER_DEVICE_OS_NAME_IOS                = "iOS"
@@ -72,6 +73,8 @@ class MODeviceManager: MOGenericManager {
             
             UserDefaults.standard.set(UUID().uuidString, forKey: MOMOFILER_DEVICE_ID)
             UserDefaults.standard.synchronize()
+            
+            UIDevice.current.isBatteryMonitoringEnabled = true
         }
     }
     
@@ -177,6 +180,33 @@ class MODeviceManager: MOGenericManager {
             printableNetworkSSID = unwrapped
         }
         
+        var batteryInfo: [String:Any] = [:];
+        
+        var batteryLevel: Float {
+            return UIDevice.current.batteryLevel
+        }
+        
+        var batteryState: UIDeviceBatteryState {
+            return UIDevice.current.batteryState
+        }
+        switch batteryState {
+//            case .unknown:   //  "The battery state for the device cannot be determined."
+            case .unplugged: //  "The device is not plugged into power; the battery is discharging"
+                batteryInfo["isCharging"] = false;
+                batteryInfo["isFull"] = false;
+            case .charging:  //  "The device is plugged into power and the battery is less than 100% charged."
+                batteryInfo["isCharging"] = true;
+                batteryInfo["isFull"] = false;
+            case .full:      //   "The device is plugged into power and the battery is 100% charged."
+                batteryInfo["isCharging"] = true;
+                batteryInfo["isFull"] = true;
+            default:
+                NSLog("----bs def");
+        }
+        
+        batteryInfo["batteryPct"] = batteryLevel*100;
+        
+        
         let extras: [String:Any] = [MOMOFILER_DEVICE_PHONETYPE:                 currentRadioAccessTechnology,
                                     MOMOFILER_DEVICE_OPERATOR_MCC:              mobileCountryCode,
                                     MOMOFILER_DEVICE_OPERATOR_MCCMNC:           mobileNetworkCode,
@@ -193,6 +223,7 @@ class MODeviceManager: MOGenericManager {
                                     MOMOFILER_DEVICE_IDENTIFIER_FOR_VENDOR:     identifierForVendor,
                                     MOMOFILER_DEVICE_NETWORK_SSID:              printableNetworkSSID,
                                     MOMOFILER_DEVICE_SCREEN_INFO:               screenInfo,
+                                    MOMOFILER_BATTERY_INFO:                     batteryInfo,
                                     MOMOFILER_DEVICE_MAX_CPUS:                  String(format: "%f", hostInfo.pointee.max_cpus),
                                     MOMOFILER_DEVICE_AVAIL_CPUS:                String(format: "%f", hostInfo.pointee.avail_cpus),
                                     MOMOFILER_DEVICE_MEMORY_SIZE:               String(format: "%f", hostInfo.pointee.memory_size),
