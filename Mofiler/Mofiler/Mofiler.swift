@@ -52,6 +52,7 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
     //# MARK: - Properties
     public static let sharedInstance = Mofiler()
     static var initialized = false
+    public var isInitialized = false
     
     public var delegate: MofilerDelegate? = nil
     public var appKey: String = ""                          //Required field
@@ -196,7 +197,7 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
         self.appName = appName
         
         // clear identities
-        identities = []
+        //identities = []
         
         useLocation = useLoc
         if (useLoc) {
@@ -205,19 +206,25 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
 
         // add installID as identity too
         if let installID = UserDefaults.standard.object(forKey: Mofiler.sharedInstance.MOMOFILER_APPLICATION_INSTALLID) as? String {
-            identities.append(["name":MOFILER_INSTALL_ID,"value":installID])
+//            identities.append(["name":MOFILER_INSTALL_ID,"value":installID])
+            addIdentity(identity: [MOFILER_INSTALL_ID: installID])
         }
         
-
-        if (useAdvertisingId) {
-            if ASIdentifierManager.shared().isAdvertisingTrackingEnabled {
-                identities.append(["name":MOFILER_ADVERTISING_ID,"value":ASIdentifierManager.shared().advertisingIdentifier.uuidString])
+        if getIdentity(_key: MOFILER_ADVERTISING_ID) == nil {
+            if (useAdvertisingId) {
+                if ASIdentifierManager.shared().isAdvertisingTrackingEnabled {
+                    identities.append(["name":MOFILER_ADVERTISING_ID,"value":ASIdentifierManager.shared().advertisingIdentifier.uuidString])
+                }
+                injectValue(newValue: ["_initialized" : String(NSDate().timeIntervalSince1970*1000)])
+                
+                let when = DispatchTime.now() + 2 // change 2 to desired number of seconds
+                DispatchQueue.main.asyncAfter(deadline: when) {
+                    self.flushDataToMofiler();
+                }
             }
         }
         
-        injectValue(newValue: ["_initialized" : String(NSDate().timeIntervalSince1970*1000)])
-            
-        flushDataToMofiler();
+        self.isInitialized = true;
         
         MODiskCache.sharedInstance.saveCacheToDisk()
     }
@@ -228,6 +235,23 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
             identities.append(["name":key,"value":value])
         }
         MODiskCache.sharedInstance.saveCacheToDisk()
+    }
+    
+    public func getIdentity(_key: String) -> [String:String]?{
+//        return identities.first(where: { $0.name == _name})
+//        if let i = identities.index(where: { $0.key == _name }) {
+//            return identities[i]
+//        }
+//        return nil
+        let identitiesAux = identities
+        for (idx, identi) in identitiesAux.enumerated() {
+            if let key = identi.first?.value, key == _key {
+                return identities[idx]
+            }
+        }
+         return nil
+
+    
     }
     
     func validateIdentity(identity: [String:String]) {
@@ -299,7 +323,8 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
                 if values.count > 0 {
                     self.isLoadingPost = true
                     let data = MODeviceManager.sharedInstance.loadData(userValues: values, identities: identities)
-                    let countDeleteItems = values.count - 1
+                    //let countDeleteItems = values.count - 1
+                    let countDeleteItems = values.count
                     MOAPIManager.sharedInstance.uploadValues(urlBase: url, appKey: appKey, appName: appName, data: data, callback: { (result, error) in
                         
                         performBlockOnMainQueue {
