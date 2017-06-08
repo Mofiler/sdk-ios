@@ -80,7 +80,7 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
             Mofiler.initialized = true;
             generateInstallID()
         }
-        sessionControl()
+        
         MODiskCache.sharedInstance.registerForDiskCaching("Mofiler", object: self)
         
         mofilerProbeTimer = Timer.scheduledTimer(timeInterval: mofilerProbeInterval, target: self, selector: #selector(injectMofilerProbe), userInfo: nil, repeats: true)
@@ -145,7 +145,13 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
         injectValue(newValue: ["sessionLength":duration], expirationDateInMilliseconds: sessionEndTime as NSNumber)
         injectValue(newValue: ["sessionStart":start], expirationDateInMilliseconds: sessionEndTime as NSNumber)
         injectValue(newValue: ["sessionEnd":end], expirationDateInMilliseconds: sessionEndTime as NSNumber)
-        flushDataToMofiler()
+        //flushDataToMofiler()
+        
+        let when = DispatchTime.now() + 2 // change 2 to desired number of seconds
+        DispatchQueue.main.asyncAfter(deadline: when) {
+            self.flushDataToMofiler();
+        }
+
     }
     
     func generateNewSession() {
@@ -164,11 +170,15 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
     }
     
     func differenceDatesMilliSeconds(startDate: Date, endDate: Date) -> Int {
-        let difference = NSCalendar.current.dateComponents([.day, .month, .year, .hour, .minute, .second], from: startDate,  to: endDate)
-        if let seconds = difference.second {
-            return seconds * 1000
-        }
-        return 0
+//        let difference = NSCalendar.current.dateComponents([.second], from: startDate,  to: endDate)
+//        if let seconds = difference.second {
+//            return seconds * 1000
+//            NSLog("----seconds", seconds)
+//        }
+        let elapsed = endDate.timeIntervalSince(startDate);
+        NSLog("----elapsed", elapsed)
+
+        return Int(elapsed*1000)
     }
 
     //# MARK: - Methods app enter background, foreground
@@ -225,6 +235,7 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
         }
         
         self.isInitialized = true;
+        sessionControl();
         
         MODiskCache.sharedInstance.saveCacheToDisk()
     }
