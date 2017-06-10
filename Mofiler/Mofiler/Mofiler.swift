@@ -157,6 +157,7 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
     func generateNewSession() {
         UserDefaults.standard.set(UUID().uuidString, forKey: MOMOFILER_SESSION_ID)
         UserDefaults.standard.set(Date(), forKey: MOMOFILER_SESSION_START_DATE)
+        UserDefaults.standard.set(nil, forKey: MOMOFILER_SESSION_END_DATE)
         UserDefaults.standard.synchronize()
     }
     
