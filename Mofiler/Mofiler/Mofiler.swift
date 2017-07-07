@@ -10,13 +10,14 @@ import CoreTelephony
 import Darwin
 import CoreLocation
 import AdSupport
+import CoreBluetooth
 
 @objc public protocol MofilerDelegate {
     @objc optional func responseValue(key: String, identityKey: String, identityValue: String, value: [String:Any])
     @objc optional func errorOcurred(error: String, userInfo: [String: String])
 }
 
-public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCacheProtocol {
+public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCacheProtocol, CBCentralManagerDelegate {
     
     //# MARK: - Keys to save to disk
     let MOMOFILER_APP_KEY               = "MOMOFILER_APP_KEY"
@@ -280,7 +281,7 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
     }
     
     
-    public func injectValue(newValue: [String:String], expirationDateInMilliseconds: NSNumber? = nil) {
+    public func injectValue(newValue: [String:Any], expirationDateInMilliseconds: NSNumber? = nil) {
         if validateMandatoryFields() {
             
             if let keyValue = newValue.first?.key, let value = newValue.first?.value {
@@ -414,9 +415,15 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
         }
     }
     
+    var beaconList = [(CLBeaconRegion, CLBeacon)]()
+    var blueToothReady = false
+    var centralManager:CBCentralManager!
+    var scannedBeacons: [ScannedBeacon] = []
+    var updateTimer: Timer?
     
     //# MARK: - Location
     func determineMyCurrentLocation() {
+
         let locationManager = CLLocationManager()
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
@@ -424,9 +431,26 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
         
         if CLLocationManager.locationServicesEnabled() {
             locationManager.startUpdatingLocation()
+            
+            //beacons by region
+            //TODO bring list from server
+            let beaconRegions = [
+                CLBeaconRegion(proximityUUID: NSUUID(uuidString: "F7826DA6-4FA2-4E98-8024-BC5B71E0893E")! as UUID, identifier: "Kontakt"),
+                CLBeaconRegion(proximityUUID: NSUUID(uuidString: "B9407F30-F5F8-466E-AFF9-25556B57FE6D")! as UUID, identifier: "Estimote")
+            ]
+            
+            beaconRegions.forEach{region in
+                locationManager.startRangingBeacons(in: region)
+            }
         }
+        
+        // bluetooth devices (beacons and others)
+        centralManager = CBCentralManager(delegate: self, queue: nil)
+        
+        
     }
     
+    // LOCATION
     public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.first {
             self.latitude = Float(location.coordinate.latitude)
@@ -437,7 +461,148 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
     public func locationManager(_ manager: CLLocationManager, didFailWithError error: Error){
         self.errorOcurred(error: "Error \(error.localizedDescription)", userInfo: [self.MOMOFILER_ERROR_LOCATION : self.MOMOFILER_ERROR_LOCATION])
     }
+    // END LOCATION
     
+    // BEACON REGION
+    public func locationManager(_ manager: CLLocationManager, didRangeBeacons beacons: [CLBeacon], in region: CLBeaconRegion) {
+        // 1
+        var outputText = "Ranged beacons count: \(beacons.count)\n\n"
+        beacons.forEach { beacon in
+            outputText += beacon.description
+            outputText += "\n\n"
+        }
+        NSLog("%@", outputText)
+        
+        // 2
+        beacons.forEach { beacon in
+            if let index = beaconList.index(where: { $0.1.proximityUUID.uuidString == beacon.proximityUUID.uuidString && $0.1.major == beacon.major && $0.1.minor == beacon.minor }) {
+                beaconList[index] = (region, beacon)
+            } else {
+                beaconList.append((region, beacon))
+            }
+        }
+        
+    }
+    // END BEACON REGION
+    
+    // BLUETOOH
+    //Callback where we receive the Central Manager state. When state is "Powered ON" start the scan.
+    public func centralManagerDidUpdateState(_ central: CBCentralManager) {
+        switch (central.state) {
+        case .poweredOff:
+            print("CoreBluetooth BLE hardware is powered off")
+        case .poweredOn:
+            print("CoreBluetooth BLE hardware is powered on and ready")
+            blueToothReady = true;
+            
+        default: break
+        }
+        
+        if blueToothReady {
+            //Start scanning for devices
+            discoverDevices()
+        }
+    }
+    
+    func discoverDevices() {
+        print("Discovering devices")
+        //Scan for peripherals
+        centralManager.scanForPeripherals(withServices: nil, options: nil)
+    }
+    
+    //Central Manager method called every time a device is scanned. Manage them with an array to add new ones and update data on the old ones.
+    public func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
+        var namee = "N/A"
+        if(peripheral.name != nil){
+            namee = peripheral.name!
+        }
+//        NSLog("\(namee) - \(RSSI)")
+        
+        //RSSI 127 is an error code which indicates the data received is corrupted. Cannot be treated as RSSI.
+        if(RSSI == 127){
+            return
+        }
+        
+        var contains = false
+        if(scannedBeacons.count>0){
+            for i in 0...(scannedBeacons.count-1){
+                if(i<scannedBeacons.count && peripheral.identifier.uuidString == scannedBeacons[i].bUUID){
+                    scannedBeacons[i] = ScannedBeacon(peri: peripheral, name: namee, uuid: peripheral.identifier.uuidString, rssi: RSSI.intValue)
+                    contains = true
+                    break
+                }
+            }
+        }
+        if(!contains){
+            NSLog("new device found \(namee) - \(RSSI)")
+            scannedBeacons.append(ScannedBeacon(peri:peripheral, name: namee, uuid: peripheral.identifier.uuidString, rssi: RSSI.intValue))
+            //"peripheral":peripheral,
+            let bt_device: [String:Any] = [
+                                           "name": namee,
+                                           "uuid": peripheral.identifier.uuidString,
+                                           "rssi": RSSI.intValue]
+            
+            injectValue(newValue: ["_btdevice" : bt_device])
+            if (RSSI.intValue > -15 || RSSI.intValue < -35) {
+                // With those RSSI values, probably not an iBeacon.
+            } else {
+                // Try to obtain beacon information
+                centralManager.connect(peripheral, options: nil);
+            }
+        }
+    }
+    
+    func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
+        
+        peripheral.discoverServices(nil)
+    }
+    
+    func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
+        
+        discoveredPeripheral = nil
+    }
+    
+    func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
+        
+        guard error == nil else {
+            return
+        }
+        
+        if let services = peripheral.services {
+            for service in services {
+                peripheral.discoverCharacteristics(nil, for: service)
+            }
+        }
+    }
+    
+    func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
+        
+        guard error == nil else {
+            return
+        }
+        
+        if let characteristics = service.characteristics {
+            for characteristic in characteristics {
+                if characteristic.uuid.uuidString == "2B24" { // UUID
+                    peripheral.readValue(for: characteristic)
+                }
+            }
+        }
+    }
+    
+    func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
+        
+        guard error == nil else {
+            return;
+        }
+        
+        if value = characteristic.value {
+            // value will be a Data object with bits that represent the UUID you're looking for.
+            print("Found beacon UUID: \(value.hexString)")
+            // This is where you can start the CLBeaconRegion and start monitoring it, or just get the value you need.
+        }
+    }
+    // END BLUETOOH
     
     //# MARK: - Methods validate fields
     func validateStringField(field: Any?) -> String? {
@@ -507,4 +672,21 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
         }
     }
 
+}
+
+//Beacon class which defines the structure of the data we need.
+class ScannedBeacon {
+    
+    var mPeri: CBPeripheral
+    var bName: String
+    var bUUID: String
+    var bRssi: Int
+    
+    
+    init(peri: CBPeripheral, name: String, uuid: String, rssi: Int) {
+        self.mPeri = peri
+        self.bName = name
+        self.bUUID = uuid
+        self.bRssi = rssi
+    }
 }
