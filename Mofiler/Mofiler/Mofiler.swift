@@ -485,7 +485,7 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
     // BEACON SCANNER
     // iBeacon
     func didFindiBeacon(_ beaconScanner: BeaconScanner, iBeaconInfo: iBeaconInfo) {
-        NSLog("FIND iBEACON: %@", iBeaconInfo.description)
+        NSLog("FOUND iBEACON: %@", iBeaconInfo.description)
         
         let ibeacon_device: [String:Any] = [
             "proximityUUID": iBeaconInfo.proximityUUID,
@@ -498,16 +498,16 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
         injectValue(newValue: ["_ibeacon" : ibeacon_device])
     }
     func didUpdateiBeacon(_ beaconScanner: BeaconScanner, iBeaconInfo: iBeaconInfo) {
-        NSLog("UPDATE iBEACON: %@", iBeaconInfo.description)
+//        NSLog("UPDATE iBEACON: %@", iBeaconInfo.description)
     }
     func didLoseiBeacon(_ beaconScanner: BeaconScanner, iBeaconInfo: iBeaconInfo) {
-        NSLog("LOST iBEACON: %@", iBeaconInfo.description)
+//        NSLog("LOST iBEACON: %@", iBeaconInfo.description)
     }
     // end iBeacon
 
     // Eddystone
     func didFindBeacon(_ beaconScanner: BeaconScanner, beaconInfo: BeaconInfo) {
-        NSLog("FIND BEACON: %@", beaconInfo.description)
+        NSLog("FOUND BEACON: %@", beaconInfo.description)
         
         let beacon_device: [String:Any] = [
             "beaconId": beaconInfo.beaconID.beaconIDString,
@@ -518,10 +518,10 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
         injectValue(newValue: ["_beacon" : beacon_device])
     }
     func didLoseBeacon(_ beaconScanner: BeaconScanner, beaconInfo: BeaconInfo) {
-        NSLog("LOST BEACON: %@", beaconInfo.description)
+//        NSLog("LOST BEACON: %@", beaconInfo.description)
     }
     func didUpdateBeacon(_ beaconScanner: BeaconScanner, beaconInfo: BeaconInfo) {
-        NSLog("UPDATE BEACON: %@", beaconInfo.description)
+//        NSLog("UPDATE BEACON: %@", beaconInfo.description)
     }
     func didObserveURLBeacon(_ beaconScanner: BeaconScanner, URL: Foundation.URL, RSSI: Int) {
         //NSLog("URL SEEN: %@, RSSI: %d", URL, RSSI)
