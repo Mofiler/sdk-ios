@@ -53,7 +53,7 @@ class MODeviceManager: MOGenericManager {
     let MOMOFILER_DEVICE_SDK_TYPE                   = "sdk_type"
     var MOMOFILER_DEVICE_SDK_TYPE_NAME              = "iPhone SDK"
     let MOMOFILER_DEVICE_SDK_VERSION                = "sdk_version"
-    var MOMOFILER_DEVICE_SDK_VERSION_N              = "1.1.5.1"
+    var MOMOFILER_DEVICE_SDK_VERSION_N              = "1.1.6"
     
     let MOMOFILER_DEVICE_MODEL_NAME                 = "model"
     let MOMOFILER_DEVICE_NAME                       = "deviceName"
