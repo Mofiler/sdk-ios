@@ -21,7 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MofilerDelegate {
         
         mof.initializeWith(appKey: "MY-APPKEY-HERE-IOS", appName: "MyIosTestApplication")
         mof.delegate = self
-        mof.url = "mofiler.com"
+        mof.url = "mofiler.com/mock"
         mof.addIdentity(identity: ["username" : "johndoe"])
         mof.addIdentity(identity: ["name":"john doe"])
         mof.addIdentity(identity: ["email":"john@doe.com"])
@@ -59,11 +59,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MofilerDelegate {
         
         mof.flushDataToMofiler()
         
-        mof.getValue(key: "mykey1", identityKey: "username", identityValue: "johndoe")
+//        mof.getValue(key: "mykey1", identityKey: "username", identityValue: "johndoe")
         
-        mof.getValue(key: "mykey1", identityKey: "username", identityValue: "johndoe") { (result, error) in
-            print(result)
-        }
+//        mof.getValue(key: "mykey1", identityKey: "username", identityValue: "johndoe") { (result, error) in
+//            print(result)
+//        }
         
         return true
     }

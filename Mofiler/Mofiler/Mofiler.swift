@@ -10,13 +10,27 @@ import CoreTelephony
 import Darwin
 import CoreLocation
 import AdSupport
+import CoreBluetooth
 
 @objc public protocol MofilerDelegate {
     @objc optional func responseValue(key: String, identityKey: String, identityValue: String, value: [String:Any])
     @objc optional func errorOcurred(error: String, userInfo: [String: String])
 }
 
-public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCacheProtocol {
+extension Data {
+    
+    public var hexString: String {
+        var str = ""
+        enumerateBytes { (buffer, index, stop) in
+            for byte in buffer {
+                str.append(String(format: "%02X", byte))
+            }
+        }
+        return str
+    }
+}
+
+public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCacheProtocol, BeaconScannerDelegate, BluetoothScannerDelegate {
     
     //# MARK: - Keys to save to disk
     let MOMOFILER_APP_KEY               = "MOMOFILER_APP_KEY"
@@ -52,6 +66,7 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
     //# MARK: - Properties
     public static let sharedInstance = Mofiler()
     static var initialized = false
+    public var isInitialized = false
     
     public var delegate: MofilerDelegate? = nil
     public var appKey: String = ""                          //Required field
@@ -79,7 +94,7 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
             Mofiler.initialized = true;
             generateInstallID()
         }
-        sessionControl()
+        
         MODiskCache.sharedInstance.registerForDiskCaching("Mofiler", object: self)
         
         mofilerProbeTimer = Timer.scheduledTimer(timeInterval: mofilerProbeInterval, target: self, selector: #selector(injectMofilerProbe), userInfo: nil, repeats: true)
@@ -144,12 +159,19 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
         injectValue(newValue: ["sessionLength":duration], expirationDateInMilliseconds: sessionEndTime as NSNumber)
         injectValue(newValue: ["sessionStart":start], expirationDateInMilliseconds: sessionEndTime as NSNumber)
         injectValue(newValue: ["sessionEnd":end], expirationDateInMilliseconds: sessionEndTime as NSNumber)
-        flushDataToMofiler()
+        //flushDataToMofiler()
+        
+        let when = DispatchTime.now() + 2 // change 2 to desired number of seconds
+        DispatchQueue.main.asyncAfter(deadline: when) {
+            self.flushDataToMofiler();
+        }
+
     }
     
     func generateNewSession() {
         UserDefaults.standard.set(UUID().uuidString, forKey: MOMOFILER_SESSION_ID)
         UserDefaults.standard.set(Date(), forKey: MOMOFILER_SESSION_START_DATE)
+        UserDefaults.standard.set(nil, forKey: MOMOFILER_SESSION_END_DATE)
         UserDefaults.standard.synchronize()
     }
     
@@ -163,11 +185,15 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
     }
     
     func differenceDatesMilliSeconds(startDate: Date, endDate: Date) -> Int {
-        let difference = NSCalendar.current.dateComponents([.day, .month, .year, .hour, .minute, .second], from: startDate,  to: endDate)
-        if let seconds = difference.second {
-            return seconds * 1000
-        }
-        return 0
+//        let difference = NSCalendar.current.dateComponents([.second], from: startDate,  to: endDate)
+//        if let seconds = difference.second {
+//            return seconds * 1000
+//            NSLog("----seconds", seconds)
+//        }
+        let elapsed = endDate.timeIntervalSince(startDate);
+        NSLog("----elapsed", elapsed)
+
+        return Int(elapsed*1000)
     }
 
     //# MARK: - Methods app enter background, foreground
@@ -196,28 +222,35 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
         self.appName = appName
         
         // clear identities
-        identities = []
+        //identities = []
         
         useLocation = useLoc
         if (useLoc) {
-            determineMyCurrentLocation()
+            startLocationServices()
         }
 
         // add installID as identity too
         if let installID = UserDefaults.standard.object(forKey: Mofiler.sharedInstance.MOMOFILER_APPLICATION_INSTALLID) as? String {
-            identities.append(["name":MOFILER_INSTALL_ID,"value":installID])
+//            identities.append(["name":MOFILER_INSTALL_ID,"value":installID])
+            addIdentity(identity: [MOFILER_INSTALL_ID: installID])
         }
         
-
-        if (useAdvertisingId) {
-            if ASIdentifierManager.shared().isAdvertisingTrackingEnabled {
-                identities.append(["name":MOFILER_ADVERTISING_ID,"value":ASIdentifierManager.shared().advertisingIdentifier.uuidString])
+        if getIdentity(_key: MOFILER_ADVERTISING_ID) == nil {
+            if (useAdvertisingId) {
+                if ASIdentifierManager.shared().isAdvertisingTrackingEnabled {
+                    identities.append(["name":MOFILER_ADVERTISING_ID,"value":ASIdentifierManager.shared().advertisingIdentifier.uuidString])
+                }
+                injectValue(newValue: ["_initialized" : String(NSDate().timeIntervalSince1970*1000)])
+                
+                let when = DispatchTime.now() + 2 // change 2 to desired number of seconds
+                DispatchQueue.main.asyncAfter(deadline: when) {
+                    self.flushDataToMofiler();
+                }
             }
         }
         
-        injectValue(newValue: ["_initialized" : String(NSDate().timeIntervalSince1970*1000)])
-            
-        flushDataToMofiler();
+        self.isInitialized = true;
+        sessionControl();
         
         MODiskCache.sharedInstance.saveCacheToDisk()
     }
@@ -228,6 +261,23 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
             identities.append(["name":key,"value":value])
         }
         MODiskCache.sharedInstance.saveCacheToDisk()
+    }
+    
+    public func getIdentity(_key: String) -> [String:String]?{
+//        return identities.first(where: { $0.name == _name})
+//        if let i = identities.index(where: { $0.key == _name }) {
+//            return identities[i]
+//        }
+//        return nil
+        let identitiesAux = identities
+        for (idx, identi) in identitiesAux.enumerated() {
+            if let key = identi.first?.value, key == _key {
+                return identities[idx]
+            }
+        }
+         return nil
+
+    
     }
     
     func validateIdentity(identity: [String:String]) {
@@ -244,7 +294,7 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
     }
     
     
-    public func injectValue(newValue: [String:String], expirationDateInMilliseconds: NSNumber? = nil) {
+    public func injectValue(newValue: [String:Any], expirationDateInMilliseconds: NSNumber? = nil) {
         if validateMandatoryFields() {
             
             if let keyValue = newValue.first?.key, let value = newValue.first?.value {
@@ -299,7 +349,8 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
                 if values.count > 0 {
                     self.isLoadingPost = true
                     let data = MODeviceManager.sharedInstance.loadData(userValues: values, identities: identities)
-                    let countDeleteItems = values.count - 1
+                    //let countDeleteItems = values.count - 1
+                    let countDeleteItems = values.count
                     MOAPIManager.sharedInstance.uploadValues(urlBase: url, appKey: appKey, appName: appName, data: data, callback: { (result, error) in
                         
                         performBlockOnMainQueue {
@@ -377,19 +428,47 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
         }
     }
     
+    var monitoring = false
+    let locationManager = CLLocationManager()
+    var beaconScanner: BeaconScanner!
+    var bluetoothScanner: BluetoothScanner!
     
     //# MARK: - Location
-    func determineMyCurrentLocation() {
-        let locationManager = CLLocationManager()
-        locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager.requestAlwaysAuthorization()
-        
+    func startLocationServices() {
+
         if CLLocationManager.locationServicesEnabled() {
+
+            locationManager.delegate = self
+            locationManager.desiredAccuracy = kCLLocationAccuracyBest
+            locationManager.requestAlwaysAuthorization() //TODO only for debug, every developer should ask for this permission
             locationManager.startUpdatingLocation()
+        }
+        
+    }
+
+    public func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        print("STATUS CHANGED: \(status.rawValue)")
+        if status == .authorizedAlways && !monitoring {
+            print("Authorized!")
+            monitoring = true
+            
+            // beacons Eddystone / iBeacon
+            self.beaconScanner = BeaconScanner()
+            self.beaconScanner!.delegate = self
+            //self.beaconScanner!.locationManager = locationManager;
+            self.beaconScanner!.startScanning()
+            // end beacons Eddystone / iBeacon
+            
+            // bluetooth devices (beacons and others)
+            self.bluetoothScanner = BluetoothScanner()
+            self.bluetoothScanner!.delegate = self
+            self.bluetoothScanner!.startScanning()
+            // end bluetooth devices (beacons and others)
+            
         }
     }
     
+    // LOCATION
     public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.first {
             self.latitude = Float(location.coordinate.latitude)
@@ -400,7 +479,73 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
     public func locationManager(_ manager: CLLocationManager, didFailWithError error: Error){
         self.errorOcurred(error: "Error \(error.localizedDescription)", userInfo: [self.MOMOFILER_ERROR_LOCATION : self.MOMOFILER_ERROR_LOCATION])
     }
+    // END LOCATION
     
+    
+    // BEACON SCANNER
+    // iBeacon
+    func didFindiBeacon(_ beaconScanner: BeaconScanner, iBeaconInfo: iBeaconInfo) {
+        NSLog("FOUND iBEACON: %@", iBeaconInfo.description)
+        
+        let ibeacon_device: [String:Any] = [
+            "proximityUUID": iBeaconInfo.proximityUUID,
+            "major": iBeaconInfo.major,
+            "minor": iBeaconInfo.minor,
+            "proximity": iBeaconInfo.proximity,
+            "accuracy": iBeaconInfo.accuracy,
+            "rssi": iBeaconInfo.rssi]
+        
+        injectValue(newValue: ["_ibeacon" : ibeacon_device])
+    }
+    func didUpdateiBeacon(_ beaconScanner: BeaconScanner, iBeaconInfo: iBeaconInfo) {
+//        NSLog("UPDATE iBEACON: %@", iBeaconInfo.description)
+    }
+    func didLoseiBeacon(_ beaconScanner: BeaconScanner, iBeaconInfo: iBeaconInfo) {
+//        NSLog("LOST iBEACON: %@", iBeaconInfo.description)
+    }
+    // end iBeacon
+
+    // Eddystone
+    func didFindBeacon(_ beaconScanner: BeaconScanner, beaconInfo: BeaconInfo) {
+        NSLog("FOUND BEACON: %@", beaconInfo.description)
+        
+        let beacon_device: [String:Any] = [
+            "beaconId": beaconInfo.beaconID.beaconIDString,
+            "txPower": beaconInfo.txPower,
+            "rssi": beaconInfo.RSSI]
+
+        
+        injectValue(newValue: ["_beacon" : beacon_device])
+    }
+    func didLoseBeacon(_ beaconScanner: BeaconScanner, beaconInfo: BeaconInfo) {
+//        NSLog("LOST BEACON: %@", beaconInfo.description)
+    }
+    func didUpdateBeacon(_ beaconScanner: BeaconScanner, beaconInfo: BeaconInfo) {
+//        NSLog("UPDATE BEACON: %@", beaconInfo.description)
+    }
+    func didObserveURLBeacon(_ beaconScanner: BeaconScanner, URL: Foundation.URL, RSSI: Int) {
+        //NSLog("URL SEEN: %@, RSSI: %d", URL, RSSI)
+//        print("URL SEEN \(URL)")
+    }
+    // end Eddystone
+    // END BEACON SCANNER
+    
+    // BLUETOOH
+    func didFindPeripheral(_ bluetoothScanner: BluetoothScanner, scannedPeripheral: ScannedPeripheral){
+        let bt_device: [String:Any] = [
+            "name": scannedPeripheral.name,
+            "uuid": scannedPeripheral.uuid,
+            "rssi": scannedPeripheral.rssi]
+        
+        injectValue(newValue: ["_btdevice" : bt_device])
+    }
+    func didLosePeripheral(_ bluetoothScanner: BluetoothScanner, scannedPeripheral: ScannedPeripheral){
+        
+    }
+    func didUpdatePeripheral(_ bluetoothScanner: BluetoothScanner, scannedPeripheral: ScannedPeripheral){
+        
+    }
+    // END BLUETOOH
     
     //# MARK: - Methods validate fields
     func validateStringField(field: Any?) -> String? {
@@ -471,3 +616,4 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
     }
 
 }
+

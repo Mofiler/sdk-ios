@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		08589E7C1DB0069A00144878 /* Mofiler.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08589E791DB0066100144878 /* Mofiler.framework */; };
-		08589E7D1DB0069A00144878 /* Mofiler.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 08589E791DB0066100144878 /* Mofiler.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		F8A8EDF71F0D723900692046 /* Mofiler.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8A8EDF61F0D723900692046 /* Mofiler.framework */; };
+		F8A8EDF91F0D724A00692046 /* Mofiler.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F8A8EDF61F0D723900692046 /* Mofiler.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		FFC1DB681DAD331A00396B56 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFC1DB671DAD331A00396B56 /* AppDelegate.swift */; };
 		FFC1DB6A1DAD331A00396B56 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFC1DB691DAD331A00396B56 /* ViewController.swift */; };
 		FFC1DB6D1DAD331A00396B56 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FFC1DB6B1DAD331A00396B56 /* Main.storyboard */; };
@@ -23,7 +23,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				08589E7D1DB0069A00144878 /* Mofiler.framework in Embed Frameworks */,
+				F8A8EDF91F0D724A00692046 /* Mofiler.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -31,7 +31,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		08589E791DB0066100144878 /* Mofiler.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Mofiler.framework; path = Carthage/Build/iOS/Mofiler.framework; sourceTree = SOURCE_ROOT; };
+		F8A8EDF61F0D723900692046 /* Mofiler.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Mofiler.framework; path = "../../../Library/Developer/Xcode/DerivedData/Mofiler-cklhpdxboxlyisdaudmiaxcbfvmf/Build/Products/Release-iphoneos/Mofiler.framework"; sourceTree = "<group>"; };
 		FFC1DB641DAD331A00396B56 /* MofilerAppSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MofilerAppSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FFC1DB671DAD331A00396B56 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FFC1DB691DAD331A00396B56 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -46,7 +46,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				08589E7C1DB0069A00144878 /* Mofiler.framework in Frameworks */,
+				F8A8EDF71F0D723900692046 /* Mofiler.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -56,6 +56,7 @@
 		FFC1DB5B1DAD331A00396B56 = {
 			isa = PBXGroup;
 			children = (
+				F8A8EDF61F0D723900692046 /* Mofiler.framework */,
 				FFC1DB661DAD331A00396B56 /* MofilerAppSwift */,
 				FFC1DB651DAD331A00396B56 /* Products */,
 			);
@@ -72,7 +73,6 @@
 		FFC1DB661DAD331A00396B56 /* MofilerAppSwift */ = {
 			isa = PBXGroup;
 			children = (
-				08589E791DB0066100144878 /* Mofiler.framework */,
 				FFC1DB671DAD331A00396B56 /* AppDelegate.swift */,
 				FFC1DB691DAD331A00396B56 /* ViewController.swift */,
 				FFC1DB6B1DAD331A00396B56 /* Main.storyboard */,
@@ -117,8 +117,8 @@
 				TargetAttributes = {
 					FFC1DB631DAD331A00396B56 = {
 						CreatedOnToolsVersion = 8.0;
-						DevelopmentTeam = 7TV34A85J2;
-						ProvisioningStyle = Manual;
+						DevelopmentTeam = CAM4HDFG43;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -300,6 +300,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = CAM4HDFG43;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/MofilerAppSwift",
@@ -310,6 +312,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.MofilerAppSwift;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -318,7 +321,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = CAM4HDFG43;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/MofilerAppSwift",
@@ -329,6 +333,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.MofilerAppSwift;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;

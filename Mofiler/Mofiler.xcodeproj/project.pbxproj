@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F833971D1F17FE5E00A3FD40 /* BeaconScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = F833971A1F17FE5E00A3FD40 /* BeaconScanner.swift */; };
+		F833971E1F17FE5E00A3FD40 /* DispatchTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F833971B1F17FE5E00A3FD40 /* DispatchTimer.swift */; };
+		F833971F1F17FE5E00A3FD40 /* Eddystone.swift in Sources */ = {isa = PBXBuildFile; fileRef = F833971C1F17FE5E00A3FD40 /* Eddystone.swift */; };
+		F83397211F18115100A3FD40 /* BluetoothScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83397201F18115100A3FD40 /* BluetoothScanner.swift */; };
 		FF17F8161DA5873A00F0BF42 /* Mofiler.h in Headers */ = {isa = PBXBuildFile; fileRef = FF17F8081DA5873A00F0BF42 /* Mofiler.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FF2C319F1DA814B300574322 /* Mofiler.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF2C319E1DA814B300574322 /* Mofiler.swift */; };
 		FF4253151DB666BB00680BBA /* UIDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4253141DB666BB00680BBA /* UIDevice.swift */; };
@@ -18,6 +22,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		F833971A1F17FE5E00A3FD40 /* BeaconScanner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BeaconScanner.swift; sourceTree = "<group>"; };
+		F833971B1F17FE5E00A3FD40 /* DispatchTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DispatchTimer.swift; sourceTree = "<group>"; };
+		F833971C1F17FE5E00A3FD40 /* Eddystone.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Eddystone.swift; sourceTree = "<group>"; };
+		F83397201F18115100A3FD40 /* BluetoothScanner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluetoothScanner.swift; sourceTree = "<group>"; };
 		FF17F8051DA5873A00F0BF42 /* Mofiler.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Mofiler.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF17F8081DA5873A00F0BF42 /* Mofiler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Mofiler.h; sourceTree = "<group>"; };
 		FF17F8091DA5873A00F0BF42 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -82,9 +90,13 @@
 		FF5641B31DAE6BC500399BE5 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				F833971A1F17FE5E00A3FD40 /* BeaconScanner.swift */,
+				F833971B1F17FE5E00A3FD40 /* DispatchTimer.swift */,
+				F833971C1F17FE5E00A3FD40 /* Eddystone.swift */,
 				FF5641B51DAE6BC500399BE5 /* MOGenericManager.swift */,
 				FF5641B41DAE6BC500399BE5 /* MOAPIManager.swift */,
 				FF4253161DB66BB200680BBA /* MODeviceManager.swift */,
+				F83397201F18115100A3FD40 /* BluetoothScanner.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -171,12 +183,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F833971D1F17FE5E00A3FD40 /* BeaconScanner.swift in Sources */,
+				F833971F1F17FE5E00A3FD40 /* Eddystone.swift in Sources */,
 				FFF20D311DB14FE4009B65B4 /* Async.swift in Sources */,
 				FF4253151DB666BB00680BBA /* UIDevice.swift in Sources */,
 				FF7279FF1DB5019600F158E6 /* MODiskCache.swift in Sources */,
+				F833971E1F17FE5E00A3FD40 /* DispatchTimer.swift in Sources */,
 				FF2C319F1DA814B300574322 /* Mofiler.swift in Sources */,
 				FF5641B81DAE6BC500399BE5 /* MOGenericManager.swift in Sources */,
 				FF5641B71DAE6BC500399BE5 /* MOAPIManager.swift in Sources */,
+				F83397211F18115100A3FD40 /* BluetoothScanner.swift in Sources */,
 				FF4253171DB66BB200680BBA /* MODeviceManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
