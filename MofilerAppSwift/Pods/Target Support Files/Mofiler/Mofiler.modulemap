@@ -1,6 +1,0 @@
-framework module Mofiler {
-  umbrella header "Mofiler-umbrella.h"
-
-  export *
-  module * { export * }
-}

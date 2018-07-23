@@ -1,6 +1,0 @@
-framework module Pods_MofilerAppSwift {
-  umbrella header "Pods-MofilerAppSwift-umbrella.h"
-
-  export *
-  module * { export * }
-}
