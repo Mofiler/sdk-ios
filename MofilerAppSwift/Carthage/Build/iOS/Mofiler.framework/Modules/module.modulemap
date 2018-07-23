@@ -1,0 +1,11 @@
+framework module Mofiler {
+  umbrella header "Mofiler.h"
+
+  export *
+  module * { export * }
+}
+
+module Mofiler.Swift {
+    header "Mofiler-Swift.h"
+    requires objc
+}

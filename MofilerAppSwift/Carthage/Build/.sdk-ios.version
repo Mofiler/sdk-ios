@@ -1,11 +1,11 @@
 {
   "iOS" : [
     {
-      "hash" : "49616d506a1db1b0d1719d052af8e146dc4ff77590ba78149c733c98fdfe424e",
+      "hash" : "ff7bc40dab2d879fb6bbedf06fb9f371d204f80c0da43c81188e89585d87dc2e",
       "name" : "Mofiler"
     }
   ],
-  "commitish" : "1ad9766f134281e1cbbad9a1c9f0fb4cbb70414e",
+  "commitish" : "e50d5b355699cfa991a94b3ab801acdbebcbaf62",
   "watchOS" : [
 
   ],

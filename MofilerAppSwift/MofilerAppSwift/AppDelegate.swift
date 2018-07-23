@@ -21,7 +21,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MofilerDelegate {
         
         mof.initializeWith(appKey: "MY-APPKEY-HERE-IOS", appName: "MyIosTestApplication")
         mof.delegate = self
-        mof.url = "mofiler.com/mock"
+//        mof.url = "mofiler.com/mock"
+        mof.url = "mofiler.com"
         mof.addIdentity(identity: ["username" : "johndoe"])
         mof.addIdentity(identity: ["name":"john doe"])
         mof.addIdentity(identity: ["email":"john@doe.com"])

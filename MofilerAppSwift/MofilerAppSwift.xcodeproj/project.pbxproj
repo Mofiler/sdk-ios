@@ -7,8 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		F8A8EDF71F0D723900692046 /* Mofiler.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8A8EDF61F0D723900692046 /* Mofiler.framework */; };
-		F8A8EDF91F0D724A00692046 /* Mofiler.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F8A8EDF61F0D723900692046 /* Mofiler.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		CC5AFD42FCE8D29CD9B85A7B /* Pods_MofilerAppSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62CA015A37BE4F828624D1C5 /* Pods_MofilerAppSwift.framework */; };
 		FFC1DB681DAD331A00396B56 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFC1DB671DAD331A00396B56 /* AppDelegate.swift */; };
 		FFC1DB6A1DAD331A00396B56 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFC1DB691DAD331A00396B56 /* ViewController.swift */; };
 		FFC1DB6D1DAD331A00396B56 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FFC1DB6B1DAD331A00396B56 /* Main.storyboard */; };
@@ -16,22 +15,13 @@
 		FFC1DB721DAD331A00396B56 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FFC1DB701DAD331A00396B56 /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXCopyFilesBuildPhase section */
-		FFC1DB901DAD343200396B56 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				F8A8EDF91F0D724A00692046 /* Mofiler.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
-
 /* Begin PBXFileReference section */
-		F8A8EDF61F0D723900692046 /* Mofiler.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Mofiler.framework; path = "../../../Library/Developer/Xcode/DerivedData/Mofiler-cklhpdxboxlyisdaudmiaxcbfvmf/Build/Products/Release-iphoneos/Mofiler.framework"; sourceTree = "<group>"; };
+		62CA015A37BE4F828624D1C5 /* Pods_MofilerAppSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MofilerAppSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		94947A7A747BB22C800CD365 /* Pods-MofilerAppSwift.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MofilerAppSwift.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MofilerAppSwift/Pods-MofilerAppSwift.debug.xcconfig"; sourceTree = "<group>"; };
+		E17FA52C9D3E431EE9BC46EF /* Pods-MofilerAppSwift.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MofilerAppSwift.release.xcconfig"; path = "Pods/Target Support Files/Pods-MofilerAppSwift/Pods-MofilerAppSwift.release.xcconfig"; sourceTree = "<group>"; };
+		F80E250A2105FE9100024AE6 /* Mofiler.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Mofiler.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F80E25112105FEC000024AE6 /* Pods_MofilerAppSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Pods_MofilerAppSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F80E25152105FEE200024AE6 /* Pods_MofilerAppSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Pods_MofilerAppSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FFC1DB641DAD331A00396B56 /* MofilerAppSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MofilerAppSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FFC1DB671DAD331A00396B56 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FFC1DB691DAD331A00396B56 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -46,19 +36,40 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F8A8EDF71F0D723900692046 /* Mofiler.framework in Frameworks */,
+				CC5AFD42FCE8D29CD9B85A7B /* Pods_MofilerAppSwift.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		06AC2D85CA2FE4A24EC621C7 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				94947A7A747BB22C800CD365 /* Pods-MofilerAppSwift.debug.xcconfig */,
+				E17FA52C9D3E431EE9BC46EF /* Pods-MofilerAppSwift.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		CBC8AD8DA219392485AAE099 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				62CA015A37BE4F828624D1C5 /* Pods_MofilerAppSwift.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		FFC1DB5B1DAD331A00396B56 = {
 			isa = PBXGroup;
 			children = (
-				F8A8EDF61F0D723900692046 /* Mofiler.framework */,
+				F80E25152105FEE200024AE6 /* Pods_MofilerAppSwift.framework */,
+				F80E25112105FEC000024AE6 /* Pods_MofilerAppSwift.framework */,
+				F80E250A2105FE9100024AE6 /* Mofiler.framework */,
 				FFC1DB661DAD331A00396B56 /* MofilerAppSwift */,
 				FFC1DB651DAD331A00396B56 /* Products */,
+				06AC2D85CA2FE4A24EC621C7 /* Pods */,
+				CBC8AD8DA219392485AAE099 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -90,11 +101,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = FFC1DB811DAD331A00396B56 /* Build configuration list for PBXNativeTarget "MofilerAppSwift" */;
 			buildPhases = (
+				7C8F19999590FCDD9ED72279 /* [CP] Check Pods Manifest.lock */,
 				FFC1DB601DAD331A00396B56 /* Sources */,
 				FFC1DB611DAD331A00396B56 /* Frameworks */,
 				FFC1DB621DAD331A00396B56 /* Resources */,
-				FFC1DB901DAD343200396B56 /* Embed Frameworks */,
 				08589E7B1DB0067300144878 /* Carthage */,
+				1D97B02278AD18BCBEE07ED2 /* [CP] Embed Pods Frameworks */,
+				AA2CACC190CC34CC6C894411 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -117,7 +130,7 @@
 				TargetAttributes = {
 					FFC1DB631DAD331A00396B56 = {
 						CreatedOnToolsVersion = 8.0;
-						DevelopmentTeam = CAM4HDFG43;
+						DevelopmentTeam = VCKJ995KD5;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -168,6 +181,57 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
+		};
+		1D97B02278AD18BCBEE07ED2 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-MofilerAppSwift/Pods-MofilerAppSwift-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Mofiler/Mofiler.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Mofiler.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MofilerAppSwift/Pods-MofilerAppSwift-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7C8F19999590FCDD9ED72279 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-MofilerAppSwift-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		AA2CACC190CC34CC6C894411 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MofilerAppSwift/Pods-MofilerAppSwift-resources.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -243,7 +307,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -287,7 +351,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -298,10 +362,11 @@
 		};
 		FFC1DB821DAD331A00396B56 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 94947A7A747BB22C800CD365 /* Pods-MofilerAppSwift.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = CAM4HDFG43;
+				DEVELOPMENT_TEAM = VCKJ995KD5;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/MofilerAppSwift",
@@ -319,10 +384,11 @@
 		};
 		FFC1DB831DAD331A00396B56 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E17FA52C9D3E431EE9BC46EF /* Pods-MofilerAppSwift.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = CAM4HDFG43;
+				DEVELOPMENT_TEAM = VCKJ995KD5;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/MofilerAppSwift",

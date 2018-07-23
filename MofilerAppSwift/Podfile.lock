@@ -1,0 +1,16 @@
+PODS:
+  - Mofiler (1.1.6)
+
+DEPENDENCIES:
+  - Mofiler (from `../Mofiler`)
+
+EXTERNAL SOURCES:
+  Mofiler:
+    :path: ../Mofiler
+
+SPEC CHECKSUMS:
+  Mofiler: 7af91be7ac90ef4d86e696c40ff9680c081a9922
+
+PODFILE CHECKSUM: 85968295cc6613af1ae5906d0c43dacce59cbda3
+
+COCOAPODS: 1.3.1
