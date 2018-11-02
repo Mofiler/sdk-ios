@@ -384,7 +384,7 @@ extension Data {
         }
     }
     
-    public func getValue(key: String, identityKey: String, identityValue: String) {
+    @objc public func getValue(key: String, identityKey: String, identityValue: String) {
         
         if validateMandatoryFields() {
             if let delegate = delegate, let responseValue = delegate.responseValue {
