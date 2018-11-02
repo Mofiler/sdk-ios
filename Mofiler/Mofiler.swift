@@ -410,7 +410,7 @@ extension Data {
         }
     }
     
-    public func getValue(key: String, identityKey: String, identityValue: String, callback: @escaping (Any?, Any?) -> Void) {
+    @objc public func getValue(key: String, identityKey: String, identityValue: String, callback: @escaping (Any?, Any?) -> Void) {
      
         if validateMandatoryFields() {
             MOAPIManager.sharedInstance.getValue(identityKey: identityKey, identityValue: identityValue, keyToRetrieve: key, urlBase: url, appKey: appKey, appName: appName, device: "apple", callback: { (result, error) in
