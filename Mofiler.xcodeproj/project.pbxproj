@@ -351,7 +351,7 @@
 				PRODUCT_NAME = Mofiler;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				VALID_ARCHS = "arm64 armv7 armv7s";
 			};
 			name = Debug;
@@ -377,7 +377,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.Mofiler;
 				PRODUCT_NAME = Mofiler;
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				VALID_ARCHS = "arm64 armv7 armv7s";
 			};
 			name = Release;

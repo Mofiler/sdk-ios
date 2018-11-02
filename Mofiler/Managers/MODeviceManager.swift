@@ -62,7 +62,7 @@ class MODeviceManager: MOGenericManager {
     let MOMOFILER_DEVICE_NETWORK_SSID               = "networkSSID"
 
     
-    static let sharedInstance = MODeviceManager()
+    @objc static let sharedInstance = MODeviceManager()
     static var initialized = false
     
     //# MARK: - Methods init singleton
@@ -192,7 +192,7 @@ class MODeviceManager: MOGenericManager {
             return UIDevice.current.batteryLevel
         }
         
-        var batteryState: UIDeviceBatteryState {
+        var batteryState: UIDevice.BatteryState {
             return UIDevice.current.batteryState
         }
         switch batteryState {

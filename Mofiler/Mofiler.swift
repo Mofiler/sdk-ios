@@ -30,7 +30,7 @@ extension Data {
     }
 }
 
-public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCacheProtocol, BeaconScannerDelegate, BluetoothScannerDelegate {
+@objc public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCacheProtocol, BeaconScannerDelegate, BluetoothScannerDelegate {
     
     //# MARK: - Keys to save to disk
     let MOMOFILER_APP_KEY               = "MOMOFILER_APP_KEY"
@@ -64,11 +64,11 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
     let VALUES_COUNT:Int = 10;
 
     //# MARK: - Properties
-    public static let sharedInstance = Mofiler()
+    @objc public static let sharedInstance = Mofiler()
     static var initialized = false
     public var isInitialized = false
     
-    public var delegate: MofilerDelegate? = nil
+    @objc public var delegate: MofilerDelegate? = nil
     public var appKey: String = ""                          //Required field
     public var appName: String = ""                         //Required field
     public var url: String = "mofiler.com"
@@ -87,7 +87,7 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
     var mofilerProbeInterval:Double = 1800 //30 minutes
     
     //# MARK: - Methods init singleton
-    override init() {
+    @objc override init() {
         super.init()
         
         if (!Mofiler.initialized) {
@@ -343,7 +343,7 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
     }
     
     //# MARK: - Methods Post and get API
-    public func flushDataToMofiler() {
+    @objc public func flushDataToMofiler() {
         if !isLoadingPost {
             if validateMandatoryFields() {
                 if values.count > 0 {

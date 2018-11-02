@@ -11,7 +11,7 @@ class MOAPIManager: MOGenericManager {
     let MO_API_DEFAULT_TIMEOUT   = 30.0
     let MO_API_QUEUENAME         = "MOAPIMANAGER"
     
-    static let sharedInstance = MOAPIManager()
+    @objc static let sharedInstance = MOAPIManager()
     static var initialized = false
     
     let defaultSession = URLSession(configuration: URLSessionConfiguration.default)

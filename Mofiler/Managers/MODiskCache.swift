@@ -26,8 +26,8 @@ class MODiskCache : NSObject {
         super.init()
         
         if (!MODiskCache.objectSingletonInitialized) {
-            NotificationCenter.default.addObserver(self, selector: #selector(applicationWillHibernateToBackground(_:)), name:NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
-            NotificationCenter.default.addObserver(self, selector: #selector(applicationWillTerminate(_:)), name: NSNotification.Name.UIApplicationWillTerminate, object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(applicationWillHibernateToBackground(_:)), name:UIApplication.didEnterBackgroundNotification, object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(applicationWillTerminate(_:)), name: UIApplication.willTerminateNotification, object: nil)
             
             loadCacheFromDisk()
             MODiskCache.objectSingletonInitialized = true;
@@ -36,8 +36,8 @@ class MODiskCache : NSObject {
     
     deinit {
         if (!MODiskCache.objectSingletonInitialized) {
-            NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
-            NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationWillTerminate, object: nil)
+            NotificationCenter.default.removeObserver(self, name: UIApplication.didEnterBackgroundNotification, object: nil)
+            NotificationCenter.default.removeObserver(self, name: UIApplication.willTerminateNotification, object: nil)
         }
     }
     
