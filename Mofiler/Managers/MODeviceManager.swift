@@ -46,6 +46,7 @@ class MODeviceManager: MOGenericManager {
     let MOMOFILER_DEVICE_SCREEN_ORIENTATION         = "orientation"
     let MOMOFILER_DEVICE_SCREEN_INFO                = "screenInfo"
     let MOMOFILER_BATTERY_INFO                      = "batteryInfo"
+    let MOMOFILER_DEVICE_USER_AGENT                 = "userAgent"
 
     let MOMOFILER_DEVICE_OS_NAME                    = "os_name"
     let MOMOFILER_DEVICE_OS_NAME_IOS                = "iOS"
@@ -105,6 +106,10 @@ class MODeviceManager: MOGenericManager {
         if let carrier = carrier, let isoCC = carrier.isoCountryCode {
             isoCountryCode = isoCC
         }
+        
+//        UIWebView* webView = [[UIWebView alloc] initWithFrame:CGRectZero];
+//        NSString* secretAgent = [webView stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"];
+        let userAgent = UIWebView().stringByEvaluatingJavaScript(from: "navigator.userAgent")
 
         let mofiler_device_context: [String:Any] = [MOMOFILER_DEVICE_MANUFACTURER:"Apple",
                                                     MOMOFILER_DEVICE_MODEL: UIDevice.current.modelName,
@@ -112,7 +117,8 @@ class MODeviceManager: MOGenericManager {
                                                     MOMOFILER_DEVICE_LOCALE:isoCountryCode,
                                                     MOMOFILER_DEVICE_XMOFILER_SESSIONID:sessionID,
                                                     MOMOFILER_DEVICE_XMOFILER_INSTALLID:installID,
-                                                    MOMOFILER_DEVICE_EXTRAS:loadExtras()]
+                                                    MOMOFILER_DEVICE_EXTRAS:loadExtras(),
+                                                    MOMOFILER_DEVICE_USER_AGENT: userAgent]
         return mofiler_device_context
     }
     

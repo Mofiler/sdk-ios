@@ -327,7 +327,7 @@ public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCachePr
         }
     }
     
-    func injectMofilerProbe() {
+    @objc func injectMofilerProbe() {
 
         if (useVerboseContext) {
             if validateMandatoryFields() {

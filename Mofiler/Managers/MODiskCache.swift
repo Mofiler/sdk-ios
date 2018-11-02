@@ -80,11 +80,11 @@ class MODiskCache : NSObject {
         }
     }
     
-    func applicationWillHibernateToBackground(_ notification: Notification) {
+    @objc func applicationWillHibernateToBackground(_ notification: Notification) {
         saveCacheToDisk()
     }
     
-    func applicationWillTerminate(_ notification: Notification) {
+    @objc func applicationWillTerminate(_ notification: Notification) {
         saveCacheToDisk()
     }
 }

@@ -18,15 +18,15 @@ public class MOGenericManager : NSObject {
         NotificationCenter.default.addObserver(self, selector: #selector(applicationWillTerminate(_:)), name: NSNotification.Name.UIApplicationWillTerminate, object: nil)
     }
     
-    func applicationWillEnterForeground(_ notification: Notification) {
+    @objc func applicationWillEnterForeground(_ notification: Notification) {
         //Do Nothing
     }
     
-    func applicationWillHibernateToBackground(_ notification: Notification) {
+    @objc func applicationWillHibernateToBackground(_ notification: Notification) {
         //Do Nothing
     }
     
-    func applicationWillTerminate(_ notification: Notification) {
+    @objc func applicationWillTerminate(_ notification: Notification) {
         //Do Nothing
     }
     
