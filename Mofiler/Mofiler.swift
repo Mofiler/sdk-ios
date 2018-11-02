@@ -71,9 +71,9 @@ extension Data {
     @objc public var delegate: MofilerDelegate? = nil
     public var appKey: String = ""                          //Required field
     public var appName: String = ""                         //Required field
-    public var url: String = "mofiler.com"
+    @objc public var url: String = "mofiler.com"
     public var identities: Array<[String:String]> = []
-    public var useVerboseContext: Bool = false              //defaults to false, but helps Mofiler get a lot of information about the device context
+    @objc public var useVerboseContext: Bool = false              //defaults to false, but helps Mofiler get a lot of information about the device context
     public var values: Array<[String : Any]> = []
     public var sessionTimeoutAfterEnd = 30000
     public var debugLogging = true
@@ -217,7 +217,7 @@ extension Data {
     }
 
     //# MARK: - Methods initialize keys and injects
-    public func initializeWith(appKey: String, appName: String, useLoc: Bool = true, useAdvertisingId: Bool = true) {
+    @objc public func initializeWith(appKey: String, appName: String, useLoc: Bool = true, useAdvertisingId: Bool = true) {
         self.appKey = appKey
         self.appName = appName
         
@@ -255,7 +255,7 @@ extension Data {
         MODiskCache.sharedInstance.saveCacheToDisk()
     }
     
-    public func addIdentity(identity: [String:String]) {
+    @objc public func addIdentity(identity: [String:String]) {
         validateIdentity(identity: identity)
         if let key = identity.first?.key, let value = identity.first?.value {
             identities.append(["name":key,"value":value])
@@ -294,7 +294,7 @@ extension Data {
     }
     
     
-    public func injectValue(newValue: [String:Any], expirationDateInMilliseconds: NSNumber? = nil) {
+    @objc public func injectValue(newValue: [String:Any], expirationDateInMilliseconds: NSNumber? = nil) {
         if validateMandatoryFields() {
             
             if let keyValue = newValue.first?.key, let value = newValue.first?.value {
