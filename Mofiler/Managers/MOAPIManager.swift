@@ -108,6 +108,8 @@ class MOAPIManager: MOGenericManager {
                 return
             }
             
+            print(url);
+            
             var urlRequest = createUrlRequest(url: url, appKey: appKey, appName: appName)
             urlRequest.httpMethod = "POST"
             urlRequest.httpBody = jsonData
@@ -117,6 +119,7 @@ class MOAPIManager: MOGenericManager {
             let task = session.dataTask(with: urlRequest, completionHandler: { (data, response, error) in
 
                 guard error == nil else {
+                    print(error);
                     callback(nil, "Error, post api.")
                     return
                 }
