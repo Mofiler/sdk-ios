@@ -456,7 +456,7 @@ extension Data {
             self.beaconScanner = BeaconScanner()
             self.beaconScanner!.delegate = self
             //self.beaconScanner!.locationManager = locationManager;
-            self.beaconScanner!.startScanning()
+//            self.beaconScanner!.startScanning() //TODO commented in version 1.1.7
             // end beacons Eddystone / iBeacon
             
             // bluetooth devices (beacons and others)
