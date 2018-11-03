@@ -103,7 +103,7 @@ class MOAPIManager: MOGenericManager {
 
             let jsonData = try JSONSerialization.data(withJSONObject: data, options: .prettyPrinted)
             
-            guard let url = URL(string: String(format: "http://%@/api/values/", urlBase)) else {
+            guard let url = URL(string: String(format: "https://%@/api/values/", urlBase)) else {
                 callback(nil, "Error: cannot create URL")
                 return
             }
@@ -119,7 +119,6 @@ class MOAPIManager: MOGenericManager {
             let task = session.dataTask(with: urlRequest, completionHandler: { (data, response, error) in
 
                 guard error == nil else {
-                    print(error);
                     callback(nil, "Error, post api.")
                     return
                 }
