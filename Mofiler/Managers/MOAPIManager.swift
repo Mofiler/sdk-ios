@@ -108,7 +108,7 @@ class MOAPIManager: MOGenericManager {
                 return
             }
             
-            print(url);
+//            print(url);
             
             var urlRequest = createUrlRequest(url: url, appKey: appKey, appName: appName)
             urlRequest.httpMethod = "POST"
