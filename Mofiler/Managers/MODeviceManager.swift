@@ -192,7 +192,7 @@ class MODeviceManager: MOGenericManager {
             return UIDevice.current.batteryLevel
         }
         
-        var batteryState: UIDevice.BatteryState {
+        var batteryState: UIDeviceBatteryState {
             return UIDevice.current.batteryState
         }
         switch batteryState {

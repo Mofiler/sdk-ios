@@ -25,6 +25,9 @@ CVS
 *.pbxuser
 *.xcworkspace
 xcuserdata
+Build/
+DerivedData/
+
 
 
 

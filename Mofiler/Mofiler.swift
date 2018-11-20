@@ -66,11 +66,11 @@ extension Data {
     //# MARK: - Properties
     @objc public static let sharedInstance = Mofiler()
     static var initialized = false
-    public var isInitialized = false
+    @objc public var isInitialized = false
     
     @objc public var delegate: MofilerDelegate? = nil
-    public var appKey: String = ""                          //Required field
-    public var appName: String = ""                         //Required field
+    @objc public var appKey: String = ""                          //Required field
+    @objc public var appName: String = ""                         //Required field
     @objc public var url: String = "mofiler.com"
     public var identities: Array<[String:String]> = []
     @objc public var useVerboseContext: Bool = false              //defaults to false, but helps Mofiler get a lot of information about the device context
@@ -289,7 +289,7 @@ extension Data {
         }
     }
 
-    public func setSdkTypeAndVersion(sdk_type: String, sdk_version: String) {
+    @objc public func setSdkTypeAndVersion(sdk_type: String, sdk_version: String) {
         MODeviceManager.sharedInstance.setSdkTypeAndVersion(sdk_type: sdk_type, sdk_version: sdk_version)
     }
     
