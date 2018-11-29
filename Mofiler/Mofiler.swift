@@ -10,7 +10,7 @@ import CoreTelephony
 import Darwin
 import CoreLocation
 import AdSupport
-import CoreBluetooth
+//import CoreBluetooth
 
 @objc public protocol MofilerDelegate {
     @objc optional func responseValue(key: String, identityKey: String, identityValue: String, value: [String:Any])
@@ -30,7 +30,8 @@ extension Data {
     }
 }
 
-@objc public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCacheProtocol, BeaconScannerDelegate, BluetoothScannerDelegate {
+//@objc public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCacheProtocol, BeaconScannerDelegate, BluetoothScannerDelegate {
+@objc public class Mofiler: MOGenericManager, CLLocationManagerDelegate, MODiskCacheProtocol  {
     
     //# MARK: - Keys to save to disk
     let MOMOFILER_APP_KEY               = "MOMOFILER_APP_KEY"
@@ -430,8 +431,8 @@ extension Data {
     
     var monitoring = false
     let locationManager = CLLocationManager()
-    var beaconScanner: BeaconScanner!
-    var bluetoothScanner: BluetoothScanner!
+//    var beaconScanner: BeaconScanner!
+//    var bluetoothScanner: BluetoothScanner!
     
     //# MARK: - Location
     func startLocationServices() {
@@ -453,16 +454,21 @@ extension Data {
             monitoring = true
             
             // beacons Eddystone / iBeacon
+            
+            /* //TODO commented in version 1.1.8
+             
             self.beaconScanner = BeaconScanner()
             self.beaconScanner!.delegate = self
             //self.beaconScanner!.locationManager = locationManager;
-//            self.beaconScanner!.startScanning() //TODO commented in version 1.1.7
+            self.beaconScanner!.startScanning()
+ 
             // end beacons Eddystone / iBeacon
             
             // bluetooth devices (beacons and others)
             self.bluetoothScanner = BluetoothScanner()
             self.bluetoothScanner!.delegate = self
             self.bluetoothScanner!.startScanning()
+            */
             // end bluetooth devices (beacons and others)
             
         }
@@ -481,7 +487,7 @@ extension Data {
     }
     // END LOCATION
     
-    
+    /*
     // BEACON SCANNER
     // iBeacon
     func didFindiBeacon(_ beaconScanner: BeaconScanner, iBeaconInfo: iBeaconInfo) {
@@ -546,7 +552,7 @@ extension Data {
         
     }
     // END BLUETOOH
-    
+    */
     //# MARK: - Methods validate fields
     func validateStringField(field: Any?) -> String? {
         if let field = field , field is String {

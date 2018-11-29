@@ -1,3 +1,4 @@
+/*
 //
 //  BTScanner.swift
 //  Mofiler
@@ -189,3 +190,4 @@ class ScannedPeripheral {
         self.rssi = rssi
     }
 }
+ */
