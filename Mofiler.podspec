@@ -3,7 +3,7 @@ Pod::Spec.new do |s|
           #1.
           s.name               = "Mofiler"
           #2.
-          s.version            = "1.1.7"
+          s.version            = "1.1.9"
           #3.  
           s.summary         = "Mofiler: Data Monetization framework"
           #4.
@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
           #7.
           s.platform            = :ios, "10.0"
           #8.
-          s.source              = { :git => "https://github.com/Mofiler/sdk-ios.git", :tag => "1.1.7" }
+          s.source              = { :git => "https://github.com/Mofiler/sdk-ios.git", :tag => "1.1.9" }
           #9.
           s.source_files     = "Mofiler", "Mofiler/**/*.{h,m,swift}"
     end
