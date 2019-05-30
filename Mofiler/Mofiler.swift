@@ -239,7 +239,8 @@ extension Data {
         if getIdentity(_key: MOFILER_ADVERTISING_ID) == nil {
             if (useAdvertisingId) {
                 if ASIdentifierManager.shared().isAdvertisingTrackingEnabled {
-                    identities.append(["name":MOFILER_ADVERTISING_ID,"value":ASIdentifierManager.shared().advertisingIdentifier.uuidString])
+                    //identities.append(["name":MOFILER_ADVERTISING_ID,"value":ASIdentifierManager.shared().advertisingIdentifier.uuidString])
+                    addIdentity(identity: [MOFILER_ADVERTISING_ID: ASIdentifierManager.shared().advertisingIdentifier.uuidString])
                 }
                 injectValue(newValue: ["_initialized" : String(NSDate().timeIntervalSince1970*1000)])
                 
@@ -283,9 +284,11 @@ extension Data {
     
     func validateIdentity(identity: [String:String]) {
         let identitiesAux = identities
+        var deleted = 0;
         for (idx, identi) in identitiesAux.enumerated() {
             if let key = identi.first?.value, let newKey = identity.first?.key, key == newKey {
-                identities.remove(at: idx)
+                identities.remove(at: (idx-deleted))
+                deleted += 1
             }
         }
     }
